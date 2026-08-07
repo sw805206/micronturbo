@@ -1,4 +1,4 @@
-v004 | 2026-08-07 | 173 lines
+v005 | 2026-08-07 | 175 lines
 # Scope
 
 ## 1. Project
@@ -68,7 +68,9 @@ section covers it.
   fetches only the glyphs it uses; self-hosting Noto Sans SC correctly would mean
   running that subsetting ourselves, and self-hosting it naively would put a
   multi-megabyte font on every Chinese page. The cost is a third-party request in
-  the critical path on every page. Consumers: all pages, via STYLE.css.
+  the critical path on every page. Loaded by `<link>` tags in each page's own
+  `<head>`, not by an `@import` in STYLE.css — see STYLE.md section 4 for why.
+  Consumers: all pages.
 
 - All internal links are RELATIVE paths, for portability.
 

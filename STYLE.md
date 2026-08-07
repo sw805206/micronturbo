@@ -1,4 +1,4 @@
-v001 | 2026-08-07 | 223 lines
+v002 | 2026-08-07 | 231 lines
 # Style
 
 The design-system decisions for micronturbo.com, in words. STYLE.css is the
@@ -115,6 +115,14 @@ exist and are not written speculatively.
 
 Space Grotesk for Latin text and all figures. Noto Sans SC for Chinese. Both are
 served from Google Fonts — the CDN exception is recorded in SCOPE.md section 3.
+
+STYLE.css declares the family in `--mt-font`; it does NOT fetch it. The fetch is
+three `<link>` tags in each page's own `<head>` — two `preconnect`, one
+stylesheet. This is deliberate: an `@import` inside STYLE.css would serialise the
+font request behind the stylesheet fetch, delaying first paint on every page. The
+cost is that a page omitting those tags falls back to `system-ui` silently, with
+no error anywhere, so the head block is carried verbatim in PROCESS.md when that
+file is written.
 
 The Chinese stack is NOT in STYLE.css as of v001. Noto Sans SC is a Simplified
 face, and whether the site is Simplified or Traditional is still open per SCOPE.md
