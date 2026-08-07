@@ -1,4 +1,4 @@
-v002 | 2026-08-07 | 125 lines
+v003 | 2026-08-07 | 157 lines
 # Scope
 
 ## 1. Project
@@ -10,9 +10,10 @@ captured in STYLE.css (tokens, shared patterns) with the decisions recorded in
 STYLE.md.
 
 The site will be multi-language, starting with English and Chinese. English is
-the master. The English site is built first; the directory-vs-suffix structure
-for translated pages is UNDECIDED and must be settled before the second page is
-built — see section 3.
+the master in the editorial sense: English pages are written first and Chinese
+follows from them, but there is no guaranteed one-to-one mapping and either
+language may carry pages the other does not. Translated pages carry a filename
+suffix — see section 3.
 
 **Where it lives**
 
@@ -59,16 +60,44 @@ section covers it.
 
 - All internal links are RELATIVE paths, for portability.
 
-- Shared header and footer are served from `partials.html`, fetched per page.
+- Shared header and footer are served from a partials file, fetched per page.
+  There is one per language: `partials.html` for English, `partials-zh.html`
+  for Chinese. Which one a page fetches is derived from its own filename, not
+  configured per page.
 
-### Multi-language — OPEN
+### Multi-language
 
-Undecided: whether translated pages live in a language subdirectory
-(`/zh/products.html`) or carry a filename suffix (`products-zh.html`). The
-choice interacts with the relative-path rule and with serving one
-`partials.html` to every page, so it is settled before the second page is
-built, not after. Also open: language switcher mechanism, `lang`/`hreflang`
-attributes, and whether STYLE.css needs a CJK font stack.
+DECIDED. Translated pages carry a filename suffix and live flat in the root
+alongside their English counterparts: `products.html` and `products-zh.html`.
+No language subdirectory. This keeps every page at one depth, so the
+relative-path rule holds unchanged and no page needs `../` to reach a shared
+asset. The cost is a busier root directory as pages and languages accumulate;
+if that becomes the binding problem, the structure converts to subdirectories
+by a mechanical move plus a path rewrite.
+
+The `-zh` suffix is the single rule that drives everything. A page ending
+`-zh.html` is Chinese, sets `lang` accordingly, and fetches `partials-zh.html`;
+every other page is English and fetches `partials.html`. Adding a page requires
+no configuration anywhere — the filename is the configuration.
+
+The language toggle is a nav element and therefore lives in the partials files.
+Each partials file points one direction only, so the markup carries no
+conditional: `partials.html` offers Chinese, `partials-zh.html` offers English.
+The toggle resolves to the current page's counterpart when it exists, and to
+the home page in the other language when it does not. That fallback is what
+lets the two language trees diverge without breaking navigation.
+
+The toggle is NOT built until the first Chinese page exists. Until then it
+would point at nothing, and suppressing it would need a list of translated
+pages that has no other purpose. `partials.html` ships with the nav and no
+toggle; the toggle and `partials-zh.html` are built together.
+
+Still open: whether Chinese is Simplified or Traditional, which sets the `lang`
+value (`zh-Hans` or `zh-Hant`), the CJK font stack in STYLE.css, and the
+register the copy is written in. Deferred until the CJK font stack or the first
+Chinese page is on the table, whichever comes first. Also deferred: `hreflang`
+attributes, which are added when the second language is actually built —
+reciprocal tags pointing at pages that do not exist are worse than none.
 
 ### Pages
 
@@ -80,10 +109,13 @@ Only `index.html` exists, and only as a temporary placeholder carrying
 certificate are configured. It is replaced wholesale by the real home page and
 carries no style, no partials and no content decisions.
 
-`partials.html` is the source of truth for the nav, and therefore for which
+The partials files are the source of truth for the nav, and therefore for which
 pages are publicly reachable — a page not linked there is live but unlisted. No
-doc restates it, and no doc tracks visibility separately. Dropdowns are flat and
-single-tier, using the `.tf-has-dropdown` mechanism. It does not exist yet.
+doc restates it, and no doc tracks visibility separately. Each language's nav is
+authoritative for that language only, so the two may list different page sets;
+a page that exists but is not linked from its own language's partials is
+unlisted in that language. Dropdowns are flat and single-tier, using the
+`.tf-has-dropdown` mechanism. Neither partials file exists yet.
 
 ### Internal pages
 

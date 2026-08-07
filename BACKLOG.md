@@ -1,4 +1,4 @@
-v001 | 2026-08-07 | 50 lines
+v002 | 2026-08-07 | 51 lines
 # Backlog
 
 The backlog for micronturbo.com. Tracks both short-term items (bugs, UI
@@ -48,3 +48,4 @@ Closed-by stays empty on every other status.
 | BL-003 | open | infra | Decide whether to enable the Cloudflare proxy (orange cloud) on the apex and www records; requires SSL/TLS mode set to Full first, as Flexible causes a redirect loop against GitHub Pages | 2026-08-07 | |
 | BL-004 | open | content | Build 404.html | 2026-08-07 | |
 | BL-005 | open | content | Add favicon, sitemap.xml and robots.txt | 2026-08-07 | |
+| BL-006 | open | feature | Build `int-backlog.html`, the rendered backlog view; until it exists, Part C flush verification is performed in the raw file | 2026-08-07 | |
