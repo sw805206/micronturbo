@@ -1,4 +1,4 @@
-/* v001 | 2026-08-07 | 373 lines
+/* v004 | 2026-08-07 | 681 lines
    micronturbo.com design tokens and shared patterns.
    The decisions this file implements are recorded in STYLE.md.
    Pages consume tokens, never raw hex or px. See STYLE.md section 8. */
@@ -35,9 +35,11 @@
   --mt-inv-ignition: #A83C15;
   --mt-inv-amber: #8A5A06;
 
-  /* Type families. The CJK stack is deliberately absent — see STYLE.md
-     section 4 and SCOPE.md section 3. */
+  /* Type families. */
   --mt-font: 'Space Grotesk', system-ui, -apple-system, sans-serif;
+  /* Traditional Chinese. Applied by the [lang] rule in section 2. Loaded only
+     by pages that need it — see STYLE.md section 4. */
+  --mt-font-cjk: 'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', sans-serif;
 
   /* Type scale */
   --mt-text-display: clamp(2.5rem, 5vw, 4rem);
@@ -315,7 +317,7 @@ td {
 .mt-datum--steel { border-left-color: var(--mt-steel); }
 
 .mt-datum__figure {
-  font-size: var(--mt-text-h2);
+  font-size: var(--mt-text-display);
   font-weight: 700;
   font-variant-numeric: tabular-nums;
   line-height: 1;
@@ -370,4 +372,310 @@ td {
   clip: rect(0, 0, 0, 0);
   white-space: nowrap;
   border: 0;
+}
+
+/* ---------------------------------------------------------------
+   7. LANGUAGE
+   --------------------------------------------------------------- */
+
+:lang(zh) {
+  font-family: var(--mt-font-cjk);
+}
+
+/* ---------------------------------------------------------------
+   8. HEADER, NAV AND FOOTER
+   Injected at runtime from the partials files by partials.js.
+   See STYLE.md section 6 and SCOPE.md section 3.
+   --------------------------------------------------------------- */
+
+.mt-skip {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 100;
+  background: var(--mt-surface);
+  color: var(--mt-text);
+  padding: var(--mt-space-3) var(--mt-space-4);
+  border-bottom: 2px solid var(--mt-ignition);
+}
+
+.mt-skip:focus { left: 0; }
+
+.mt-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: var(--mt-bg);
+  border-bottom: 1px solid var(--mt-border);
+}
+
+.mt-header__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--mt-space-5);
+  min-height: 68px;
+}
+
+.mt-wordmark {
+  font-size: var(--mt-text-lg);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--mt-text);
+  border-bottom: 0;
+  white-space: nowrap;
+}
+
+.mt-wordmark:hover { border-bottom: 0; color: var(--mt-text); }
+
+.mt-nav__list {
+  display: flex;
+  align-items: center;
+  gap: var(--mt-space-6);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.mt-nav__list li { margin: 0; }
+
+.mt-nav__list a {
+  font-size: var(--mt-text-base);
+  font-weight: 500;
+  color: var(--mt-text-2);
+}
+
+/* The underline treatment is for nav items only. .mt-lang is a boxed control
+   and is excluded, so it keeps its own border at plain class specificity and
+   works outside the nav too — the stylebook renders it standalone. */
+.mt-nav__list a:not(.mt-lang) {
+  padding: var(--mt-space-2) 0;
+  border-bottom: 2px solid transparent;
+}
+
+.mt-nav__list a:hover {
+  color: var(--mt-text);
+  border-bottom-color: var(--mt-border);
+}
+
+.mt-nav__list a.is-current {
+  color: var(--mt-text);
+  border-bottom-color: var(--mt-amber);
+}
+
+/* Language toggle. A square control, not a nav item. A fixed box rather than
+   padding, so "EN" and "繁" render the same shape despite different widths. */
+.mt-lang {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: 1px solid var(--mt-border);
+  border-radius: var(--mt-radius-sm);
+}
+
+.mt-nav__list a.mt-lang:hover {
+  border-color: var(--mt-amber);
+  color: var(--mt-text);
+}
+
+.mt-burger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+.mt-burger__bar {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: var(--mt-text);
+  margin: 0 auto;
+  transition: transform 160ms ease, opacity 160ms ease;
+}
+
+.mt-burger[aria-expanded="true"] .mt-burger__bar:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+.mt-burger[aria-expanded="true"] .mt-burger__bar:nth-child(2) { opacity: 0; }
+.mt-burger[aria-expanded="true"] .mt-burger__bar:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mt-burger__bar { transition: none; }
+}
+
+.mt-footer {
+  border-top: 1px solid var(--mt-border);
+  padding-top: var(--mt-space-5);
+  padding-bottom: var(--mt-space-5);
+  margin-top: var(--mt-space-9);
+}
+
+.mt-footer__bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--mt-space-5);
+  flex-wrap: wrap;
+}
+
+.mt-footer__legal {
+  font-size: var(--mt-text-xs);
+  color: var(--mt-text-3);
+}
+
+.mt-footer__links {
+  display: flex;
+  gap: var(--mt-space-5);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.mt-footer__links li { margin: 0; }
+
+.mt-footer__links a {
+  font-size: var(--mt-text-xs);
+  color: var(--mt-text-3);
+}
+
+.mt-footer__links a:hover {
+  color: var(--mt-text-2);
+  border-bottom-color: var(--mt-text-3);
+}
+
+/* ---------------------------------------------------------------
+   9. HERO AND BUTTON
+   --------------------------------------------------------------- */
+
+.mt-hero {
+  display: grid;
+  grid-template-columns: 1fr 1.55fr;
+  gap: var(--mt-space-7);
+  align-items: center;
+  padding-top: var(--mt-space-9);
+  padding-bottom: var(--mt-space-9);
+}
+
+.mt-hero__slogan {
+  font-size: clamp(1.375rem, 1.8vw, 1.625rem);
+  font-weight: 500;
+  color: var(--mt-text-2);
+  max-width: 24ch;
+  margin: 0 0 var(--mt-space-7);
+}
+
+.mt-hero__media img {
+  width: 100%;
+  border-radius: var(--mt-radius);
+}
+
+.mt-btn {
+  display: inline-block;
+  font-size: var(--mt-text-base);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--mt-text);
+  background: transparent;
+  border: 1px solid var(--mt-ignition);
+  border-radius: var(--mt-radius-sm);
+  padding: var(--mt-space-3) var(--mt-space-6);
+  transition: background-color 140ms ease, color 140ms ease;
+}
+
+.mt-btn:hover {
+  background: var(--mt-ignition);
+  color: var(--mt-bg);
+  border-bottom-color: var(--mt-ignition);
+}
+
+/* Secondary button. Same box, cool border — it sits beside the primary without
+   competing with it. Ignition is reserved for the one action that matters most
+   on the page. */
+.mt-btn--secondary {
+  border-color: var(--mt-border);
+  color: var(--mt-text-2);
+}
+
+.mt-btn--secondary:hover {
+  background: transparent;
+  color: var(--mt-text);
+  border-color: var(--mt-text-3);
+  border-bottom-color: var(--mt-text-3);
+}
+
+/* Button row. */
+.mt-hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--mt-space-4);
+}
+
+/* CJK does not take letter-spacing or uppercase this way. */
+:lang(zh) .mt-btn {
+  letter-spacing: 0.1em;
+  text-transform: none;
+}
+
+@media (max-width: 768px) {
+
+  .mt-burger { display: flex; }
+
+  .mt-nav {
+    position: fixed;
+    inset: 68px 0 0;
+    background: var(--mt-bg);
+    transform: translateX(100%);
+    transition: transform 200ms ease;
+    overflow-y: auto;
+    visibility: hidden;
+  }
+
+  .mt-nav.is-open { transform: translateX(0); visibility: visible; }
+
+  .mt-nav__list {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    padding: var(--mt-space-4) var(--mt-gutter);
+  }
+
+  .mt-nav__list a { font-size: var(--mt-text-lg); }
+
+  .mt-nav__list a:not(.mt-lang) {
+    display: block;
+    padding: var(--mt-space-4) 0;
+    border-bottom: 1px solid var(--mt-border);
+  }
+
+  .mt-nav__list a.is-current { border-bottom-color: var(--mt-amber); }
+
+  /* Stays the square control from section 8; only the offset changes. */
+  .mt-nav__list a.mt-lang { margin-top: var(--mt-space-4); }
+
+  body.mt-nav-open { overflow: hidden; }
+
+  .mt-hero {
+    grid-template-columns: 1fr;
+    gap: var(--mt-space-6);
+  }
+
+  .mt-hero__media { order: -1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mt-nav { transition: none; }
 }
