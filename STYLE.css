@@ -1,0 +1,373 @@
+/* v001 | 2026-08-07 | 373 lines
+   micronturbo.com design tokens and shared patterns.
+   The decisions this file implements are recorded in STYLE.md.
+   Pages consume tokens, never raw hex or px. See STYLE.md section 8. */
+
+/* ---------------------------------------------------------------
+   1. TOKENS
+   --------------------------------------------------------------- */
+
+:root {
+  /* Ground and surfaces */
+  --mt-bg: #0C1A2B;
+  --mt-surface: #12283F;
+  --mt-surface-high: #1B3350;
+  --mt-border: rgba(255, 255, 255, 0.08);
+
+  /* Text on dark */
+  --mt-text: #F6F3EE;
+  --mt-text-2: #C6CDD6;
+  --mt-text-3: #8A93A0;
+  --mt-text-faint: #5E6B7A;
+
+  /* Accent */
+  --mt-ignition: #F55B25;
+  --mt-amber: #FFB020;
+  --mt-steel: #2E6C8E;
+
+  /* Inverted band. Defined and unused as of v001 — see STYLE.md section 3. */
+  --mt-inv-bg: #F6F3EE;
+  --mt-inv-surface: #FFFFFF;
+  --mt-inv-border: #E4E0D8;
+  --mt-inv-text: #0C1A2B;
+  --mt-inv-text-2: #5E6B7A;
+  --mt-inv-text-3: #A9A59C;
+  --mt-inv-ignition: #A83C15;
+  --mt-inv-amber: #8A5A06;
+
+  /* Type families. The CJK stack is deliberately absent — see STYLE.md
+     section 4 and SCOPE.md section 3. */
+  --mt-font: 'Space Grotesk', system-ui, -apple-system, sans-serif;
+
+  /* Type scale */
+  --mt-text-display: clamp(2.5rem, 5vw, 4rem);
+  --mt-text-h1: 3rem;
+  --mt-text-h2: 2.125rem;
+  --mt-text-h3: 1.375rem;
+  --mt-text-lg: 1.125rem;
+  --mt-text-base: 1rem;
+  --mt-text-sm: 0.875rem;
+  --mt-text-xs: 0.75rem;
+
+  /* Line heights */
+  --mt-leading-display: 1.05;
+  --mt-leading-heading: 1.2;
+  --mt-leading-body: 1.7;
+
+  /* Spacing */
+  --mt-space-1: 4px;
+  --mt-space-2: 8px;
+  --mt-space-3: 12px;
+  --mt-space-4: 16px;
+  --mt-space-5: 24px;
+  --mt-space-6: 32px;
+  --mt-space-7: 48px;
+  --mt-space-8: 64px;
+  --mt-space-9: 96px;
+  --mt-space-10: 128px;
+
+  /* Radii */
+  --mt-radius-sm: 10px;
+  --mt-radius: 14px;
+  --mt-radius-lg: 18px;
+
+  /* Layout */
+  --mt-container: 1180px;
+  --mt-gutter: 40px;
+}
+
+@media (max-width: 768px) {
+  :root {
+    --mt-gutter: 24px;
+    --mt-text-h1: 2.25rem;
+    --mt-text-h2: 1.75rem;
+  }
+}
+
+/* ---------------------------------------------------------------
+   2. RESET AND BASE
+   --------------------------------------------------------------- */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--mt-bg);
+  color: var(--mt-text);
+  font-family: var(--mt-font);
+  font-size: var(--mt-text-base);
+  font-weight: 400;
+  line-height: var(--mt-leading-body);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 {
+  margin: 0 0 var(--mt-space-4);
+  font-weight: 700;
+  line-height: var(--mt-leading-heading);
+  color: var(--mt-text);
+}
+
+h1 { font-size: var(--mt-text-h1); }
+h2 { font-size: var(--mt-text-h2); }
+h3 { font-size: var(--mt-text-h3); }
+h4 { font-size: var(--mt-text-lg); }
+
+p {
+  margin: 0 0 var(--mt-space-4);
+  color: var(--mt-text-2);
+}
+
+a {
+  color: var(--mt-amber);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color 120ms ease;
+}
+
+a:hover {
+  border-bottom-color: var(--mt-amber);
+}
+
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--mt-amber);
+  outline-offset: 2px;
+}
+
+ul, ol {
+  margin: 0 0 var(--mt-space-4);
+  padding-left: var(--mt-space-5);
+  color: var(--mt-text-2);
+}
+
+li {
+  margin-bottom: var(--mt-space-2);
+}
+
+hr {
+  border: 0;
+  border-top: 1px solid var(--mt-border);
+  margin: var(--mt-space-7) 0;
+}
+
+img, svg {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--mt-text-sm);
+  margin: 0 0 var(--mt-space-5);
+}
+
+th, td {
+  text-align: left;
+  padding: var(--mt-space-3) var(--mt-space-4);
+  border-bottom: 1px solid var(--mt-border);
+}
+
+th {
+  font-weight: 700;
+  color: var(--mt-text);
+}
+
+td {
+  color: var(--mt-text-2);
+}
+
+/* Figures use Space Grotesk tabular numerals wherever they are compared
+   column-to-column. */
+.mt-figures {
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------------------------------------------------------------
+   3. LAYOUT
+   --------------------------------------------------------------- */
+
+.mt-container {
+  max-width: var(--mt-container);
+  margin: 0 auto;
+  padding-left: var(--mt-gutter);
+  padding-right: var(--mt-gutter);
+}
+
+.mt-section {
+  padding-top: var(--mt-space-9);
+  padding-bottom: var(--mt-space-9);
+}
+
+@media (max-width: 768px) {
+  .mt-section {
+    padding-top: var(--mt-space-7);
+    padding-bottom: var(--mt-space-7);
+  }
+}
+
+/* ---------------------------------------------------------------
+   4. INVERTED BAND
+   Defined and unused as of v001. Resets the ground and text tokens for
+   its subtree; component-level inverted variants are built when a page
+   needs one. See STYLE.md section 3.
+   --------------------------------------------------------------- */
+
+.mt-invert {
+  --mt-bg: var(--mt-inv-bg);
+  --mt-surface: var(--mt-inv-surface);
+  --mt-border: var(--mt-inv-border);
+  --mt-text: var(--mt-inv-text);
+  --mt-text-2: var(--mt-inv-text-2);
+  --mt-text-3: var(--mt-inv-text-3);
+  --mt-ignition: var(--mt-inv-ignition);
+  --mt-amber: var(--mt-inv-amber);
+  background: var(--mt-bg);
+  color: var(--mt-text);
+}
+
+/* ---------------------------------------------------------------
+   5. CARRIED PATTERNS
+   The three patterns the identity system already uses more than once.
+   See STYLE.md section 6.
+   --------------------------------------------------------------- */
+
+/* Tracked micro-label. Latin only. */
+.mt-label {
+  font-size: var(--mt-text-xs);
+  font-weight: 500;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--mt-ignition);
+  margin-bottom: var(--mt-space-3);
+}
+
+/* Numbered section rule. */
+.mt-rule {
+  display: flex;
+  align-items: center;
+  gap: var(--mt-space-4);
+  margin-bottom: var(--mt-space-2);
+}
+
+.mt-rule__num {
+  font-size: var(--mt-text-sm);
+  font-weight: 700;
+  letter-spacing: 0.3em;
+  color: var(--mt-ignition);
+}
+
+.mt-rule__line {
+  flex: 1;
+  height: 1px;
+  background: var(--mt-border);
+}
+
+/* Stat card. Single-sided border, so no radius. */
+.mt-stat {
+  background: var(--mt-surface);
+  border-top: 3px solid var(--mt-ignition);
+  border-radius: 0;
+  padding: var(--mt-space-5);
+}
+
+.mt-stat--amber { border-top-color: var(--mt-amber); }
+.mt-stat--steel { border-top-color: var(--mt-steel); }
+
+.mt-stat__label {
+  font-size: var(--mt-text-lg);
+  font-weight: 700;
+  color: var(--mt-text);
+}
+
+.mt-stat__figure {
+  font-size: var(--mt-text-h3);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--mt-amber);
+  margin: var(--mt-space-3) 0 var(--mt-space-1);
+}
+
+.mt-stat__note {
+  font-size: var(--mt-text-sm);
+  color: var(--mt-text-3);
+  line-height: 1.6;
+}
+
+/* Data column. Single-sided border, so no radius. */
+.mt-datum {
+  border-left: 2px solid var(--mt-ignition);
+  border-radius: 0;
+  padding-left: var(--mt-space-5);
+}
+
+.mt-datum--amber { border-left-color: var(--mt-amber); }
+.mt-datum--steel { border-left-color: var(--mt-steel); }
+
+.mt-datum__figure {
+  font-size: var(--mt-text-h2);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  color: var(--mt-text);
+}
+
+.mt-datum__label {
+  font-size: var(--mt-text-sm);
+  color: var(--mt-text-3);
+  margin-top: var(--mt-space-3);
+}
+
+/* ---------------------------------------------------------------
+   6. UTILITIES
+   --------------------------------------------------------------- */
+
+.mt-grid {
+  display: grid;
+  gap: var(--mt-space-3);
+}
+
+.mt-grid--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.mt-grid--4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+
+@media (max-width: 768px) {
+  .mt-grid--3,
+  .mt-grid--4 {
+    grid-template-columns: 1fr;
+  }
+}
+
+.mt-lead {
+  font-size: var(--mt-text-lg);
+  color: var(--mt-text-2);
+  max-width: 62ch;
+}
+
+.mt-display {
+  font-size: var(--mt-text-display);
+  font-weight: 700;
+  line-height: var(--mt-leading-display);
+  margin: 0 0 var(--mt-space-5);
+}
+
+.mt-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
