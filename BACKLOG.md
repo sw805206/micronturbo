@@ -1,4 +1,4 @@
-v003 | 2026-08-07 | 53 lines
+v004 | 2026-08-07 | 54 lines
 # Backlog
 
 The backlog for micronturbo.com. Tracks both short-term items (bugs, UI
@@ -51,3 +51,4 @@ Closed-by stays empty on every other status.
 | BL-006 | open | feature | Build `int-backlog.html`, the rendered backlog view; until it exists, Part C flush verification is performed in the raw file | 2026-08-07 | |
 | BL-007 | open | style | Export the Power Flame logo (variant 4a) from Claude Design to real SVG files: two-colour dark, two-colour light, and mono; plus favicon renders at 16/32/48. Blocks partials.html | 2026-08-07 | |
 | BL-008 | open | style | Build STYLE.css and int-stylebook.html together on a branch, per STYLE.md section 7 | 2026-08-07 | |
+| BL-009 | open | style | Confirm or replace the placeholder Chinese/English names for `--mt-surface` (舱体蓝 Cabin) and `--mt-surface-high` (仪表蓝 Instrument); both were coined outside the Chinese identity source | 2026-08-07 | |

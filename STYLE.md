@@ -1,4 +1,4 @@
-v002 | 2026-08-07 | 231 lines
+v003 | 2026-08-07 | 256 lines
 # Style
 
 The design-system decisions for micronturbo.com, in words. STYLE.css is the
@@ -46,21 +46,34 @@ component and must be exported before any page can use it.
 
 ### Ground and surfaces
 
-| Token | Value | Role |
-|---|---|---|
-| `--mt-bg` | `#0C1A2B` | Page ground |
-| `--mt-surface` | `#12283F` | Cards, panels |
-| `--mt-surface-high` | `#1B3350` | Raised within a surface |
-| `--mt-border` | `rgba(255,255,255,0.08)` | Hairline on dark |
+| Token | Value | Name | Role |
+|---|---|---|---|
+| `--mt-bg` | `#0C1A2B` | 航天墨蓝 Ink | Page ground |
+| `--mt-surface` | `#12283F` | 舱体蓝 Cabin — PLACEHOLDER | Cards, panels |
+| `--mt-surface-high` | `#1B3350` | 仪表蓝 Instrument — PLACEHOLDER | Raised within a surface |
+| `--mt-border` | `rgba(255,255,255,0.08)` | — | Hairline on dark |
+
+航天墨蓝 carries a Chinese name in the identity deck but no English one; Ink is
+the English name assigned here. 航天 is the aerospace-industry term rather than
+outer space, and 墨蓝 is ink-blue — the sense is engineering, not cosmos.
+
+Cabin and Instrument are PLACEHOLDERS. Neither colour appears in the deck's
+palette section; both were extracted from how the deck uses them, and the
+Chinese names were coined here rather than by whoever designed the Chinese
+identity. Brand naming carries connotation that cannot be audited from outside,
+so these are provisional pending that source. Tracked as BL-009.
+
+`--mt-border` is not a colour. It is white at 8% alpha and renders differently
+over every ground it sits on, so naming it would be naming a treatment.
 
 ### Text on dark
 
 | Token | Value | Contrast on ground | Use |
 |---|---|---|---|
-| `--mt-text` | `#F6F3EE` | ~15:1 | Body, headings |
+| `--mt-text` | `#F6F3EE` | ~15:1 | Body, headings — 暖白 Paper |
 | `--mt-text-2` | `#C6CDD6` | ~10:1 | Secondary copy |
 | `--mt-text-3` | `#8A93A0` | ~5.3:1 | Muted copy, captions |
-| `--mt-text-faint` | `#5E6B7A` | ~2.9:1 | DECORATIVE ONLY |
+| `--mt-text-faint` | `#5E6B7A` | ~2.9:1 | DECORATIVE ONLY — 石墨灰 Slate |
 
 `--mt-text-faint` fails WCAG AA at every size. It is legal for rules, dividers,
 disabled states and non-essential ornament. It is not legal for any text a reader
@@ -129,7 +142,19 @@ face, and whether the site is Simplified or Traditional is still open per SCOPE.
 section 3. Loading it now would silently decide that. The stack is added when that
 decision lands.
 
-Weights: 900 headline, 700 figures and emphasis, 500 medium, 400 body.
+Weights are per family — the two faces do not share an axis, and the identity
+deck lists them separately.
+
+Space Grotesk tops out at 700: headings, figures and emphasis at 700, medium at
+500, body at 400. There is no 900. Requesting one returns HTTP 400 from Google
+Fonts, and `font-weight: 900` in CSS clamps silently to 700 — identical pixels,
+no error, no warning.
+
+Noto Sans SC does carry 900 and uses it for headings, with 700 / 500 / 400
+below. That stack is not in STYLE.css yet, per the note above.
+
+Weight 600 exists in Space Grotesk but is not used. It is excluded from the font
+request rather than fetched unused on every page.
 
 | Token | Size | Use |
 |---|---|---|
