@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Stylebook — Micronturbo (internal)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="STYLE.css">
+  <style>
+    .sb-swatch { border: 1px solid var(--mt-border); border-radius: var(--mt-radius-sm); overflow: hidden; }
+    .sb-swatch__chip { height: 88px; }
+    .sb-swatch__meta { padding: var(--mt-space-3) var(--mt-space-4) var(--mt-space-4); background: var(--mt-surface); }
+    .sb-swatch__name { font-size: var(--mt-text-sm); font-weight: 700; }
+    .sb-swatch__val { font-size: var(--mt-text-xs); color: var(--mt-text-3); margin-top: var(--mt-space-1); }
+    .sb-swatch__role { font-size: var(--mt-text-xs); color: var(--mt-text-faint); margin-top: var(--mt-space-1); }
+    .sb-row { display: flex; align-items: baseline; gap: var(--mt-space-4); padding: var(--mt-space-3) 0; border-bottom: 1px solid var(--mt-border); }
+    .sb-row__token { font-size: var(--mt-text-xs); color: var(--mt-text-3); min-width: 190px; }
+    .sb-bar { background: var(--mt-ignition); height: 16px; border-radius: 2px; }
+    .sb-warn { border-left: 2px solid var(--mt-ignition); padding-left: var(--mt-space-4); color: var(--mt-text-2); font-size: var(--mt-text-sm); max-width: 62ch; }
+  </style>
+</head>
+<body>
+
+<div class="mt-container mt-section">
+
+  <p class="mt-visually-hidden">Internal stylebook rendering every STYLE.css token and pattern.</p>
+
+  <p class="mt-label">Internal · not linked · noindex</p>
+  <h1>Stylebook</h1>
+  <p class="mt-lead">
+    Every token and pattern in STYLE.css, rendered live. If something here looks
+    wrong, STYLE.css is wrong. The decisions behind these values are recorded in
+    STYLE.md; this page is the proof they work.
+  </p>
+  <p class="sb-warn">
+    This page ships in the same commit as STYLE.css, always. A stylebook that
+    lags the CSS reports a state the site is not in.
+  </p>
+
+  <div class="mt-rule" style="margin-top: var(--mt-space-9);">
+    <span class="mt-rule__num">01</span><span class="mt-rule__line"></span>
+  </div>
+  <h2>Ground and surfaces</h2>
+  <div class="mt-grid mt-grid--4">
+    <div class="sb-swatch">
+      <div class="sb-swatch__chip" style="background: #0C1A2B;"></div>
+      <div class="sb-swatch__meta">
+        <div class="sb-swatch__name">航天墨蓝 Ink</div>
+        <div class="sb-swatch__val">--mt-bg · #0C1A2B</div>
+        <div class="sb-swatch__role">Page ground</div>
+      </div>
+    </div>
+    <div class="sb-swatch">
+      <div class="sb-swatch__chip" style="background: #12283F;"></div>
+      <div class="sb-swatch__meta">
+        <div class="sb-swatch__name">舱体蓝 Cabin</div>
+        <div class="sb-swatch__val">--mt-surface · #12283F</div>
+        <div class="sb-swatch__role">Cards, panels</div>
+      </div>
+    </div>
+    <div class="sb-swatch">
+      <div class="sb-swatch__chip" style="background: #1B3350;"></div>
+      <div class="sb-swatch__meta">
+        <div class="sb-swatch__name">仪表蓝 Instrument</div>
+        <div class="sb-swatch__val">--mt-surface-high · #1B3350</div>
+        <div class="sb-swatch__role">Raised within a surface</div>
+      </div>
+    </div>
+    <div class="sb-swatch">
+      <div class="sb-swatch__chip" style="background: rgba(255,255,255,0.08);"></div>
+      <div class="sb-swatch__meta">
+        <div class="sb-swatch__name">Border</div>
+        <div class="sb-swatch__val">--mt-border · rgba(255,255,255,.08)</div>
+        <div class="sb-swatch__role">Hairline on dark</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-rule" style="margin-top: var(--mt-space-9);">
+    <span class="mt-rule__num">02</span><span class="mt-rule__line"></span>
+  </div>
+  <h2>Text on dark</h2>
+  <div style="margin-bottom: var(--mt-space-5);">
+    <p style="color: var(--mt-text); font-size: var(--mt-text-lg); margin-bottom: var(--mt-space-2);">
+      --mt-text · #F6F3EE · ~15:1 · body and headings
+    </p>
+    <p style="color: var(--mt-text-2); margin-bottom: var(--mt-space-2);">
+      --mt-text-2 · #C6CDD6 · ~10:1 · secondary copy
+    </p>
+    <p style="color: var(--mt-text-3); margin-bottom: var(--mt-space-2);">
+      --mt-text-3 · #8A93A0 · ~5.3:1 · muted copy and captions
+    </p>
+    <p style="color: var(--mt-text-faint); margin-bottom: var(--mt-space-2);">
+      --mt-text-faint · #5E6B7A · ~2.9:1 · decorative only, fails AA at every size
+    </p>
+  </div>
+  <p class="sb-warn">
+    The line above in --mt-text-faint is shown at body size deliberately, so the
+    failure is visible rather than theoretical. It is legal for rules, dividers
+    and ornament. It is not legal for text a reader needs.
+  </p>
+
+  <div class="mt-rule" style="margin-top: var(--mt-space-9);">
+    <span class="mt-rule__num">03</span><span class="mt-rule__line"></span>
+  </div>
+  <h2>Accent</h2>
+  <div class="mt-grid mt-grid--3">
+    <div class="sb-swatch">
+      <div class="sb-swatch__chip" style="background: #F55B25;"></div>
+      <div class="sb-swatch__meta">
+        <div class="sb-swatch__name">燃动橙 Ignition</div>
+        <div class="sb-swatch__val">--mt-ignition · #F55B25</div>
+        <div class="sb-swatch__role">~4.5:1 · display type, borders, rules</div>
+      </div>
+    </div>
+    <div class="sb-swatch">
+      <div class="sb-swatch__chip" style="background: #FFB020;"></div>
+      <div class="sb-swatch__meta">
+        <div class="sb-swatch__name">炽芯金 Amber</div>
+        <div class="sb-swatch__val">--mt-amber · #FFB020</div>
+        <div class="sb-swatch__role">~9:1 · figures, links, safe at any size</div>
+      </div>
+    </div>
+    <div class="sb-swatch">
+      <div class="sb-swatch__chip" style="background: #2E6C8E;"></div>
+      <div class="sb-swatch__meta">
+        <div class="sb-swatch__name">钢青 Steel</div>
+        <div class="sb-swatch__val">--mt-steel · #2E6C8E</div>
+        <div class="sb-swatch__role">~2.2:1 · graphic only, never text on dark</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-rule" style="margin-top: var(--mt-space-9);">
+    <span class="mt-rule__num">04</span><span class="mt-rule__line"></span>
+  </div>
+  <h2>Type scale</h2>
+  <div class="sb-row"><span class="sb-row__token">--mt-text-display</span><span class="mt-display" style="margin: 0;">Aa</span></div>
+  <div class="sb-row"><span class="sb-row__token">--mt-text-h1 · 3rem</span><span style="font-size: var(--mt-text-h1); font-weight: 700;">Aa</span></div>
+  <div class="sb-row"><span class="sb-row__token">--mt-text-h2 · 2.125rem</span><span style="font-size: var(--mt-text-h2); font-weight: 700;">Aa</span></div>
+  <div class="sb-row"><span class="sb-row__token">--mt-text-h3 · 1.375rem</span><span style="font-size: var(--mt-text-h3); font-weight: 700;">Aa</span></div>
+  <div class="sb-row"><span class="sb-row__token">--mt-text-lg · 1.125rem</span><span style="font-size: var(--mt-text-lg);">Aa</span></div>
+  <div class="sb-row"><span class="sb-row__token">--mt-text-base · 1rem</span><span style="font-size: var(--mt-text-base);">Aa</span></div>
+  <div class="sb-row"><span class="sb-row__token">--mt-text-sm · 0.875rem</span><span style="font-size: var(--mt-text-sm);">Aa</span></div>
+  <div class="sb-row"><span class="sb-row__token">--mt-text-xs · 0.75rem</span><span style="font-size: var(--mt-text-xs);">Aa</span></div>
+
+  <h3 style="margin-top: var(--mt-space-6);">Weights</h3>
+  <div class="sb-row"><span class="sb-row__token">700 · headings, figures</span><span style="font-size: var(--mt-text-h3); font-weight: 700;">Micronturbo 2000</span></div>
+  <div class="sb-row"><span class="sb-row__token">500 · medium</span><span style="font-size: var(--mt-text-h3); font-weight: 500;">Micronturbo 2000</span></div>
+  <div class="sb-row"><span class="sb-row__token">400 · body</span><span style="font-size: var(--mt-text-h3); font-weight: 400;">Micronturbo 2000</span></div>
+  <p style="font-size: var(--mt-text-sm); color: var(--mt-text-3);">
+    Space Grotesk has no 900. The Chinese face does, and will use it for
+    headings when that stack lands.
+  </p>
+
+  <h3 style="margin-top: var(--mt-space-6);">Tracked micro-label</h3>
+  <p class="mt-label">Micro gas-turbine power</p>
+  <p style="font-size: var(--mt-text-sm); color: var(--mt-text-3);">
+    .mt-label · --mt-text-xs · 500 · 0.28em · uppercase · ignition. Latin only.
+  </p>
+
+  <div class="mt-rule" style="margin-top: var(--mt-space-9);">
+    <span class="mt-rule__num">05</span><span class="mt-rule__line"></span>
+  </div>
+  <h2>Spacing and radii</h2>
+  <div class="sb-row"><span class="sb-row__token">--mt-space-1 · 4px</span><span class="sb-bar" style="width: 4px;"></span></div>
+  <div class="sb-row"><span class="sb-row__token">--mt-space-2 · 8px</span><span class="sb-bar" style="width: 8px;"></span></div>
+  <div class="sb-row"><span class="sb-row__token">--mt-space-3 · 12px</span><span class="sb-bar" style="width: 12px;"></span></div>
+  <div class="sb-row"><span class="sb-row__token">--mt-space-4 · 16px</span><span class="sb-bar" style="width: 16px;"></span></div>
+  <div class="sb-row"><span class="sb-row__token">--mt-space-5 · 24px</span><span class="sb-bar" style="width: 24px;"></span></div>
+  <div class="sb-row"><span class="sb-row__token">--mt-space-6 · 32px</span><span class="sb-bar" style="width: 32px;"></span></div>
+  <div class="sb-row"><span class="sb-row__token">--mt-space-7 · 48px</span><span class="sb-bar" style="width: 48px;"></span></div>
+  <div class="sb-row"><span class="sb-row__token">--mt-space-8 · 64px</span><span class="sb-bar" style="width: 64px;"></span></div>
+  <div class="sb-row"><span class="sb-row__token">--mt-space-9 · 96px</span><span class="sb-bar" style="width: 96px;"></span></div>
+  <div class="sb-row"><span class="sb-row__token">--mt-space-10 · 128px</span><span class="sb-bar" style="width: 128px;"></span></div>
+
+  <div class="mt-grid mt-grid--3" style="margin-top: var(--mt-space-5);">
+    <div style="background: var(--mt-surface); border: 1px solid var(--mt-border); border-radius: var(--mt-radius-sm); padding: var(--mt-space-5); font-size: var(--mt-text-sm); color: var(--mt-text-3);">--mt-radius-sm · 10px</div>
+    <div style="background: var(--mt-surface); border: 1px solid var(--mt-border); border-radius: var(--mt-radius); padding: var(--mt-space-5); font-size: var(--mt-text-sm); color: var(--mt-text-3);">--mt-radius · 14px</div>
+    <div style="background: var(--mt-surface); border: 1px solid var(--mt-border); border-radius: var(--mt-radius-lg); padding: var(--mt-space-5); font-size: var(--mt-text-sm); color: var(--mt-text-3);">--mt-radius-lg · 18px</div>
+  </div>
+
+  <div class="mt-rule" style="margin-top: var(--mt-space-9);">
+    <span class="mt-rule__num">06</span><span class="mt-rule__line"></span>
+  </div>
+  <h2>Carried patterns</h2>
+
+  <h3>Stat card</h3>
+  <div class="mt-grid mt-grid--3">
+    <div class="mt-stat">
+      <div class="mt-stat__label">Light</div>
+      <div class="mt-stat__figure">&minus;80%</div>
+      <div class="mt-stat__note">versus diesel piston sets</div>
+    </div>
+    <div class="mt-stat mt-stat--amber">
+      <div class="mt-stat__label">Efficient</div>
+      <div class="mt-stat__figure">&gt;2000</div>
+      <div class="mt-stat__note">W/kg power density</div>
+    </div>
+    <div class="mt-stat mt-stat--steel">
+      <div class="mt-stat__label">Durable</div>
+      <div class="mt-stat__figure">3000h</div>
+      <div class="mt-stat__note">design service life</div>
+    </div>
+  </div>
+
+  <h3 style="margin-top: var(--mt-space-6);">Data column</h3>
+  <div class="mt-grid mt-grid--4">
+    <div class="mt-datum">
+      <div class="mt-datum__figure">$118.4B</div>
+      <div class="mt-datum__label">Total addressable market</div>
+    </div>
+    <div class="mt-datum mt-datum--amber">
+      <div class="mt-datum__figure">$3.4B</div>
+      <div class="mt-datum__label">Serviceable obtainable market</div>
+    </div>
+    <div class="mt-datum mt-datum--steel">
+      <div class="mt-datum__figure">$452M</div>
+      <div class="mt-datum__label">2036 revenue target</div>
+    </div>
+    <div class="mt-datum">
+      <div class="mt-datum__figure">0</div>
+      <div class="mt-datum__label">Direct competitors</div>
+    </div>
+  </div>
+
+  <h3 style="margin-top: var(--mt-space-6);">Numbered section rule</h3>
+  <div class="mt-rule">
+    <span class="mt-rule__num">07</span><span class="mt-rule__line"></span>
+  </div>
+  <p style="font-size: var(--mt-text-sm); color: var(--mt-text-3);">
+    .mt-rule with .mt-rule__num and .mt-rule__line. Marks a major section boundary.
+  </p>
+
+  <div class="mt-rule" style="margin-top: var(--mt-space-9);">
+    <span class="mt-rule__num">08</span><span class="mt-rule__line"></span>
+  </div>
+  <h2>Base elements</h2>
+  <p>
+    Body copy in --mt-text-2 at --mt-text-base, line height 1.7. An
+    <a href="#">inline link</a> takes amber with a hover underline. Long-form
+    reading on the dark ground is what section 1 of STYLE.md flags as the cost of
+    the dark default.
+  </p>
+  <ul>
+    <li>List items inherit --mt-text-2.</li>
+    <li>Spacing between items is --mt-space-2.</li>
+  </ul>
+  <table>
+    <thead>
+      <tr><th>Parameter</th><th>Value</th><th>Unit</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Power density</td><td class="mt-figures">2000</td><td>W/kg</td></tr>
+      <tr><td>Service life</td><td class="mt-figures">3000</td><td>h</td></tr>
+      <tr><td>Compatible fuels</td><td class="mt-figures">8</td><td>&mdash;</td></tr>
+    </tbody>
+  </table>
+
+</div>
+
+<div class="mt-invert">
+  <div class="mt-container mt-section">
+    <div class="mt-rule">
+      <span class="mt-rule__num">09</span><span class="mt-rule__line"></span>
+    </div>
+    <h2>Inverted band</h2>
+    <p class="mt-lead">
+      Defined and unused as of v001. The .mt-invert wrapper resets the ground and
+      text tokens for its subtree — the patterns below are the same classes as
+      above, unmodified, picking up inverted values by inheritance.
+    </p>
+    <p class="sb-warn">
+      Ignition and amber are substituted for their deep variants inside this
+      wrapper. Neither original is legal as text on a light ground.
+    </p>
+    <div class="mt-grid mt-grid--3" style="margin-top: var(--mt-space-5);">
+      <div class="mt-stat">
+        <div class="mt-stat__label">Light</div>
+        <div class="mt-stat__figure">&minus;80%</div>
+        <div class="mt-stat__note">versus diesel piston sets</div>
+      </div>
+      <div class="mt-stat mt-stat--amber">
+        <div class="mt-stat__label">Efficient</div>
+        <div class="mt-stat__figure">&gt;2000</div>
+        <div class="mt-stat__note">W/kg power density</div>
+      </div>
+      <div class="mt-stat mt-stat--steel">
+        <div class="mt-stat__label">Durable</div>
+        <div class="mt-stat__figure">3000h</div>
+        <div class="mt-stat__note">design service life</div>
+      </div>
+    </div>
+    <p style="margin-top: var(--mt-space-5);">
+      Body copy inside the band, with an <a href="#">inline link</a> in deep amber.
+    </p>
+  </div>
+</div>
+
+<div class="mt-container mt-section">
+  <p style="font-size: var(--mt-text-xs); color: var(--mt-text-faint);">
+    Internal reference. Published so it stays bookmarkable; linked from nowhere;
+    no robots.txt entry. This is obscurity, not privacy — nothing
+    client-sensitive belongs here.
+  </p>
+</div>
+
+</body>
+</html>
