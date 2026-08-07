@@ -1,4 +1,4 @@
-v001 | 2026-08-07 | 122 lines
+v002 | 2026-08-07 | 125 lines
 # Scope
 
 ## 1. Project
@@ -28,13 +28,16 @@ built — see section 3.
 Product docs, all in this repo:
 
 - **SCOPE.md** — this file
+- **BACKLOG.md** — the backlog table. Its rendered view is `int-backlog.html`,
+  which is not yet built; until it exists, Part C flush verification is
+  performed in the raw file
 
-BACKLOG.md, STYLE.md, STYLE.css and PROCESS.md are planned but do not yet
+STYLE.md, STYLE.css and PROCESS.md are planned but do not yet
 exist. Each is added to this list in the same commit that creates it. Until a
 doc is listed here it is not required reading and its absence is not a blocker
 under CLAUDE.md Part A.
 
-The CLAUDE.md Part C backlog process is INACTIVE until BACKLOG.md exists.
+The CLAUDE.md Part C backlog process is ACTIVE for this project.
 
 CLAUDE.md is deliberately not on that list: it holds universal working rules,
 not product ones, and is synced from the disk master at
@@ -96,8 +99,8 @@ remain publicly fetchable by anyone who knows the URL; nothing client-sensitive
 belongs on them.
 
 None exist yet. `int-backlog.html` — the rendered backlog view, and the place
-Part C flush verification is performed — is built when BACKLOG.md is created.
-Until then, flushes are verified in the raw file.
+Part C flush verification is performed — fetches BACKLOG.md at runtime. It is
+not yet built; until it is, flushes are verified in the raw file.
 
 ### Build approach
 

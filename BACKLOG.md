@@ -1,0 +1,50 @@
+v001 | 2026-08-07 | 50 lines
+# Backlog
+
+The backlog for micronturbo.com. Tracks both short-term items (bugs, UI
+improvements) and long-term ones (features, new pages). The process that
+governs this file is CLAUDE.md Part C, "how-to: maintain the backlog", which
+is ACTIVE for this project.
+
+## Schema
+
+`| ID | Status | Category | Item | Raised | Closed-by |`
+
+- **ID** — `BL-###`, assigned at flush in cumulative sequence from the last
+  BL number in this file. Never reused, never renumbered.
+- **Raised** — the date the item entered the running block, `yyyy-mm-dd`.
+- **Item** — one line. A literal pipe character must be escaped as `\|`, or it
+  silently breaks the rendered view.
+
+## Status
+
+- **open** — raised, not started.
+- **in-progress** — actively being worked.
+- **review** — work is done and awaiting the human's check. Code moves items
+  here; code never self-closes.
+- **closed** — verified by the human. Closing is the human's alone and
+  requires evidence in Closed-by: the `PR##` for code, or a stated reason
+  otherwise.
+- **discard** — will not be done. Requires the reason in Closed-by. A discard
+  without a recorded reason is a vanished row.
+
+Closed-by stays empty on every other status.
+
+## Category
+
+- **bug** — something is broken.
+- **feature** — new functionality or a new page.
+- **content** — copy, images, metadata, SEO artifacts.
+- **style** — design-system and visual work; STYLE.md / STYLE.css.
+- **infra** — DNS, hosting, certificates, build and deploy.
+- **governance** — the governance docs and the processes themselves.
+
+## Items
+
+| ID | Status | Category | Item | Raised | Closed-by |
+|---|---|---|---|---|---|
+| BL-001 | open | content | Remove `noindex,nofollow` from index.html when the placeholder is replaced by the real home page | 2026-08-07 | |
+| BL-002 | open | infra | DMARC is set to `p=quarantine` with no SPF record and no MX; mail sent from or to micronturbo.com will bounce or be quarantined if the domain is ever used for email | 2026-08-07 | |
+| BL-003 | open | infra | Decide whether to enable the Cloudflare proxy (orange cloud) on the apex and www records; requires SSL/TLS mode set to Full first, as Flexible causes a redirect loop against GitHub Pages | 2026-08-07 | |
+| BL-004 | open | content | Build 404.html | 2026-08-07 | |
+| BL-005 | open | content | Add favicon, sitemap.xml and robots.txt | 2026-08-07 | |
