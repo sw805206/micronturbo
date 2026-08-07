@@ -1,4 +1,4 @@
-v003 | 2026-08-07 | 157 lines
+v004 | 2026-08-07 | 173 lines
 # Scope
 
 ## 1. Project
@@ -32,11 +32,15 @@ Product docs, all in this repo:
 - **BACKLOG.md** — the backlog table. Its rendered view is `int-backlog.html`,
   which is not yet built; until it exists, Part C flush verification is
   performed in the raw file
+- **STYLE.md** — design-system decisions in words; the ratchet record of which
+  page defined which pattern
+- **STYLE.css** — design tokens and shared patterns; the single source of truth
+  for all styling. Not yet created: it is publicly served, so per CLAUDE.md
+  Part B it is built on a branch and merged by PR, not committed here
 
-STYLE.md, STYLE.css and PROCESS.md are planned but do not yet
-exist. Each is added to this list in the same commit that creates it. Until a
-doc is listed here it is not required reading and its absence is not a blocker
-under CLAUDE.md Part A.
+PROCESS.md is planned but does not yet exist. Each is added to this list in
+the same commit that creates it. Until a doc is listed here it is not required
+reading and its absence is not a blocker under CLAUDE.md Part A.
 
 The CLAUDE.md Part C backlog process is ACTIVE for this project.
 
@@ -55,8 +59,16 @@ section covers it.
   no Tailwind). STYLE.css is plain CSS with variables.
 
 - Lean dependencies. Per-page CDN loads are by exception only, and each
-  exception is recorded here before it is taken. There are currently no
-  exceptions.
+  exception is recorded here before it is taken.
+
+- **Exception taken: Google Fonts.** Space Grotesk (Latin and figures) and, once
+  the Simplified/Traditional decision lands, Noto Sans SC (Chinese), loaded from
+  `fonts.googleapis.com` with `preconnect`. Taken rather than self-hosting
+  because Google serves CJK faces as unicode-range subsets, so a Chinese page
+  fetches only the glyphs it uses; self-hosting Noto Sans SC correctly would mean
+  running that subsetting ourselves, and self-hosting it naively would put a
+  multi-megabyte font on every Chinese page. The cost is a third-party request in
+  the critical path on every page. Consumers: all pages, via STYLE.css.
 
 - All internal links are RELATIVE paths, for portability.
 
@@ -115,7 +127,7 @@ doc restates it, and no doc tracks visibility separately. Each language's nav is
 authoritative for that language only, so the two may list different page sets;
 a page that exists but is not linked from its own language's partials is
 unlisted in that language. Dropdowns are flat and single-tier, using the
-`.tf-has-dropdown` mechanism. Neither partials file exists yet.
+`.mt-has-dropdown` mechanism. Neither partials file exists yet.
 
 ### Internal pages
 
@@ -130,9 +142,13 @@ This is obscurity, not privacy. Static hosting has no auth layer, so these pages
 remain publicly fetchable by anyone who knows the URL; nothing client-sensitive
 belongs on them.
 
-None exist yet. `int-backlog.html` — the rendered backlog view, and the place
-Part C flush verification is performed — fetches BACKLOG.md at runtime. It is
-not yet built; until it is, flushes are verified in the raw file.
+None exist yet. Two are planned:
+
+- `int-backlog.html` — the rendered backlog view, and the place Part C flush
+  verification is performed. Fetches BACKLOG.md at runtime. Until it is built,
+  flushes are verified in the raw file.
+- `int-stylebook.html` — renders every STYLE.css token and pattern live. Per
+  STYLE.md section 7 it ships in the same commit as STYLE.css, always.
 
 ### Build approach
 
@@ -144,7 +160,7 @@ not yet built; until it is, flushes are verified in the raw file.
 
 - A pattern used on two or more pages belongs in STYLE.css. A genuine one-off
   may stay in a page-local style block, but must be built from existing tokens
-  — `var(--tf-*)`, the spacing and type scales — never raw hex or px, and it
+  — `var(--mt-*)`, the spacing and type scales — never raw hex or px, and it
   gets a one-line note in STYLE.md's ratchet record so the next page that wants
   it promotes it instead of rebuilding it. STYLE.md holds the full rule.
 
