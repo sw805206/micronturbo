@@ -1,0 +1,40 @@
+<!-- partials-zh.html — 繁體中文 header and footer fragments. See partials.html. -->
+
+<template id="mt-header-tpl">
+  <a class="mt-skip" href="#mt-main">跳至內容</a>
+  <header class="mt-header">
+    <div class="mt-header__inner mt-container">
+      <a class="mt-wordmark" href="index-zh.html">安恆燃動</a>
+      <button class="mt-burger" type="button" aria-expanded="false"
+              aria-controls="mt-nav" aria-label="選單">
+        <span class="mt-burger__bar"></span>
+        <span class="mt-burger__bar"></span>
+        <span class="mt-burger__bar"></span>
+      </button>
+      <nav class="mt-nav" id="mt-nav" aria-label="主導覽">
+        <ul class="mt-nav__list">
+          <li><a href="index-zh.html">首頁</a></li>
+          <li><a href="products-zh.html">產品</a></li>
+          <li><a href="about-zh.html">關於</a></li>
+          <li><a href="contact-zh.html">聯絡</a></li>
+          <li><a class="mt-lang" href="index.html" lang="en" hreflang="en">EN</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+</template>
+
+<template id="mt-footer-tpl">
+  <footer class="mt-footer">
+    <div class="mt-container">
+      <div class="mt-footer__bottom">
+        <div class="mt-footer__legal">
+          [公司法定名稱] &nbsp;|&nbsp; Copyright &copy; <span data-mt-year>2026</span>
+        </div>
+        <ul class="mt-footer__links">
+          <li><a href="privacy-zh.html">隱私權</a></li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+</template>

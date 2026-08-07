@@ -1,0 +1,42 @@
+<!-- partials.html — English header and footer fragments. Fetched at runtime by
+     partials.js, which derives WHICH file to fetch from the page's own
+     filename. See SCOPE.md section 3. Never served as a page. -->
+
+<template id="mt-header-tpl">
+  <a class="mt-skip" href="#mt-main">Skip to content</a>
+  <header class="mt-header">
+    <div class="mt-header__inner mt-container">
+      <a class="mt-wordmark" href="index.html">Micronturbo</a>
+      <button class="mt-burger" type="button" aria-expanded="false"
+              aria-controls="mt-nav" aria-label="Menu">
+        <span class="mt-burger__bar"></span>
+        <span class="mt-burger__bar"></span>
+        <span class="mt-burger__bar"></span>
+      </button>
+      <nav class="mt-nav" id="mt-nav" aria-label="Main">
+        <ul class="mt-nav__list">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="products.html">Products</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a class="mt-lang" href="index-zh.html" lang="zh-Hant" hreflang="zh-Hant">繁</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+</template>
+
+<template id="mt-footer-tpl">
+  <footer class="mt-footer">
+    <div class="mt-container">
+      <div class="mt-footer__bottom">
+        <div class="mt-footer__legal">
+          [Company legal name] &nbsp;|&nbsp; Copyright &copy; <span data-mt-year>2026</span>
+        </div>
+        <ul class="mt-footer__links">
+          <li><a href="privacy.html">Privacy</a></li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+</template>

@@ -7,7 +7,7 @@
   <title>Stylebook — Micronturbo (internal)</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="STYLE.css">
   <style>
     .sb-swatch { border: 1px solid var(--mt-border); border-radius: var(--mt-radius-sm); overflow: hidden; }
@@ -152,8 +152,15 @@
   <div class="sb-row"><span class="sb-row__token">500 · medium</span><span style="font-size: var(--mt-text-h3); font-weight: 500;">Micronturbo 2000</span></div>
   <div class="sb-row"><span class="sb-row__token">400 · body</span><span style="font-size: var(--mt-text-h3); font-weight: 400;">Micronturbo 2000</span></div>
   <p style="font-size: var(--mt-text-sm); color: var(--mt-text-3);">
-    Space Grotesk has no 900. The Chinese face does, and will use it for
-    headings when that stack lands.
+    Space Grotesk has no 900. Noto Sans TC does, and uses it for headings.
+  </p>
+
+  <h3 style="margin-top: var(--mt-space-6);">Traditional Chinese</h3>
+  <div class="sb-row"><span class="sb-row__token">--mt-font-cjk · 900</span><span lang="zh-Hant" style="font-size: var(--mt-text-h2); font-weight: 900;">安恆燃動</span></div>
+  <div class="sb-row"><span class="sb-row__token">--mt-font-cjk · 400</span><span lang="zh-Hant" style="font-size: var(--mt-text-h3); font-weight: 400;">安心恆久，高效燃動</span></div>
+  <p style="font-size: var(--mt-text-sm); color: var(--mt-text-3);">
+    Applied by the :lang(zh) rule in section 7 — no class needed, the lang
+    attribute is the switch.
   </p>
 
   <h3 style="margin-top: var(--mt-space-6);">Tracked micro-label</h3>
@@ -301,6 +308,30 @@
 </div>
 
 <div class="mt-container mt-section">
+  <div class="mt-rule" style="margin-top: var(--mt-space-9);">
+    <span class="mt-rule__num">10</span><span class="mt-rule__line"></span>
+  </div>
+  <h2>Buttons and language toggle</h2>
+  <div class="mt-hero__actions" style="margin-bottom: var(--mt-space-3);">
+    <a class="mt-btn" href="#">Products</a>
+    <a class="mt-btn mt-btn--secondary" href="#">Contact</a>
+  </div>
+  <p style="font-size: var(--mt-text-sm); color: var(--mt-text-3);">
+    .mt-hero__actions is the row. Ignition is reserved for the primary action;
+    .mt-btn--secondary takes the hairline border so it does not compete.
+  </p>
+  <p style="display: flex; align-items: center; gap: var(--mt-space-3);">
+    <a class="mt-lang" href="#" lang="zh-Hant">繁</a>
+    <a class="mt-lang" href="#">EN</a>
+    <span style="font-size: var(--mt-text-sm); color: var(--mt-text-3);">
+      .mt-lang — a fixed 36px square, so both labels render the same shape
+    </span>
+  </p>
+  <p style="font-size: var(--mt-text-sm); color: var(--mt-text-3);">
+    The header and footer are not shown here. They are injected at runtime from
+    the partials files and are visible on any real page; an inline copy would be
+    the drift STYLE.md section 7 exists to prevent.
+  </p>
   <p style="font-size: var(--mt-text-xs); color: var(--mt-text-faint);">
     Internal reference. Published so it stays bookmarkable; linked from nowhere;
     no robots.txt entry. This is obscurity, not privacy — nothing
