@@ -1,4 +1,4 @@
-v004 | 2026-08-07 | 54 lines
+v005 | 2026-08-07 | 54 lines
 # Backlog
 
 The backlog for micronturbo.com. Tracks both short-term items (bugs, UI
@@ -43,12 +43,12 @@ Closed-by stays empty on every other status.
 
 | ID | Status | Category | Item | Raised | Closed-by |
 |---|---|---|---|---|---|
-| BL-001 | open | content | Remove `noindex,nofollow` from index.html when the placeholder is replaced by the real home page | 2026-08-07 | |
+| BL-001 | review | content | Remove `noindex,nofollow` from index.html when the placeholder is replaced by the real home page | 2026-08-07 | |
 | BL-002 | open | infra | DMARC is set to `p=quarantine` with no SPF record and no MX; mail sent from or to micronturbo.com will bounce or be quarantined if the domain is ever used for email | 2026-08-07 | |
 | BL-003 | open | infra | Decide whether to enable the Cloudflare proxy (orange cloud) on the apex and www records; requires SSL/TLS mode set to Full first, as Flexible causes a redirect loop against GitHub Pages | 2026-08-07 | |
 | BL-004 | open | content | Build 404.html | 2026-08-07 | |
 | BL-005 | open | content | Add favicon, sitemap.xml and robots.txt | 2026-08-07 | |
 | BL-006 | open | feature | Build `int-backlog.html`, the rendered backlog view; until it exists, Part C flush verification is performed in the raw file | 2026-08-07 | |
 | BL-007 | open | style | Export the Power Flame logo (variant 4a) from Claude Design to real SVG files: two-colour dark, two-colour light, and mono; plus favicon renders at 16/32/48. Blocks partials.html | 2026-08-07 | |
-| BL-008 | open | style | Build STYLE.css and int-stylebook.html together on a branch, per STYLE.md section 7 | 2026-08-07 | |
+| BL-008 | review | style | Build STYLE.css and int-stylebook.html together on a branch, per STYLE.md section 7 | 2026-08-07 | |
 | BL-009 | open | style | Confirm or replace the placeholder Chinese/English names for `--mt-surface` (舱体蓝 Cabin) and `--mt-surface-high` (仪表蓝 Instrument); both were coined outside the Chinese identity source | 2026-08-07 | |
