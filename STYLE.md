@@ -1,4 +1,4 @@
-v003 | 2026-08-07 | 256 lines
+v004 | 2026-08-07 | 293 lines
 # Style
 
 The design-system decisions for micronturbo.com, in words. STYLE.css is the
@@ -20,7 +20,7 @@ warm accents read as heat rather than as decoration.
 
 The cost is legibility in dense reference content — spec tables, long product
 copy, datasheets — which is genuinely harder to read on a dark ground. Section 3
-defines an inverted band for that case. It is defined and unused as of v001.
+defines an inverted band for that case. It remains defined and unused.
 
 ## 2. Brand marks and names
 
@@ -100,7 +100,7 @@ two warm accents are not interchangeable.
 
 ### Inverted band
 
-DEFINED AND UNUSED as of v001. These tokens exist so that a light section can be
+DEFINED AND UNUSED, still. These tokens exist so that a light section can be
 built without inventing values, but no page uses them and no component has an
 inverted variant yet. Variants are built when a page needs one — not in advance.
 
@@ -126,7 +126,8 @@ exist and are not written speculatively.
 
 ## 4. Typography
 
-Space Grotesk for Latin text and all figures. Noto Sans SC for Chinese. Both are
+Space Grotesk for Latin text and all figures. Noto Sans SC for Chinese — the
+script decision is Simplified, recorded in SCOPE.md section 3. Both are
 served from Google Fonts — the CDN exception is recorded in SCOPE.md section 3.
 
 STYLE.css declares the family in `--mt-font`; it does NOT fetch it. The fetch is
@@ -137,10 +138,10 @@ cost is that a page omitting those tags falls back to `system-ui` silently, with
 no error anywhere, so the head block is carried verbatim in PROCESS.md when that
 file is written.
 
-The Chinese stack is NOT in STYLE.css as of v001. Noto Sans SC is a Simplified
-face, and whether the site is Simplified or Traditional is still open per SCOPE.md
-section 3. Loading it now would silently decide that. The stack is added when that
-decision lands.
+The Chinese stack IS in STYLE.css as of v005, as `--mt-font-cjk`: Noto Sans SC,
+then `PingFang SC` and `Microsoft YaHei` as platform fallbacks. It is applied by
+a `:lang(zh)` rule, not a class — the `lang` attribute on the page is the
+switch, so no page opts in by hand.
 
 Weights are per family — the two faces do not share an axis, and the identity
 deck lists them separately.
@@ -209,12 +210,38 @@ than once, and they are what makes the brand recognisable:
 - **Numbered section rule** — a two-digit ordinal in ignition, tracked, followed
   by a 1px hairline filling the remaining width. Marks a major section boundary.
 
-### Deferred
+### Defined by the home page
 
-Header, footer, nav and the dropdown mechanism are NOT specified in v001. Those
-decisions are made when `partials.html` is designed, and recording them before
-that would be guessing. The dropdown mechanism is named `.mt-has-dropdown` in
-SCOPE.md; nothing else about it is settled.
+Header, footer and nav are specified as of v005, and live in STYLE.css sections
+8 and 9. The markup is not in STYLE.css — it is injected at runtime from the
+partials files, per SCOPE.md section 3.
+
+- **Header** — sticky, page ground, hairline bottom border, 68px minimum
+  height. The wordmark sits left, nav right.
+- **Nav item** — a 2px transparent bottom border that fills with `--mt-border`
+  on hover and amber on the current page. The current page also carries
+  `aria-current="page"`, set by `partials.js`.
+- **Language toggle** — `.mt-lang`, a fixed 36px square with a hairline border
+  and `--mt-radius-sm`. Fixed dimensions rather than padding, so "EN" and "简"
+  render the same shape despite different glyph widths. It is excluded from the
+  nav item rules with `:not(.mt-lang)` so it keeps its own box, which also lets
+  it render outside a nav — the stylebook shows it standalone.
+- **Burger** — below 768px only. 44px tap target, three bars that cross into an
+  X on open. Honours `prefers-reduced-motion`.
+- **Footer** — hairline top border, legal line left, links right, both at
+  `--mt-text-xs` in `--mt-text-3`.
+- **Buttons** — `.mt-btn` is a hairline box in ignition. `.mt-btn--secondary`
+  takes `--mt-border` instead, so it sits beside the primary without competing;
+  ignition stays reserved for the one action that matters most on a page.
+  `.mt-hero__actions` is the row that holds them.
+- **Hero** — a two-column grid at `1fr 1.55fr`, image right, that stacks at
+  1000px. It stacks earlier than the nav breaks to the burger, because between
+  768 and 1000px the text column falls to roughly 264px and wraps the slogan;
+  the two breakpoints answer different questions and are deliberately not
+  shared.
+
+The dropdown mechanism is still NOT specified. It is named `.mt-has-dropdown`
+in SCOPE.md; nothing else about it is settled, and no page has needed one.
 
 ## 7. The stylebook
 
@@ -227,10 +254,12 @@ CSS is worse than no stylebook, because it reports a state the site is not in. I
 a change to STYLE.css cannot be reflected in the stylebook in the same commit, the
 change waits.
 
-As of v001 the stylebook carries no header or footer section, because
-`partials.html` does not exist. It gains one when partials is built. It does not
-carry an inline copy of the nav in the meantime — a duplicate is exactly the drift
-this section exists to prevent.
+The stylebook still carries NO header or footer section, now by choice rather
+than by absence. Both are injected at runtime from the partials files and are
+visible on any real page; an inline copy in the stylebook would be exactly the
+drift this section exists to prevent. What it does carry, in section 10, is the
+parts that are not injected: the two button variants, the language toggle
+standalone, and a Simplified Chinese specimen for `--mt-font-cjk`.
 
 ## 8. The reuse rule
 
@@ -251,6 +280,14 @@ Which page defined which pattern. One line each, appended as pages are built.
 
 | Pattern | Defined by | Promoted to STYLE.css |
 |---|---|---|
-| — | — | — |
+| Header, nav, language toggle, burger | Home page | v002 §8 |
+| Footer | Home page | v002 §8 |
+| Hero grid, slogan, primary button | Home page | v002 §9 |
+| `:lang(zh)` CJK family switch | Home page (zh) | v002 §7 |
+| Secondary button, `.mt-hero__actions` | Home page | v004 §9 |
 
-Empty as of v001. No page has been built.
+Every row so far is the home page. That is expected for the first page built and
+is not yet evidence of reuse — the rule in section 8 earns its keep from the
+second page onward, when the question becomes whether to promote or rebuild.
+
+No page-local one-offs exist. Nothing has been built outside STYLE.css.
