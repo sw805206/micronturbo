@@ -87,7 +87,15 @@
     }
   }
 
-  fetch(partialsFor(currentFile()))
+  /* cache: 'no-cache' revalidates; it does not disable caching. The partials
+     are a separate request from the page that displays them, so their cache
+     entries expire independently — a stale copy injects an old header into a
+     current page, and the mismatch is invisible from the server, where both
+     files are correct. GitHub Pages serves them with max-age=600, so that
+     window is ten minutes wide after every nav change. The server sends an
+     ETag, so an unchanged file costs one conditional request and a 304 with
+     no body. */
+  fetch(partialsFor(currentFile()), { cache: 'no-cache' })
     .then(function (r) {
       if (!r.ok) { throw new Error('partials ' + r.status); }
       return r.text();
