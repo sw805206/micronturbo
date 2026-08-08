@@ -1,4 +1,4 @@
-/* v007 | 2026-08-08 | 826 lines
+/* v008 | 2026-08-08 | 1130 lines
    micronturbo.com design tokens and shared patterns.
    The decisions this file implements are recorded in STYLE.md.
    Pages consume tokens, never raw hex or px. See STYLE.md section 8. */
@@ -20,10 +20,15 @@
   --mt-text-3: #8A93A0;
   --mt-text-faint: #5E6B7A;
 
-  /* Accent */
+  /* Accent. The last three are the categorical hues added for the six-way point
+     card — see STYLE.md section 3. All three clear AA on --mt-bg, so unlike
+     steel they are legal as text on dark. */
   --mt-ignition: #F55B25;
   --mt-amber: #FFB020;
   --mt-steel: #2E6C8E;
+  --mt-hydro: #3FB870;
+  --mt-magnet: #9B7BE8;
+  --mt-vortex: #E0619B;
 
   /* Inverted band. Defined and unused as of v001 — see STYLE.md section 3. */
   --mt-inv-bg: #F6F3EE;
@@ -34,6 +39,9 @@
   --mt-inv-text-3: #A9A59C;
   --mt-inv-ignition: #A83C15;
   --mt-inv-amber: #8A5A06;
+  --mt-inv-hydro: #1E7E45;
+  --mt-inv-magnet: #7B5EC1;
+  --mt-inv-vortex: #B7467A;
 
   /* Type families. */
   --mt-font: 'Space Grotesk', system-ui, -apple-system, sans-serif;
@@ -76,6 +84,11 @@
   /* Layout */
   --mt-container: 1180px;
   --mt-gutter: 40px;
+
+  /* Timeline when-column. A token rather than a section 8 exception because the
+     value is shared by the column and its narrow-breakpoint override, and the
+     two have to move together — the month names are what set it. */
+  --mt-time-when: 104px;
 }
 
 @media (max-width: 768px) {
@@ -84,6 +97,13 @@
     --mt-text-h1: 2.25rem;
     --mt-text-h2: 1.75rem;
   }
+}
+
+/* The timeline keeps its own breakpoint, narrower than the global one: the
+   when-column is sized by the longest month name, not by the page gutter, so it
+   survives well past the width at which the gutter has to give. */
+@media (max-width: 560px) {
+  :root { --mt-time-when: 88px; }
 }
 
 /* ---------------------------------------------------------------
@@ -824,3 +844,287 @@ td {
 @media (prefers-reduced-motion: reduce) {
   .mt-nav { transition: none; }
 }
+
+/* ---------------------------------------------------------------
+   10. PRODUCT PAGE PATTERNS
+   Promoted from the products hub and the two SKU pages. Each carries
+   its own breakpoints: these are content-shaped grids and they break
+   where their content breaks, not where the page gutter does.
+   See STYLE.md sections 6 and 9.
+   --------------------------------------------------------------- */
+
+/* Image slot. Stock or render until real photography lands. */
+.mt-shot {
+  background: var(--mt-surface);
+  border: 1px dashed var(--mt-border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: var(--mt-text-xs);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--mt-text-faint);
+  padding: var(--mt-space-4);
+}
+
+.mt-shot--hero { aspect-ratio: 16 / 9; margin-bottom: var(--mt-space-8); }
+.mt-shot--use { aspect-ratio: 4 / 3; }
+
+/* A real image standing in the same slot. object-fit keeps the ratio the
+   placeholder set, so a page does not reflow when photography replaces a
+   render — and the sources are a mix of portrait and landscape. */
+.mt-shot--img {
+  display: block;
+  width: 100%;
+  object-fit: cover;
+  border: 0;
+  padding: 0;
+  background: none;
+}
+
+/* Selling-point card. The carried stat card with an icon in the label slot.
+   The figure is --mt-text, not amber: six coloured icons beside six amber
+   numbers made amber compete rather than signal. STYLE.md section 3. */
+.mt-points {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--mt-space-4);
+  margin-bottom: var(--mt-space-9);
+}
+
+@media (max-width: 900px) { .mt-points { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 520px) { .mt-points { grid-template-columns: 1fr; } }
+
+/* Neutral top border, unlike .mt-stat — the icon carries the colour here, and
+   a coloured rule as well would be a second categorical signal saying the
+   same thing. */
+.mt-point {
+  background: var(--mt-surface);
+  border-top: 3px solid var(--mt-border);
+  padding: var(--mt-space-5);
+}
+
+.mt-point__head {
+  display: flex;
+  align-items: center;
+  gap: var(--mt-space-3);
+  margin-bottom: var(--mt-space-3);
+}
+
+.mt-point__icon { flex: 0 0 auto; display: inline-flex; }
+.mt-point__icon svg { display: block; }
+
+.mt-point__figure {
+  display: block;
+  font-size: var(--mt-text-lg);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--mt-text);
+  line-height: 1.25;
+  min-width: 0;
+}
+
+.mt-point__note {
+  font-size: var(--mt-text-sm);
+  color: var(--mt-text-3);
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* SKU cards on the hub. The third column is narrower because it holds the
+   pipeline card, which is a signpost rather than a product. */
+.mt-skus {
+  display: grid;
+  grid-template-columns: 1fr 1fr 0.7fr;
+  gap: var(--mt-space-5);
+  margin-bottom: var(--mt-space-9);
+}
+
+@media (max-width: 900px) { .mt-skus { grid-template-columns: 1fr; } }
+
+.mt-sku-card {
+  background: var(--mt-surface);
+  border-top: 3px solid var(--mt-ignition);
+  padding: var(--mt-space-6);
+  display: flex;
+  flex-direction: column;
+}
+
+/* Steel, so the pipeline card reads as future rather than as a third product
+   competing with the two that ship. */
+.mt-sku-card--quiet { border-top-color: var(--mt-steel); }
+
+.mt-sku-card h3 { margin-bottom: var(--mt-space-2); }
+.mt-sku-card p { font-size: var(--mt-text-sm); color: var(--mt-text-3); }
+
+/* margin: auto 0 pushes the spec line to the bottom of whichever card is
+   tallest, so the three spec rules align across a row of uneven copy. */
+.mt-sku-card__spec {
+  font-size: var(--mt-text-sm);
+  color: var(--mt-text-2);
+  border-top: 1px solid var(--mt-border);
+  padding-top: var(--mt-space-3);
+  margin: auto 0 var(--mt-space-5);
+  font-variant-numeric: tabular-nums;
+}
+
+/* Comparison table. Scrolls below the breakpoint rather than wrapping: a
+   three-column comparison that wraps stops being a comparison. */
+.mt-table-wrap { overflow-x: auto; margin-bottom: var(--mt-space-8); }
+.mt-table { min-width: 640px; margin: 0; }
+.mt-table th { font-size: var(--mt-text-sm); }
+.mt-table th:first-child,
+.mt-table td:first-child { width: 28%; }
+.mt-table .mt-metric { color: var(--mt-text-3); font-weight: 500; }
+
+/* The emphasised column. Surface fill plus an ignition rule lifts our column
+   off the ground without colouring the competitor's. */
+.mt-table th.mt-ours {
+  background: var(--mt-surface);
+  border-top: 3px solid var(--mt-ignition);
+  color: var(--mt-text);
+}
+
+.mt-table td.mt-ours { background: var(--mt-surface); color: var(--mt-text); }
+.mt-table td.mt-ours strong { color: var(--mt-amber); font-weight: 700; }
+.mt-table td.mt-trade strong { color: var(--mt-text-2); font-weight: 700; }
+
+/* Use-case grid. Picture-led. */
+.mt-uses {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--mt-space-5);
+}
+
+@media (max-width: 860px) { .mt-uses { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 480px) { .mt-uses { grid-template-columns: 1fr; } }
+
+.mt-use h4 { margin: var(--mt-space-3) 0 var(--mt-space-1); font-size: var(--mt-text-base); }
+.mt-use p { font-size: var(--mt-text-sm); color: var(--mt-text-3); margin: 0; line-height: 1.6; }
+
+/* Timeline. Vertical spine — nine nodes on a horizontal axis cannot hold at
+   375px, and a scrolling axis hides the second half of the schedule. */
+.mt-time { position: relative; padding-left: var(--mt-space-6); }
+
+.mt-time::before {
+  content: "";
+  position: absolute;
+  left: 5px;
+  top: 10px;
+  bottom: 10px;
+  width: 2px;
+  background: var(--mt-border);
+}
+
+.mt-time__group + .mt-time__group { margin-top: var(--mt-space-6); }
+
+.mt-time__year {
+  position: relative;
+  font-size: var(--mt-text-h3);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--mt-text);
+  margin-bottom: var(--mt-space-4);
+}
+
+.mt-time__year::before {
+  content: "";
+  position: absolute;
+  left: calc(-1 * var(--mt-space-6));
+  top: 0.55em;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--mt-ignition);
+}
+
+.mt-time__list { list-style: none; margin: 0; padding: 0; }
+
+.mt-time__list li {
+  position: relative;
+  display: grid;
+  grid-template-columns: var(--mt-time-when) 1fr;
+  gap: var(--mt-space-4);
+  padding: var(--mt-space-3) 0;
+  margin: 0;
+}
+
+.mt-time__list li::before {
+  content: "";
+  position: absolute;
+  left: calc(-1 * var(--mt-space-6) + 3px);
+  top: 1.35em;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--mt-text-faint);
+}
+
+.mt-time__when {
+  font-size: var(--mt-text-sm);
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  color: var(--mt-text-3);
+}
+
+.mt-time__what { font-size: var(--mt-text-sm); color: var(--mt-text-2); }
+.mt-time__what strong { color: var(--mt-text); font-weight: 700; }
+
+/* SKU hero. Reuses .mt-hero but overrides the ratio: the home page carries a
+   short slogan in the text column, a SKU page carries a headline plus a
+   paragraph, so 1fr is too narrow and the display type wraps to five lines. */
+.mt-hero--sku { grid-template-columns: 1.15fr 1fr; align-items: start; }
+
+@media (max-width: 1000px) { .mt-hero--sku { grid-template-columns: 1fr; } }
+
+.mt-intro { margin-bottom: var(--mt-space-8); }
+.mt-intro p { font-size: var(--mt-text-lg); color: var(--mt-text-2); }
+
+/* One-line selling points on a SKU page. The hub states the six claims as
+   cards; a SKU page has already made its argument in the hero and only needs
+   them restated, so they collapse to a bounded band of one-liners. */
+.mt-lines {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--mt-space-4) var(--mt-space-5);
+  margin-bottom: var(--mt-space-9);
+  padding: var(--mt-space-6) 0;
+  border-top: 1px solid var(--mt-border);
+  border-bottom: 1px solid var(--mt-border);
+}
+
+@media (max-width: 860px) { .mt-lines { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 480px) { .mt-lines { grid-template-columns: 1fr; } }
+
+.mt-line { display: block; }
+.mt-line__head { display: flex; align-items: center; gap: var(--mt-space-3); }
+.mt-line__ic { flex: 0 0 auto; display: inline-flex; }
+.mt-line__ic svg { display: block; }
+
+.mt-line__fig {
+  font-size: var(--mt-text-lg);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--mt-text);
+  line-height: 1.25;
+}
+
+.mt-line__txt {
+  font-size: var(--mt-text-sm);
+  color: var(--mt-text-3);
+  display: block;
+  margin-top: var(--mt-space-2);
+}
+
+/* Development status. A hairline column rather than a card: it is a caveat on
+   the claims above it, not a claim of its own. */
+.mt-status {
+  border-left: 2px solid var(--mt-border);
+  padding-left: var(--mt-space-5);
+  margin-bottom: var(--mt-space-8);
+}
+
+.mt-status p { font-size: var(--mt-text-sm); color: var(--mt-text-3); margin: 0; }
+
+.mt-backlink { margin-bottom: var(--mt-space-6); font-size: var(--mt-text-sm); }
