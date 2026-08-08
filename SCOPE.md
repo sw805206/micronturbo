@@ -1,4 +1,4 @@
-v005 | 2026-08-07 | 175 lines
+v006 | 2026-08-07 | 181 lines
 # Scope
 
 ## 1. Project
@@ -35,8 +35,8 @@ Product docs, all in this repo:
 - **STYLE.md** — design-system decisions in words; the ratchet record of which
   page defined which pattern
 - **STYLE.css** — design tokens and shared patterns; the single source of truth
-  for all styling. Not yet created: it is publicly served, so per CLAUDE.md
-  Part B it is built on a branch and merged by PR, not committed here
+  for all styling. It is publicly served, so per CLAUDE.md Part B every change
+  to it goes on a branch and merges by PR, never direct to main
 
 PROCESS.md is planned but does not yet exist. Each is added to this list in
 the same commit that creates it. Until a doc is listed here it is not required
@@ -61,8 +61,8 @@ section covers it.
 - Lean dependencies. Per-page CDN loads are by exception only, and each
   exception is recorded here before it is taken.
 
-- **Exception taken: Google Fonts.** Space Grotesk (Latin and figures) and, once
-  the Simplified/Traditional decision lands, Noto Sans SC (Chinese), loaded from
+- **Exception taken: Google Fonts.** Space Grotesk (Latin and figures) and Noto
+  Sans SC (Chinese), loaded from
   `fonts.googleapis.com` with `preconnect`. Taken rather than self-hosting
   because Google serves CJK faces as unicode-range subsets, so a Chinese page
   fetches only the glyphs it uses; self-hosting Noto Sans SC correctly would mean
@@ -101,27 +101,33 @@ The toggle resolves to the current page's counterpart when it exists, and to
 the home page in the other language when it does not. That fallback is what
 lets the two language trees diverge without breaking navigation.
 
-The toggle is NOT built until the first Chinese page exists. Until then it
-would point at nothing, and suppressing it would need a list of translated
-pages that has no other purpose. `partials.html` ships with the nav and no
-toggle; the toggle and `partials-zh.html` are built together.
+The toggle is BUILT, as of the home page. Both partials files carry it, each
+pointing one direction only, and each carries a reciprocal `hreflang`. Until a
+second translated page exists both toggles resolve to the other language's home
+page, which is the documented fallback rather than a gap.
 
-Still open: whether Chinese is Simplified or Traditional, which sets the `lang`
-value (`zh-Hans` or `zh-Hant`), the CJK font stack in STYLE.css, and the
-register the copy is written in. Deferred until the CJK font stack or the first
-Chinese page is on the table, whichever comes first. Also deferred: `hreflang`
-attributes, which are added when the second language is actually built —
-reciprocal tags pointing at pages that do not exist are worse than none.
+DECIDED: Chinese is **Simplified**. `lang="zh-Hans"`, `hreflang="zh-Hans"`, and
+the CJK stack in STYLE.css is Noto Sans SC / PingFang SC / Microsoft YaHei. The
+Chinese wordmark is 安恒燃动, matching STYLE.md section 2.
+
+Traditional was built first and merged, then replaced. It is deferred until
+Simplified is complete, and is not carried alongside in the meantime: the `-zh`
+suffix is a single slot, so two Chinese scripts cannot coexist under the current
+convention. Adding Traditional later means a filename convention for a second
+Chinese script, a third partials file, a three-way toggle, and a rewrite of the
+suffix rule below — it is a structural change, not a translation pass.
 
 ### Pages
 
 Planned external pages: `index.html` (Home), `products.html`, `about.html`,
 `contact.html`, `privacy.html`.
 
-Only `index.html` exists, and only as a temporary placeholder carrying
-`noindex,nofollow` so that Pages has something to serve while DNS and the
-certificate are configured. It is replaced wholesale by the real home page and
-carries no style, no partials and no content decisions.
+Built: `index.html` and `index-zh.html`, the home page in both languages. The
+`noindex,nofollow` placeholder that stood in during DNS and certificate setup
+has been replaced wholesale and the directive is gone — the home page is
+indexable. `products`, `about`, `contact` and `privacy` are linked from the nav
+in both languages but do not exist yet, so those links 404 until they are
+built.
 
 The partials files are the source of truth for the nav, and therefore for which
 pages are publicly reachable — a page not linked there is live but unlisted. No
@@ -129,7 +135,9 @@ doc restates it, and no doc tracks visibility separately. Each language's nav is
 authoritative for that language only, so the two may list different page sets;
 a page that exists but is not linked from its own language's partials is
 unlisted in that language. Dropdowns are flat and single-tier, using the
-`.mt-has-dropdown` mechanism. Neither partials file exists yet.
+`.mt-has-dropdown` mechanism, which is named but not yet built — no page has
+needed a dropdown. Both partials files exist, along with `partials.js`, which
+derives which one to fetch from the page's own filename.
 
 ### Internal pages
 
@@ -144,13 +152,11 @@ This is obscurity, not privacy. Static hosting has no auth layer, so these pages
 remain publicly fetchable by anyone who knows the URL; nothing client-sensitive
 belongs on them.
 
-None exist yet. Two are planned:
-
+- `int-stylebook.html` — BUILT. Renders every STYLE.css token and pattern live.
+  Per STYLE.md section 7 it ships in the same commit as STYLE.css, always.
 - `int-backlog.html` — the rendered backlog view, and the place Part C flush
-  verification is performed. Fetches BACKLOG.md at runtime. Until it is built,
-  flushes are verified in the raw file.
-- `int-stylebook.html` — renders every STYLE.css token and pattern live. Per
-  STYLE.md section 7 it ships in the same commit as STYLE.css, always.
+  verification is performed. Fetches BACKLOG.md at runtime. NOT yet built; until
+  it is, flushes are verified in the raw file.
 
 ### Build approach
 
