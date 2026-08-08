@@ -1,4 +1,4 @@
-v009 | 2026-08-02 | 215 lines
+v010 | 2026-08-08 | 216 lines
 
 # Working Rules
 
@@ -80,10 +80,11 @@ don't need it), compare line 1 — version, date, line count — between
 `origin/main` and the project-folder copy. Audit whatever governance docs
 SCOPE.md lists, plus CLAUDE.md and SCOPE.md themselves, plus any stamped
 non-`.md` governance file the project keeps (e.g. STYLE.css); never assume a
-fixed list. The audit is two-part, because neither side can see both: the chat
-reports the project-folder half, Code reports the `origin/main` half, and the
-human joins them. Where the two differ, the higher version is current — flag it
-and sync to that version.
+fixed list. Code performs the whole audit: it reads both sides itself — the
+committed version from `origin/main` and the project-folder copy — compares
+them, and reports the joined result. A chat cannot read git, so it is never
+asked to supply half of it. Where the two differ, the higher version is
+current — flag it and sync to that version.
 
 **Governance docs go direct to main.** Every `.md` governance doc listed in
 SCOPE.md — CLAUDE.md, SCOPE.md, BLOG.md, BACKLOG.md, PROCESS.md and the like —
