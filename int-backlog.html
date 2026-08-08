@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Backlog — Micronturbo (internal)</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="STYLE.css">
+  <style>
+    .bl-meta { display: flex; flex-wrap: wrap; gap: var(--mt-space-5); font-size: var(--mt-text-xs); color: var(--mt-text-3); margin-bottom: var(--mt-space-5); }
+    .bl-meta strong { color: var(--mt-text-2); font-weight: 500; }
+
+    .bl-check { border-left: 2px solid var(--mt-border); padding-left: var(--mt-space-4); margin-bottom: var(--mt-space-2); font-size: var(--mt-text-sm); color: var(--mt-text-2); }
+    .bl-check--pass { border-left-color: var(--mt-steel); }
+    .bl-check--fail { border-left-color: var(--mt-ignition); color: var(--mt-text); }
+    .bl-check__detail { color: var(--mt-text-3); }
+
+    /* Controls */
+    .bl-controls { display: flex; flex-wrap: wrap; align-items: center; gap: var(--mt-space-4); margin: var(--mt-space-6) 0 var(--mt-space-4); }
+
+    .bl-search { flex: 1 1 22ch; min-width: 22ch; font-family: inherit; font-size: var(--mt-text-sm); color: var(--mt-text); background: var(--mt-surface); border: 1px solid var(--mt-border); border-radius: var(--mt-radius-sm); padding: var(--mt-space-3) var(--mt-space-4); }
+    .bl-search::placeholder { color: var(--mt-text-faint); }
+    .bl-search:focus { outline: 2px solid var(--mt-amber); outline-offset: 2px; }
+
+    .bl-filters { display: flex; flex-wrap: wrap; gap: var(--mt-space-2); }
+    .bl-filter { font-family: inherit; font-size: var(--mt-text-xs); letter-spacing: 0.06em; text-transform: uppercase; color: var(--mt-text-3); background: transparent; border: 1px solid var(--mt-border); border-radius: var(--mt-radius-sm); padding: var(--mt-space-2) var(--mt-space-4); cursor: pointer; white-space: nowrap; transition: color 120ms ease, border-color 120ms ease; }
+    .bl-filter:hover { color: var(--mt-text); border-color: var(--mt-text-3); }
+    .bl-filter[aria-pressed="true"] { color: var(--mt-text); border-color: var(--mt-amber); }
+    .bl-filter__n { font-weight: 700; font-variant-numeric: tabular-nums; }
+    .bl-filter:focus-visible { outline: 2px solid var(--mt-amber); outline-offset: 2px; }
+
+    .bl-count { font-size: var(--mt-text-xs); color: var(--mt-text-3); font-variant-numeric: tabular-nums; margin-left: auto; }
+
+    /* Table */
+    .bl-scroll { overflow-x: auto; }
+    .bl-table { width: 100%; border-collapse: collapse; font-size: var(--mt-text-sm); }
+    .bl-table th { font-size: var(--mt-text-xs); font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--mt-text-3); text-align: left; padding: var(--mt-space-3) var(--mt-space-4); border-bottom: 1px solid var(--mt-border); white-space: nowrap; }
+    .bl-table td { padding: var(--mt-space-4); border-bottom: 1px solid var(--mt-border); vertical-align: top; color: var(--mt-text-2); }
+    .bl-table tr:hover td { background: var(--mt-surface); }
+    .bl-table code { font-size: 0.92em; color: var(--mt-text); }
+
+    .bl-id { font-weight: 700; color: var(--mt-text); white-space: nowrap; font-variant-numeric: tabular-nums; }
+    /* width:100% makes Item absorb whatever the fixed-content columns leave.
+       Item is the row; the rest are labels. */
+    .bl-item { width: 100%; min-width: 34ch; color: var(--mt-text-2); }
+    .bl-date, .bl-closedby { white-space: nowrap; font-size: var(--mt-text-xs); color: var(--mt-text-3); font-variant-numeric: tabular-nums; }
+    .bl-closedby { color: var(--mt-text-2); }
+
+    .bl-chip { display: inline-block; font-size: var(--mt-text-xs); letter-spacing: 0.06em; text-transform: uppercase; padding: var(--mt-space-1) var(--mt-space-3); border: 1px solid var(--mt-border); border-radius: var(--mt-radius-sm); white-space: nowrap; color: var(--mt-text-3); }
+    .bl-chip--open { border-color: var(--mt-steel); color: var(--mt-text-2); }
+    .bl-chip--inprogress { border-color: var(--mt-amber); color: var(--mt-amber); }
+    .bl-chip--review { border-color: var(--mt-ignition); color: var(--mt-ignition); }
+    .bl-chip--closed { opacity: 0.55; }
+    .bl-chip--discard { opacity: 0.55; text-decoration: line-through; }
+
+    .bl-row--closed .bl-id, .bl-row--closed .bl-item { color: var(--mt-text-3); }
+    .bl-row--bad td { background: color-mix(in srgb, var(--mt-ignition) 12%, transparent); color: var(--mt-text); }
+
+    /* No radius: STYLE.md section 5 collapses radii to three tokens, and none
+       of them suit an inline highlight. */
+    mark { background: var(--mt-amber); color: var(--mt-bg); }
+
+    .bl-empty { color: var(--mt-text-faint); }
+    .bl-none { padding: var(--mt-space-6) 0; color: var(--mt-text-3); font-size: var(--mt-text-sm); }
+    .bl-error { border-left: 2px solid var(--mt-ignition); padding-left: var(--mt-space-4); color: var(--mt-text); }
+  </style>
+</head>
+<body>
+
+<div class="mt-container mt-section">
+
+  <p class="mt-label">Internal · not linked · noindex</p>
+  <h1>Backlog</h1>
+
+  <div id="bl-meta" class="bl-meta"></div>
+  <div id="bl-checks"></div>
+
+  <div class="bl-controls">
+    <label class="mt-visually-hidden" for="bl-search">Search the backlog</label>
+    <input type="search" id="bl-search" class="bl-search" placeholder="Search ID, item, category…" autocomplete="off">
+    <div id="bl-filters" class="bl-filters"></div>
+    <div id="bl-count" class="bl-count"></div>
+  </div>
+
+  <div class="bl-scroll"><table class="bl-table" id="bl-table"></table></div>
+  <div id="bl-none"></div>
+
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  var COLUMNS = ['ID', 'Status', 'Category', 'Item', 'Raised', 'Closed-by'];
+  var EVIDENCE_STATUSES = ['closed', 'discard'];
+
+  var rows = [];
+  var state = { status: 'all', q: '' };
+
+  function esc(s) {
+    return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+
+  function slug(s) { return (s || '').toLowerCase().replace(/[^a-z]/g, ''); }
+
+  /* Split a table row on unescaped pipes only. A literal pipe in an Item cell
+     is written \| per the BACKLOG.md schema, and splitting naively on every |
+     is exactly the mis-parse this page exists to catch. */
+  function splitRow(line) {
+    var cells = [];
+    var buf = '';
+    for (var i = 0; i < line.length; i++) {
+      var c = line.charAt(i);
+      if (c === '\\' && line.charAt(i + 1) === '|') { buf += '|'; i++; continue; }
+      if (c === '|') { cells.push(buf); buf = ''; continue; }
+      buf += c;
+    }
+    cells.push(buf);
+    if (cells.length && cells[0].trim() === '') { cells.shift(); }
+    if (cells.length && cells[cells.length - 1].trim() === '') { cells.pop(); }
+    return cells.map(function (s) { return s.trim(); });
+  }
+
+  /* Wrap CJK runs so STYLE.css section 7's :lang(zh) rule applies the CJK
+     family. Reuses the existing switch rather than declaring a second stack. */
+  function markCjk(html) {
+    return html.replace(/[㐀-鿿豈-﫿！-｠]+/g, function (m) {
+      return '<span lang="zh-Hans">' + m + '</span>';
+    });
+  }
+
+  /* Highlight the search term. Runs on already-escaped text and skips the
+     inside of tags, so it cannot break the markup it is inserted into. */
+  function highlight(html, q) {
+    if (!q) { return html; }
+    var needle = q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    return html.replace(new RegExp('(' + needle + ')(?![^<]*>)', 'gi'), '<mark>$1</mark>');
+  }
+
+  function inline(text, q) {
+    var out = esc(text).replace(/`([^`]+)`/g, '<code>$1</code>');
+    return markCjk(highlight(out, q));
+  }
+
+  function chip(value) {
+    if (!value) { return '<span class="bl-empty">—</span>'; }
+    return '<span class="bl-chip bl-chip--' + slug(value) + '">' + esc(value) + '</span>';
+  }
+
+  function check(pass, label, detail) {
+    return '<div class="bl-check ' + (pass ? 'bl-check--pass' : 'bl-check--fail') + '">' +
+      (pass ? '✓ ' : '✕ ') + esc(label) +
+      (detail ? ' <span class="bl-check__detail">' + esc(detail) + '</span>' : '') +
+      '</div>';
+  }
+
+  function matches(r) {
+    // A malformed row always shows. Hiding a broken row behind a filter is the
+    // one failure this page exists to prevent.
+    if (r.cells.length !== COLUMNS.length) { return true; }
+    if (state.status !== 'all' && slug(r.cells[1]) !== state.status) { return false; }
+    if (state.q && r.haystack.indexOf(state.q.toLowerCase()) === -1) { return false; }
+    return true;
+  }
+
+  function drawTable() {
+    var shown = rows.filter(matches);
+    var q = state.q;
+
+    var head = '<thead><tr>' + COLUMNS.map(function (c) {
+      return '<th>' + esc(c) + '</th>';
+    }).join('') + '</tr></thead>';
+
+    var body = shown.map(function (r) {
+      var c = r.cells;
+
+      if (c.length !== COLUMNS.length) {
+        return '<tr class="bl-row--bad"><td class="bl-id">' + esc(c[0] || '?') + '</td>' +
+          '<td colspan="' + (COLUMNS.length - 1) + '">' +
+          '<strong>Malformed row — ' + c.length + ' cells, expected ' + COLUMNS.length + '.</strong> ' +
+          'Source line ' + r.source + '. A literal pipe in the Item cell must be written <code>\\|</code>. ' +
+          'Raw cells: ' + c.map(function (x) { return '<code>' + esc(x) + '</code>'; }).join(' ') +
+          '</td></tr>';
+      }
+
+      return '<tr class="bl-row--' + slug(c[1]) + '">' +
+        '<td class="bl-id">' + inline(c[0], q) + '</td>' +
+        '<td>' + chip(c[1]) + '</td>' +
+        '<td>' + chip(c[2]) + '</td>' +
+        '<td class="bl-item">' + inline(c[3], q) + '</td>' +
+        '<td class="bl-date">' + esc(c[4]) + '</td>' +
+        '<td class="bl-closedby">' + (c[5] ? inline(c[5], q) : '<span class="bl-empty">—</span>') + '</td>' +
+        '</tr>';
+    }).join('');
+
+    document.getElementById('bl-table').innerHTML = shown.length ? head + '<tbody>' + body + '</tbody>' : '';
+    document.getElementById('bl-none').innerHTML = shown.length ? '' :
+      '<p class="bl-none">No rows match' + (state.q ? ' “' + esc(state.q) + '”' : '') +
+      (state.status !== 'all' ? ' with status ' + esc(state.status) : '') + '.</p>';
+
+    document.getElementById('bl-count').textContent =
+      shown.length === rows.length ? rows.length + ' rows' : shown.length + ' of ' + rows.length + ' rows';
+
+    [].forEach.call(document.querySelectorAll('.bl-filter'), function (b) {
+      b.setAttribute('aria-pressed', b.dataset.status === state.status ? 'true' : 'false');
+    });
+  }
+
+  function drawFilters() {
+    var counts = {};
+    rows.forEach(function (r) {
+      if (r.cells.length !== COLUMNS.length) { return; }
+      var s = slug(r.cells[1]);
+      counts[s] = (counts[s] || 0) + 1;
+    });
+
+    var buttons = [{ key: 'all', label: 'all', n: rows.length }].concat(
+      Object.keys(counts).sort().map(function (s) {
+        return { key: s, label: s, n: counts[s] };
+      }));
+
+    document.getElementById('bl-filters').innerHTML = buttons.map(function (b) {
+      return '<button type="button" class="bl-filter" data-status="' + esc(b.key) + '" aria-pressed="false">' +
+        '<span class="bl-filter__n">' + b.n + '</span> ' + esc(b.label) + '</button>';
+    }).join('');
+
+    [].forEach.call(document.querySelectorAll('.bl-filter'), function (b) {
+      b.addEventListener('click', function () {
+        state.status = b.dataset.status;
+        drawTable();
+      });
+    });
+  }
+
+  function render(md) {
+    var lines = md.split('\n');
+    var stamp = (lines[0] || '').trim();
+
+    for (var i = 0; i < lines.length; i++) {
+      if (!/^\s*\|/.test(lines[i])) { continue; }
+      var cells = splitRow(lines[i]);
+      if (!cells.length || !/^BL-\d+$/.test(cells[0])) { continue; }
+      rows.push({ cells: cells, source: i + 1, haystack: cells.join(' ').toLowerCase() });
+    }
+
+    document.getElementById('bl-meta').innerHTML =
+      '<div><strong>' + esc(stamp) + '</strong></div>' +
+      '<div>Rendered <strong>' + new Date().toLocaleString() + '</strong></div>';
+
+    /* Zero rows must fail loudly. Every check below is vacuously true against
+       an empty set, so a fetch that succeeds but yields nothing parseable —
+       a renamed file, a mangled table, a truncated response — would otherwise
+       render green ticks over an empty table. */
+    if (rows.length === 0) {
+      document.getElementById('bl-checks').innerHTML =
+        check(false, 'No rows parsed from BACKLOG.md',
+          'The file loaded but no line matched a BL-### row.');
+      return;
+    }
+
+    var malformed = rows.filter(function (r) { return r.cells.length !== COLUMNS.length; });
+    var ids = rows.map(function (r) { return parseInt(r.cells[0].slice(3), 10); });
+    var dupes = ids.filter(function (n, i) { return ids.indexOf(n) !== i; });
+    var gaps = [];
+    for (var n = 1; n <= Math.max.apply(null, ids); n++) {
+      if (ids.indexOf(n) === -1) { gaps.push('BL-' + String(n).padStart(3, '0')); }
+    }
+    var evidenceBad = rows.filter(function (r) {
+      if (r.cells.length !== COLUMNS.length) { return false; }
+      var needs = EVIDENCE_STATUSES.indexOf(slug(r.cells[1])) !== -1;
+      return needs ? r.cells[5] === '' : r.cells[5] !== '';
+    });
+
+    /* Detail is carried on failures only. A passing check needs no prose; a
+       failing one has to say which rows, or it is not actionable. */
+    document.getElementById('bl-checks').innerHTML =
+      check(malformed.length === 0,
+        malformed.length === 0 ? 'Six columns on every row'
+          : malformed.length + ' row(s) do NOT parse to six columns',
+        malformed.length === 0 ? '' : 'likely an unescaped pipe: ' +
+          malformed.map(function (r) { return r.cells[0] + ' (line ' + r.source + ', ' + r.cells.length + ' cells)'; }).join(', ')) +
+      check(dupes.length === 0,
+        dupes.length === 0 ? 'No duplicate IDs' : 'Duplicate IDs',
+        dupes.length === 0 ? '' : dupes.join(', ')) +
+      check(gaps.length === 0,
+        gaps.length === 0 ? 'Unbroken ID sequence' : 'Missing from sequence',
+        gaps.length === 0 ? '' : gaps.join(', ') + ' — IDs are never renumbered, so a gap means a deleted row') +
+      check(evidenceBad.length === 0,
+        evidenceBad.length === 0 ? 'Closed-by set only where the status requires it'
+          : evidenceBad.length + ' row(s) break the Closed-by rule',
+        evidenceBad.length === 0 ? '' : evidenceBad.map(function (r) { return r.cells[0]; }).join(', '));
+
+    drawFilters();
+    drawTable();
+
+    var search = document.getElementById('bl-search');
+    search.addEventListener('input', function () {
+      state.q = search.value.trim();
+      drawTable();
+    });
+    search.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && search.value) { search.value = ''; state.q = ''; drawTable(); }
+    });
+  }
+
+  /* cache: 'no-cache' revalidates. This page verifies a flush that was pushed
+     moments earlier, so a cached BACKLOG.md would report the state before the
+     flush and quietly defeat the whole point. See BL-013. */
+  fetch('BACKLOG.md', { cache: 'no-cache' })
+    .then(function (r) {
+      if (!r.ok) { throw new Error('BACKLOG.md ' + r.status); }
+      return r.text();
+    })
+    .then(render)
+    .catch(function (err) {
+      document.getElementById('bl-checks').innerHTML =
+        '<p class="bl-error">Could not load BACKLOG.md — ' + esc(err.message) + '</p>';
+    });
+
+})();
+</script>
+
+</body>
+</html>
