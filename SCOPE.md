@@ -1,4 +1,4 @@
-v006 | 2026-08-07 | 181 lines
+v007 | 2026-08-08 | 214 lines
 # Scope
 
 ## 1. Project
@@ -72,6 +72,22 @@ section covers it.
   `<head>`, not by an `@import` in STYLE.css — see STYLE.md section 4 for why.
   Consumers: all pages.
 
+- **Dependency note, NOT a CDN exception: vendored icons.** The product pages
+  carry six icons, vendored inline as SVG markup in the page. Nothing is fetched
+  at runtime and nothing is installed at build time, so this takes no exception
+  against the rule above — it is recorded because the artwork is third-party and
+  the licences travel with it.
+
+  | Icon | Source | Licence |
+  |---|---|---|
+  | Feather | Bootstrap Icons | MIT |
+  | Clock, fuel, leaf, snowflake, zap | Lucide | ISC |
+
+  Both licences permit use and modification with attribution retained. Inline
+  rather than a sprite or an icon font because six icons on three pages do not
+  justify either, and inline SVG takes `currentColor`, which is what lets the
+  categorical hues come from tokens.
+
 - All internal links are RELATIVE paths, for portability.
 
 - Shared header and footer are served from a partials file, fetched per page.
@@ -119,15 +135,28 @@ suffix rule below — it is a structural change, not a translation pass.
 
 ### Pages
 
-Planned external pages: `index.html` (Home), `products.html`, `about.html`,
-`contact.html`, `privacy.html`.
+Planned external pages: `index.html` (Home), `products.html`,
+`products-6k.html`, `products-75k.html`, `about.html`, `contact.html`,
+`privacy.html`.
 
-Built: `index.html` and `index-zh.html`, the home page in both languages. The
+The two SKU pages are children of the hub, reachable from the Products dropdown
+and from the hub's own SKU cards. They are the first pages below the top level.
+
+Built: `index.html` and `index-zh.html`, the home page in both languages, plus
+`products.html`, `products-6k.html` and `products-75k.html` in English. The
 `noindex,nofollow` placeholder that stood in during DNS and certificate setup
-has been replaced wholesale and the directive is gone — the home page is
-indexable. `products`, `about`, `contact` and `privacy` are linked from the nav
-in both languages but do not exist yet, so those links 404 until they are
-built.
+has been replaced wholesale on the home page and the directive is gone — home
+and all three product pages are indexable. `about`, `contact` and `privacy` are
+linked from the nav in both languages but do not exist yet, so those links 404
+until they are built.
+
+`products-zh.html`, `products-6k-zh.html` and `products-75k-zh.html` exist as
+holding pages only. Each carries `noindex,nofollow`, `lang="zh-Hans"`, minimal
+content and a link to its English counterpart, following the pattern
+`index.html` used during DNS setup. They exist so the Chinese dropdown does not
+404 — the Chinese nav lists the same page set as the English one, and a listed
+page that 404s is worse than a listed page that is honestly under construction.
+Real content follows later, and the `noindex` comes off with it.
 
 The partials files are the source of truth for the nav, and therefore for which
 pages are publicly reachable — a page not linked there is live but unlisted. No
@@ -135,9 +164,13 @@ doc restates it, and no doc tracks visibility separately. Each language's nav is
 authoritative for that language only, so the two may list different page sets;
 a page that exists but is not linked from its own language's partials is
 unlisted in that language. Dropdowns are flat and single-tier, using the
-`.mt-has-dropdown` mechanism, which is named but not yet built — no page has
-needed a dropdown. Both partials files exist, along with `partials.js`, which
-derives which one to fetch from the page's own filename.
+`.mt-has-dropdown` mechanism, which is now BUILT and used by Products in both
+languages — the English parent lists MT-6K and MT-75K, the Chinese parent lists
+the same two under the same product names. The parent link still navigates to
+the hub; the keyboard map and the mobile behaviour are specified in STYLE.md
+section 6. Both partials files exist, along with `partials.js`, which derives
+which one to fetch from the page's own filename and wires the dropdown after
+injection.
 
 ### Internal pages
 
