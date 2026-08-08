@@ -14,7 +14,21 @@
       <nav class="mt-nav" id="mt-nav" aria-label="主导航">
         <ul class="mt-nav__list">
           <li><a href="index-zh.html">首页</a></li>
-          <li><a href="products-zh.html">产品</a></li>
+          <!-- 下拉父项。父链接仍可跳转：Enter 进入产品页，Space 与 Down 展开面板。
+               见 STYLE.md section 6。产品型号名两种语言相同。 -->
+          <li class="mt-has-dropdown">
+            <a href="products-zh.html" aria-expanded="false" aria-controls="mt-dd-products">
+              产品
+              <svg class="mt-dd__caret" viewBox="0 0 10 6" aria-hidden="true" focusable="false">
+                <path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5"
+                      stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </a>
+            <ul class="mt-dd" id="mt-dd-products">
+              <li><a href="products-6k-zh.html">MT-6K</a></li>
+              <li><a href="products-75k-zh.html">MT-75K</a></li>
+            </ul>
+          </li>
           <li><a href="about-zh.html">关于</a></li>
           <li><a href="contact-zh.html">联系</a></li>
           <li><a class="mt-lang" href="index.html" lang="en" hreflang="en">EN</a></li>

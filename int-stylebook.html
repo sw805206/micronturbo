@@ -327,6 +327,41 @@
       .mt-lang — a fixed 36px square, so both labels render the same shape
     </span>
   </p>
+  <h2>Nav dropdown</h2>
+  <p style="font-size: var(--mt-text-sm); color: var(--mt-text-3); max-width: 62ch;">
+    .mt-has-dropdown, shown open. The panel and its rows are the specimen; the
+    behaviour is not, because partials.js is not loaded here. This is the one
+    nav part rendered inline, and only in its resting visual state — what it
+    does when you press a key is proven on a real page, not on this one.
+  </p>
+  <nav class="mt-nav" aria-label="Dropdown specimen"
+       style="position: relative; height: 190px;">
+    <ul class="mt-nav__list" style="justify-content: flex-start;">
+      <li><a href="#">Home</a></li>
+      <li class="mt-has-dropdown is-open">
+        <a href="#" aria-expanded="true" aria-controls="sb-dd">
+          Products
+          <svg class="mt-dd__caret" viewBox="0 0 10 6" aria-hidden="true" focusable="false">
+            <path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+        <ul class="mt-dd" id="sb-dd">
+          <li><a href="#">MT-6K</a></li>
+          <li><a class="is-current" href="#">MT-75K</a></li>
+        </ul>
+      </li>
+      <li><a href="#">About</a></li>
+    </ul>
+  </nav>
+  <p style="font-size: var(--mt-text-sm); color: var(--mt-text-3); max-width: 62ch;">
+    The parent stays a real link — Enter follows it to the hub page, Space and
+    Down open the panel. The current row takes an inset amber rule rather than
+    the underline the top level uses, because a full-width row has no word to
+    underline. Below 768px the panel goes static and expands inline inside the
+    burger overlay.
+  </p>
+
   <p style="font-size: var(--mt-text-sm); color: var(--mt-text-3);">
     The header and footer are not shown here. They are injected at runtime from
     the partials files and are visible on any real page; an inline copy would be

@@ -1,4 +1,4 @@
-/* v006 | 2026-08-07 | 688 lines
+/* v007 | 2026-08-08 | 826 lines
    micronturbo.com design tokens and shared patterns.
    The decisions this file implements are recorded in STYLE.md.
    Pages consume tokens, never raw hex or px. See STYLE.md section 8. */
@@ -481,6 +481,95 @@ td {
   color: var(--mt-text);
 }
 
+/* Dropdown. One tier only, and deliberately so: a second tier needs hover
+   intent, a safe-triangle cursor path and a mobile back affordance, none of
+   which four nav items justify.
+
+   The parent stays a real link. Enter follows it to the hub page, Space and
+   Down open the panel — if Enter opened the panel instead, the hub page would
+   have no keyboard route at all, since the panel lists only the two SKUs. */
+.mt-has-dropdown {
+  position: relative;
+}
+
+.mt-has-dropdown > a {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--mt-space-2);
+}
+
+.mt-dd__caret {
+  width: 10px;
+  height: 6px;
+  flex: none;
+  transition: transform 160ms ease;
+}
+
+.mt-has-dropdown > a[aria-expanded="true"] .mt-dd__caret {
+  transform: rotate(180deg);
+}
+
+/* Hidden by visibility rather than display, so the panel keeps a measurable box
+   and stays out of the tab order while closed.
+
+   visibility is transitioned at 0s but with a close-delay, never faded. It has
+   to flip to visible the instant the panel opens, because a visibility:hidden
+   element cannot take focus and Down opens the panel and focuses its first row
+   in the same tick. Delaying it on the way out instead keeps the fade visible
+   while closing. Transitioning visibility over 140ms — the obvious-looking
+   version — silently breaks the keyboard path and nothing else. */
+.mt-dd {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 60;
+  min-width: 180px;
+  margin: 0;
+  padding: var(--mt-space-2) 0;
+  list-style: none;
+  background: var(--mt-surface);
+  border: 1px solid var(--mt-border);
+  border-radius: var(--mt-radius-sm);
+  visibility: hidden;
+  opacity: 0;
+  transform: translateY(-4px);
+  transition: opacity 140ms ease, transform 140ms ease,
+              visibility 0s linear 140ms;
+}
+
+.mt-has-dropdown.is-open > .mt-dd {
+  visibility: visible;
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 140ms ease, transform 140ms ease, visibility 0s;
+}
+
+.mt-dd li { margin: 0; }
+
+/* Full-width rows, so the hit area is the whole panel and not just the word.
+   The underline treatment from the nav list would cut across that, so these
+   take a background change instead. */
+.mt-nav__list .mt-dd a {
+  display: block;
+  padding: var(--mt-space-3) var(--mt-space-4);
+  border-bottom: 0;
+  color: var(--mt-text-2);
+  white-space: nowrap;
+}
+
+.mt-nav__list .mt-dd a:hover,
+.mt-nav__list .mt-dd a:focus-visible {
+  background: var(--mt-surface-high);
+  border-bottom: 0;
+  color: var(--mt-text);
+}
+
+.mt-nav__list .mt-dd a.is-current {
+  color: var(--mt-text);
+  border-bottom: 0;
+  box-shadow: inset 2px 0 0 var(--mt-amber);
+}
+
 .mt-burger {
   display: none;
   flex-direction: column;
@@ -513,6 +602,8 @@ td {
 
 @media (prefers-reduced-motion: reduce) {
   .mt-burger__bar { transition: none; }
+  .mt-dd,
+  .mt-dd__caret { transition: none; }
 }
 
 .mt-footer {
@@ -662,6 +753,53 @@ td {
   }
 
   .mt-nav__list a.is-current { border-bottom-color: var(--mt-amber); }
+
+  /* The dropdown expands inline inside the burger panel — it is already an
+     overlay, and a panel floating above a panel has nothing to float over.
+     Static positioning lets it push the items below it down instead. */
+  /* Scoped through .mt-nav__list deliberately: the mobile
+     `.mt-nav__list a:not(.mt-lang)` rule above sets display:block, and at equal
+     weight it would win and drop the caret onto its own line. */
+  .mt-nav__list .mt-has-dropdown > a {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .mt-dd {
+    position: static;
+    min-width: 0;
+    padding: 0;
+    background: none;
+    border: 0;
+    border-radius: 0;
+    transform: none;
+    /* Collapsed height, not just hidden, so the rows below close up. */
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 200ms ease, opacity 140ms ease,
+                visibility 0s linear 200ms;
+  }
+
+  .mt-has-dropdown.is-open > .mt-dd {
+    max-height: 20rem;
+    transform: none;
+    transition: max-height 200ms ease, opacity 140ms ease, visibility 0s;
+  }
+
+  .mt-nav__list .mt-dd a {
+    padding: var(--mt-space-4) 0 var(--mt-space-4) var(--mt-space-5);
+    border-bottom: 1px solid var(--mt-border);
+    font-size: var(--mt-text-base);
+  }
+
+  .mt-nav__list .mt-dd a:hover,
+  .mt-nav__list .mt-dd a:focus-visible { background: none; }
+
+  .mt-nav__list .mt-dd a.is-current {
+    box-shadow: none;
+    border-bottom-color: var(--mt-amber);
+  }
 
   /* Stays the square control from section 8; only the offset changes. */
   .mt-nav__list a.mt-lang { margin-top: var(--mt-space-4); }

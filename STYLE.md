@@ -1,4 +1,4 @@
-v004 | 2026-08-07 | 293 lines
+v005 | 2026-08-08 | 323 lines
 # Style
 
 The design-system decisions for micronturbo.com, in words. STYLE.css is the
@@ -240,8 +240,29 @@ partials files, per SCOPE.md section 3.
   the two breakpoints answer different questions and are deliberately not
   shared.
 
-The dropdown mechanism is still NOT specified. It is named `.mt-has-dropdown`
-in SCOPE.md; nothing else about it is settled, and no page has needed one.
+- **Nav dropdown** — `.mt-has-dropdown` on the `<li>`, `.mt-dd` on the panel.
+  Flat, one tier. A second tier would need hover intent, a safe-triangle cursor
+  path and a mobile back affordance; four nav items do not justify any of it.
+
+  The parent stays a real link, and that decision drives the keyboard map.
+  **Enter navigates** to the hub page; **Space** and **Down** open the panel.
+  The tempting alternative — Enter toggles — was rejected because the panel
+  lists only the two SKUs, so intercepting Enter would leave `products.html`
+  with no keyboard route at all while mouse users kept theirs. Escape closes
+  and returns focus to the parent, arrows and Home/End move within the panel,
+  and moving focus out of the item closes it. `aria-expanded` sits on the
+  parent link. On the desktop layout hover opens as well.
+
+  Below 768px the panel goes `position: static` and expands inline inside the
+  burger overlay — no hover, no second overlay, since a panel floating above a
+  panel has nothing to float over. It collapses by `max-height` so the rows
+  below close up rather than leaving a gap. Crossing the breakpoint closes any
+  open panel, because an overlay left over from the other layout reads as stuck.
+  Honours `prefers-reduced-motion`.
+
+  Rows inside the panel are full width, so the hit area is the panel rather than
+  the word. That is why the current row takes an inset amber rule instead of the
+  underline the top level uses: there is no word to underline.
 
 ## 7. The stylebook
 
@@ -260,6 +281,12 @@ visible on any real page; an inline copy in the stylebook would be exactly the
 drift this section exists to prevent. What it does carry, in section 10, is the
 parts that are not injected: the two button variants, the language toggle
 standalone, and a Simplified Chinese specimen for `--mt-font-cjk`.
+
+The nav dropdown is the one deliberate exception. Section 10 renders it inline
+and open, because a panel that is invisible at rest cannot be reviewed any other
+way. Only its resting appearance is the specimen — `partials.js` is not loaded
+there, so nothing in it responds to a key. The behaviour is proven on a real
+page. An inline specimen that pretended otherwise would be the same drift.
 
 ## 8. The reuse rule
 
@@ -285,9 +312,12 @@ Which page defined which pattern. One line each, appended as pages are built.
 | Hero grid, slogan, primary button | Home page | v002 §9 |
 | `:lang(zh)` CJK family switch | Home page (zh) | v002 §7 |
 | Secondary button, `.mt-hero__actions` | Home page | v004 §9 |
+| `.mt-has-dropdown`, `.mt-dd` nav dropdown | Products (both languages) | v007 §8 |
 
-Every row so far is the home page. That is expected for the first page built and
-is not yet evidence of reuse — the rule in section 8 earns its keep from the
-second page onward, when the question becomes whether to promote or rebuild.
+Every row up to the dropdown is the home page. That was expected for the first
+page built and was not evidence of reuse — the rule in section 8 earns its keep
+from the second page onward, when the question becomes whether to promote or
+rebuild. The dropdown is the first row raised by a second page, and it went
+straight into STYLE.css because both language partials needed it at once.
 
 No page-local one-offs exist. Nothing has been built outside STYLE.css.

@@ -16,7 +16,21 @@
       <nav class="mt-nav" id="mt-nav" aria-label="Main">
         <ul class="mt-nav__list">
           <li><a href="index.html">Home</a></li>
-          <li><a href="products.html">Products</a></li>
+          <!-- Dropdown parent. The link still navigates: Enter follows it to the
+               hub page, Space and Down open the panel. See STYLE.md section 6. -->
+          <li class="mt-has-dropdown">
+            <a href="products.html" aria-expanded="false" aria-controls="mt-dd-products">
+              Products
+              <svg class="mt-dd__caret" viewBox="0 0 10 6" aria-hidden="true" focusable="false">
+                <path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5"
+                      stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </a>
+            <ul class="mt-dd" id="mt-dd-products">
+              <li><a href="products-6k.html">MT-6K</a></li>
+              <li><a href="products-75k.html">MT-75K</a></li>
+            </ul>
+          </li>
           <li><a href="about.html">About</a></li>
           <li><a href="contact.html">Contact</a></li>
           <li><a class="mt-lang" href="index-zh.html" lang="zh-Hans" hreflang="zh-Hans">简</a></li>
