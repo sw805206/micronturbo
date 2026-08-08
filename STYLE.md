@@ -1,4 +1,4 @@
-v006 | 2026-08-08 | 439 lines
+v007 | 2026-08-08 | 473 lines
 # Style
 
 The design-system decisions for micronturbo.com, in words. STYLE.css is the
@@ -371,6 +371,40 @@ SCOPE.md.
 CSS is worse than no stylebook, because it reports a state the site is not in. If
 a change to STYLE.css cannot be reflected in the stylebook in the same commit, the
 change waits.
+
+**Every page's `?v=` query matches the current STYLE.css version, and is bumped
+in the same commit that bumps the stamp.** Each page links the stylesheet as
+`href="STYLE.css?v=008"`, where the number is STYLE.css's own `v###`. Changing
+the query changes the URL, so a browser holding the old file has nothing to
+match against and must refetch.
+
+The reason is the cache window. GitHub Pages serves STYLE.css with
+`cache-control: max-age=600`, and the stylesheet is a separate request from the
+page that uses it, so their cache entries expire independently. Without the
+query, a returning visitor can pair new HTML with CSS up to ten minutes old. The
+failure is not a blank page — it renders **styled above the fold and unstyled
+below it**, because the old file still carries the shared header, footer, hero
+and container rules and lacks only the newest patterns. It looks like a broken
+deploy and is not one; the server is serving the correct file to anyone without
+a warm cache, which is why it cannot be reproduced with `curl`.
+
+Verify before pushing any STYLE.css change:
+
+```
+grep -l 'rel="stylesheet"' *.html | xargs grep -L 'STYLE.css?v=008'
+```
+
+It lists any page out of step and should return nothing. The scoping matters:
+`partials.html` and `partials-zh.html` are fragments injected into pages that
+already carry the link, so they hold no stylesheet reference of their own. A
+bare `grep -L 'STYLE.css?v=008' *.html` reports both as failures — the check
+must ask only pages that link a stylesheet at all.
+
+This is a mitigation, not the fix. It costs a returning visitor a full CSS
+refetch on every release, and it only works if the query is actually bumped —
+a stamp bumped without the query is the same bug with an extra step. BL-003,
+putting the site behind the Cloudflare proxy, is the durable answer, because it
+allows a purge at release instead of waiting out someone else's TTL.
 
 The stylebook still carries NO header or footer section, now by choice rather
 than by absence. Both are injected at runtime from the partials files and are
