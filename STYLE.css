@@ -1,4 +1,4 @@
-/* v004 | 2026-08-07 | 681 lines
+/* v005 | 2026-08-07 | 681 lines
    micronturbo.com design tokens and shared patterns.
    The decisions this file implements are recorded in STYLE.md.
    Pages consume tokens, never raw hex or px. See STYLE.md section 8. */
@@ -37,9 +37,9 @@
 
   /* Type families. */
   --mt-font: 'Space Grotesk', system-ui, -apple-system, sans-serif;
-  /* Traditional Chinese. Applied by the [lang] rule in section 2. Loaded only
+  /* Simplified Chinese. Applied by the :lang(zh) rule in section 7. Loaded only
      by pages that need it — see STYLE.md section 4. */
-  --mt-font-cjk: 'Noto Sans TC', 'PingFang TC', 'Microsoft JhengHei', sans-serif;
+  --mt-font-cjk: 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
 
   /* Type scale */
   --mt-text-display: clamp(2.5rem, 5vw, 4rem);
@@ -464,7 +464,7 @@ td {
 }
 
 /* Language toggle. A square control, not a nav item. A fixed box rather than
-   padding, so "EN" and "繁" render the same shape despite different widths. */
+   padding, so "EN" and "简" render the same shape despite different widths. */
 .mt-lang {
   display: inline-flex;
   align-items: center;
