@@ -1,4 +1,4 @@
-v005 | 2026-08-08 | 323 lines
+v006 | 2026-08-08 | 439 lines
 # Style
 
 The design-system decisions for micronturbo.com, in words. STYLE.css is the
@@ -49,19 +49,18 @@ component and must be exported before any page can use it.
 | Token | Value | Name | Role |
 |---|---|---|---|
 | `--mt-bg` | `#0C1A2B` | 航天墨蓝 Ink | Page ground |
-| `--mt-surface` | `#12283F` | 舱体蓝 Cabin — PLACEHOLDER | Cards, panels |
-| `--mt-surface-high` | `#1B3350` | 仪表蓝 Instrument — PLACEHOLDER | Raised within a surface |
+| `--mt-surface` | `#12283F` | 舱体蓝 Cabin | Cards, panels |
+| `--mt-surface-high` | `#1B3350` | 仪表蓝 Instrument | Raised within a surface |
 | `--mt-border` | `rgba(255,255,255,0.08)` | — | Hairline on dark |
 
 航天墨蓝 carries a Chinese name in the identity deck but no English one; Ink is
 the English name assigned here. 航天 is the aerospace-industry term rather than
 outer space, and 墨蓝 is ink-blue — the sense is engineering, not cosmos.
 
-Cabin and Instrument are PLACEHOLDERS. Neither colour appears in the deck's
-palette section; both were extracted from how the deck uses them, and the
-Chinese names were coined here rather than by whoever designed the Chinese
-identity. Brand naming carries connotation that cannot be audited from outside,
-so these are provisional pending that source. Tracked as BL-009.
+Cabin and Instrument are confirmed. Neither colour appears in the deck's palette
+section — both were extracted from how the deck uses them, and the Chinese names
+were coined here rather than by whoever designed the Chinese identity. They were
+provisional on that basis until the names were confirmed directly.
 
 `--mt-border` is not a colour. It is white at 8% alpha and renders differently
 over every ground it sits on, so naming it would be naming a treatment.
@@ -87,6 +86,9 @@ convention and does not carry to the site.
 | `--mt-ignition` | `#F55B25` | 燃动橙 Ignition | Primary accent |
 | `--mt-amber` | `#FFB020` | 炽芯金 Amber | Highlight, figures |
 | `--mt-steel` | `#2E6C8E` | 钢青 Steel | Secondary cool, power ring |
+| `--mt-hydro` | `#3FB870` | 氢能绿 Hydro | Low-carbon, hydrogen |
+| `--mt-magnet` | `#9B7BE8` | 永磁紫 Magnet | Permanent-magnet generator |
+| `--mt-vortex` | `#E0619B` | 涡流粉 Vortex | Turbine |
 
 Contrast on `--mt-bg`: amber ~9:1 and is safe for text at any size; ignition
 ~4.5:1, which passes AA for normal text but sits close enough to the line that it
@@ -94,11 +96,54 @@ is reserved for display type, borders, rules and graphic elements rather than
 running copy; steel ~2.2:1 and is NOT a text colour on dark — it is a graphic
 colour only.
 
+The three added hues all clear AA on `--mt-bg` — hydro 6.9:1, magnet 5.3:1,
+vortex 5.3:1 — so unlike steel, each is legal as text on dark. They exist because
+six categories needed six distinguishable hues and the three original accents are
+all warm; nothing in the palette separated a fuel claim from a thermal one.
+
 Amber is the figure colour. When a number is the point of a component, it is
 amber; ignition carries the label or the rule above it. This is the one place the
-two warm accents are not interchangeable.
+two warm accents are not interchangeable — with one exception, recorded under the
+point card below.
 
-### Inverted band
+#### Categorical order
+
+Where a component assigns colour by category rather than by meaning — chart
+series, icon sets, anything counted rather than ranked — the order is fixed:
+
+| Slot | Token |
+|---|---|
+| c1 | `--mt-ignition` |
+| c2 | `--mt-amber` |
+| c3 | `--mt-steel` |
+| c4 | `--mt-hydro` |
+| c5 | `--mt-magnet` |
+| c6 | `--mt-vortex` |
+
+**c1 and c2 are only 23° apart in hue and must not sit adjacent as chart series.**
+Side by side in a legend they read as one colour in two lightnesses rather than
+as two categories, and the distinction collapses entirely for a red-green
+colour-blind reader. The order above is the assignment order, not a promise that
+any two consecutive slots are safe neighbours: a two-series chart takes c1 and
+c3, not c1 and c2. Where the six are spatially separated — six cards in a grid,
+each with its own label — the adjacency problem does not arise and the full order
+is usable as written.
+
+Steel remains graphic-only on dark. Its place at c3 is a categorical assignment
+for fills, rules and icon strokes; it does not make steel legal as text.
+
+#### The point card exception
+
+The point card (`.mt-point`, section 6) is the one place a figure is NOT amber.
+Its figure is `--mt-text` and its icon carries the colour instead.
+
+Amber was tried first, as the rule says it should be. With six cards on screen,
+each pairing a coloured icon with an amber number, amber stopped signalling and
+started competing: the icons already carried the categorical colour, so the amber
+figures added a seventh colour that meant nothing and drowned the six that did.
+Neutral figures let the icon hue do the categorising and the number do the
+reading. The rule holds everywhere a figure is the only coloured thing in its
+component — which is every other case in this file.
 
 DEFINED AND UNUSED, still. These tokens exist so that a light section can be
 built without inventing values, but no page uses them and no component has an
@@ -114,11 +159,21 @@ inverted variant yet. Variants are built when a page needs one — not in advanc
 | `--mt-inv-text-3` | `#A9A59C` | DECORATIVE ONLY (~2.1:1) |
 | `--mt-inv-ignition` | `#A83C15` | Ignition for text on light |
 | `--mt-inv-amber` | `#8A5A06` | Amber for text on light |
+| `--mt-inv-hydro` | `#1E7E45` | Hydro for text on light |
+| `--mt-inv-magnet` | `#7B5EC1` | Magnet for text on light |
+| `--mt-inv-vortex` | `#B7467A` | Vortex for text on light |
 
-The two deep accents exist because `--mt-ignition` on `--mt-inv-bg` is ~3.3:1 and
+The deep accents exist because `--mt-ignition` on `--mt-inv-bg` is ~3.3:1 and
 `--mt-amber` is far worse. Neither is legal as text on a light ground. The deep
-variants clear AA at ~5.7:1 and ~5.4:1. Steel needs no variant — it reads at
-~5.1:1 on light and is a legal text colour there, which it is not on dark.
+variants clear AA — ignition ~5.7:1, amber ~5.4:1, hydro 4.60:1, magnet 4.50:1,
+vortex 4.55:1. Steel needs no variant — it reads at ~5.1:1 on light and is a
+legal text colour there, which it is not on dark.
+
+The three new deep variants are tighter to the 4.5:1 line than the two originals.
+That is deliberate: pulling them darker still would have cost the hue separation
+the categorical order depends on, and a set of six that all read as muted is
+worth less than a set of six that stay distinguishable at the legal minimum.
+They are legal for normal text and are not comfortable for long passages.
 
 The band is applied by a single wrapper class, `.mt-invert`, which resets the
 ground and text tokens for its subtree. Component-level inverted variants do not
@@ -152,7 +207,7 @@ Fonts, and `font-weight: 900` in CSS clamps silently to 700 — identical pixels
 no error, no warning.
 
 Noto Sans SC does carry 900 and uses it for headings, with 700 / 500 / 400
-below. That stack is not in STYLE.css yet, per the note above.
+below.
 
 Weight 600 exists in Space Grotesk but is not used. It is excluded from the font
 request rather than fetched unused on every page.
@@ -264,6 +319,48 @@ partials files, per SCOPE.md section 3.
   the word. That is why the current row takes an inset amber rule instead of the
   underline the top level uses: there is no word to underline.
 
+### Defined by the product pages
+
+Ten patterns, in STYLE.css section 10. They share one property worth stating
+once: each carries its own breakpoints — 900/520, 860/480, 560, 1000 — rather
+than the global 768. These are content-shaped grids and they break where their
+content breaks. A six-card grid and a three-column comparison table do not fail
+at the same width, and forcing both onto the page's breakpoint would break one
+of them early and the other late.
+
+- **Point card** — `.mt-point` in `.mt-points`, a 3×2 grid. The carried stat
+  card with an icon in the label slot. Its top border is neutral and its figure
+  is `--mt-text`, both departures from `.mt-stat`, and both for the same reason:
+  the icon already carries the categorical colour, so a coloured rule and a
+  coloured number would be two more signals saying what the icon has said.
+  Section 3 records the amber exception in full.
+- **One-liner** — `.mt-line` in `.mt-lines`. The same six claims on a SKU page,
+  where the hero has already made the argument and they only need restating.
+  A bounded band, hairline top and bottom, rather than six more cards.
+- **Comparison table** — `.mt-table` in `.mt-table-wrap`. Our column takes a
+  surface fill and an ignition rule; the competitor's is left uncoloured. It
+  scrolls below its breakpoint rather than wrapping, because a three-column
+  comparison that wraps has stopped being a comparison.
+- **SKU cards** — `.mt-sku-card` in `.mt-skus`, at `1fr 1fr 0.7fr`. The narrow
+  third column holds the pipeline card, which is a signpost rather than a
+  product, and takes `--mt-steel` so it reads as future rather than as a third
+  thing competing with the two that ship.
+- **Use-case grid** — `.mt-use` in `.mt-uses`. Picture-led, three across.
+- **Timeline** — `.mt-time`. A vertical spine. Nine nodes on a horizontal axis
+  cannot hold at 375px, and a scrolling axis hides half the schedule. The
+  when-column is `--mt-time-when`, a token because the column and its narrow
+  override have to move together and the longest month name sets both.
+- **Image slot** — `.mt-shot`, with `--hero` at 16/9 and `--use` at 4/3.
+  `.mt-shot--img` puts a real image in the same box at the same ratio, so
+  replacing a render with photography does not reflow the page.
+- **SKU hero** — `.mt-hero--sku`, overriding `.mt-hero` to `1.15fr 1fr` with
+  `align-items: start`. The home page carries a short slogan in the text column;
+  a SKU page carries a headline plus a paragraph, and at `1fr` the display type
+  wrapped to five lines.
+- **Status note** — `.mt-status`. A hairline column, not a card: it is a caveat
+  on the claims above it, not a claim of its own.
+- **Backlink** — `.mt-backlink`. The return path from a SKU page to the hub.
+
 ## 7. The stylebook
 
 `int-stylebook.html` renders every token and pattern in this file live. It is an
@@ -313,11 +410,30 @@ Which page defined which pattern. One line each, appended as pages are built.
 | `:lang(zh)` CJK family switch | Home page (zh) | v002 §7 |
 | Secondary button, `.mt-hero__actions` | Home page | v004 §9 |
 | `.mt-has-dropdown`, `.mt-dd` nav dropdown | Products (both languages) | v007 §8 |
+| Categorical accents — hydro, magnet, vortex, and the three deep variants | Products hub | v008 §1 |
+| `--mt-time-when` | Products hub | v008 §1 |
+| `.mt-point` / `.mt-points` point card | Products hub | v008 §10 |
+| `.mt-sku-card` / `.mt-skus` SKU cards | Products hub | v008 §10 |
+| `.mt-time` timeline | Products hub | v008 §10 |
+| `.mt-line` / `.mt-lines` one-liners | MT-6K, MT-75K | v008 §10 |
+| `.mt-table` / `.mt-table-wrap` comparison table | MT-6K, MT-75K | v008 §10 |
+| `.mt-use` / `.mt-uses` use-case grid | MT-6K, MT-75K | v008 §10 |
+| `.mt-shot` image slot | MT-6K, MT-75K | v008 §10 |
+| `.mt-hero--sku` hero ratio override | MT-6K, MT-75K | v008 §10 |
+| `.mt-intro`, `.mt-status`, `.mt-backlink` | MT-6K, MT-75K | v008 §10 |
 
 Every row up to the dropdown is the home page. That was expected for the first
 page built and was not evidence of reuse — the rule in section 8 earns its keep
 from the second page onward, when the question becomes whether to promote or
 rebuild. The dropdown is the first row raised by a second page, and it went
 straight into STYLE.css because both language partials needed it at once.
+
+The product-page rows are the first real test of the rule, and they went into
+STYLE.css directly rather than living page-local first. Each was built as a
+one-off in a mock and each is used by at least two of the three pages — the
+point card and the one-liner are the same six claims in two forms, and the
+table, use-case grid, image slot and SKU hero appear on both SKU pages. A
+pattern used twice belongs in STYLE.css, and these were used twice before any
+of them shipped.
 
 No page-local one-offs exist. Nothing has been built outside STYLE.css.

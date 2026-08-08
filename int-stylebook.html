@@ -132,7 +132,92 @@
         <div class="sb-swatch__role">~2.2:1 · graphic only, never text on dark</div>
       </div>
     </div>
+    <div class="sb-swatch">
+      <div class="sb-swatch__chip" style="background: #3FB870;"></div>
+      <div class="sb-swatch__meta">
+        <div class="sb-swatch__name">氢能绿 Hydro</div>
+        <div class="sb-swatch__val">--mt-hydro · #3FB870</div>
+        <div class="sb-swatch__role">6.9:1 · low-carbon, hydrogen · legal as text</div>
+      </div>
+    </div>
+    <div class="sb-swatch">
+      <div class="sb-swatch__chip" style="background: #9B7BE8;"></div>
+      <div class="sb-swatch__meta">
+        <div class="sb-swatch__name">永磁紫 Magnet</div>
+        <div class="sb-swatch__val">--mt-magnet · #9B7BE8</div>
+        <div class="sb-swatch__role">5.3:1 · permanent-magnet generator · legal as text</div>
+      </div>
+    </div>
+    <div class="sb-swatch">
+      <div class="sb-swatch__chip" style="background: #E0619B;"></div>
+      <div class="sb-swatch__meta">
+        <div class="sb-swatch__name">涡流粉 Vortex</div>
+        <div class="sb-swatch__val">--mt-vortex · #E0619B</div>
+        <div class="sb-swatch__role">5.3:1 · turbine · legal as text</div>
+      </div>
+    </div>
   </div>
+
+  <h3 style="margin-top: var(--mt-space-7);">Categorical order</h3>
+  <p style="font-size: var(--mt-text-sm); color: var(--mt-text-3); max-width: 62ch;">
+    The fixed assignment order for anything counted rather than ranked.
+  </p>
+  <div style="display: flex; gap: var(--mt-space-2); flex-wrap: wrap; margin-bottom: var(--mt-space-4);">
+    <span style="flex: 1 1 90px; min-width: 90px;">
+      <span style="display: block; height: 48px; background: var(--mt-ignition); border-radius: 2px;"></span>
+      <span style="font-size: var(--mt-text-xs); color: var(--mt-text-3);">c1 ignition</span>
+    </span>
+    <span style="flex: 1 1 90px; min-width: 90px;">
+      <span style="display: block; height: 48px; background: var(--mt-amber); border-radius: 2px;"></span>
+      <span style="font-size: var(--mt-text-xs); color: var(--mt-text-3);">c2 amber</span>
+    </span>
+    <span style="flex: 1 1 90px; min-width: 90px;">
+      <span style="display: block; height: 48px; background: var(--mt-steel); border-radius: 2px;"></span>
+      <span style="font-size: var(--mt-text-xs); color: var(--mt-text-3);">c3 steel</span>
+    </span>
+    <span style="flex: 1 1 90px; min-width: 90px;">
+      <span style="display: block; height: 48px; background: var(--mt-hydro); border-radius: 2px;"></span>
+      <span style="font-size: var(--mt-text-xs); color: var(--mt-text-3);">c4 hydro</span>
+    </span>
+    <span style="flex: 1 1 90px; min-width: 90px;">
+      <span style="display: block; height: 48px; background: var(--mt-magnet); border-radius: 2px;"></span>
+      <span style="font-size: var(--mt-text-xs); color: var(--mt-text-3);">c5 magnet</span>
+    </span>
+    <span style="flex: 1 1 90px; min-width: 90px;">
+      <span style="display: block; height: 48px; background: var(--mt-vortex); border-radius: 2px;"></span>
+      <span style="font-size: var(--mt-text-xs); color: var(--mt-text-3);">c6 vortex</span>
+    </span>
+  </div>
+  <p class="sb-warn">
+    c1 and c2 are 23° apart in hue and must NOT sit adjacent as chart series —
+    side by side they read as one colour in two lightnesses, and the distinction
+    disappears entirely for a red-green colour-blind reader. A two-series chart
+    takes c1 and c3. The six are safe where they are spatially separated and
+    individually labelled, as in the point card below.
+  </p>
+
+  <h3 style="margin-top: var(--mt-space-7);">Deep variants, on the inverted ground</h3>
+  <div class="mt-invert" style="padding: var(--mt-space-5); border-radius: var(--mt-radius-sm);">
+    <div class="mt-grid mt-grid--3">
+      <div>
+        <strong style="color: #1E7E45;">氢能绿 Hydro 4.60:1</strong>
+        <div style="font-size: var(--mt-text-xs); color: var(--mt-inv-text-2);">--mt-inv-hydro · #1E7E45</div>
+      </div>
+      <div>
+        <strong style="color: #7B5EC1;">永磁紫 Magnet 4.50:1</strong>
+        <div style="font-size: var(--mt-text-xs); color: var(--mt-inv-text-2);">--mt-inv-magnet · #7B5EC1</div>
+      </div>
+      <div>
+        <strong style="color: #B7467A;">涡流粉 Vortex 4.55:1</strong>
+        <div style="font-size: var(--mt-text-xs); color: var(--mt-inv-text-2);">--mt-inv-vortex · #B7467A</div>
+      </div>
+    </div>
+  </div>
+  <p style="font-size: var(--mt-text-sm); color: var(--mt-text-3); max-width: 62ch; margin-top: var(--mt-space-3);">
+    Tighter to the 4.5:1 line than the ignition and amber variants. Pulling them
+    darker would have cost the hue separation the categorical order depends on.
+    Legal for normal text; not comfortable for long passages.
+  </p>
 
   <div class="mt-rule" style="margin-top: var(--mt-space-9);">
     <span class="mt-rule__num">04</span><span class="mt-rule__line"></span>
@@ -367,6 +452,183 @@
     the partials files and are visible on any real page; an inline copy would be
     the drift STYLE.md section 7 exists to prevent.
   </p>
+  <div class="mt-rule" style="margin-top: var(--mt-space-9);">
+    <span class="mt-rule__num">11</span><span class="mt-rule__line"></span>
+  </div>
+  <h2>Product page patterns</h2>
+  <p style="font-size: var(--mt-text-sm); color: var(--mt-text-3); max-width: 62ch;">
+    STYLE.css section 10. Each carries its own breakpoints rather than the global
+    768 — these are content-shaped grids and they break where their content
+    breaks. Resize the window to see them go.
+  </p>
+
+  <h3 style="margin-top: var(--mt-space-7);">Point card · .mt-point / .mt-points</h3>
+  <div class="mt-points mt-figures">
+    <div class="mt-point">
+      <div class="mt-point__head">
+        <span class="mt-point__icon" style="color: var(--mt-magnet);">
+          <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/></svg>
+        </span>
+        <span class="mt-point__figure">c5 magnet</span>
+      </div>
+      <p class="mt-point__note">Neutral rule, neutral figure, coloured icon.</p>
+    </div>
+    <div class="mt-point">
+      <div class="mt-point__head">
+        <span class="mt-point__icon" style="color: var(--mt-amber);">
+          <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/></svg>
+        </span>
+        <span class="mt-point__figure">c2 amber</span>
+      </div>
+      <p class="mt-point__note">The figure is --mt-text, not amber. Section 3.</p>
+    </div>
+    <div class="mt-point">
+      <div class="mt-point__head">
+        <span class="mt-point__icon" style="color: var(--mt-hydro);">
+          <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/></svg>
+        </span>
+        <span class="mt-point__figure">c4 hydro</span>
+      </div>
+      <p class="mt-point__note">3 across, then 2 at 900px, then 1 at 520px.</p>
+    </div>
+  </div>
+
+  <h3>One-liner · .mt-line / .mt-lines</h3>
+  <div class="mt-lines mt-figures">
+    <div class="mt-line">
+      <div class="mt-line__head">
+        <span class="mt-line__ic" style="color: var(--mt-vortex);">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/></svg>
+        </span>
+        <span class="mt-line__fig"><strong>2 kW/kg</strong></span>
+      </div>
+      <span class="mt-line__txt">The same claim, restated on a SKU page</span>
+    </div>
+    <div class="mt-line">
+      <div class="mt-line__head">
+        <span class="mt-line__ic" style="color: var(--mt-steel);">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/></svg>
+        </span>
+        <span class="mt-line__fig"><strong>−40 °C</strong></span>
+      </div>
+      <span class="mt-line__txt">Bounded band, hairline top and bottom</span>
+    </div>
+    <div class="mt-line">
+      <div class="mt-line__head">
+        <span class="mt-line__ic" style="color: var(--mt-ignition);">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/></svg>
+        </span>
+        <span class="mt-line__fig"><strong>8 fuels</strong></span>
+      </div>
+      <span class="mt-line__txt">Not six more cards</span>
+    </div>
+  </div>
+
+  <h3>SKU cards · .mt-sku-card / .mt-skus</h3>
+  <div class="mt-skus">
+    <div class="mt-sku-card">
+      <h3 style="font-size: var(--mt-text-h3);">Ships</h3>
+      <p>Ignition rule. A product you can buy.</p>
+      <div class="mt-sku-card__spec">6 kW &nbsp;·&nbsp; 9–12 kg</div>
+      <div><a class="mt-btn" href="#">See it</a></div>
+    </div>
+    <div class="mt-sku-card">
+      <h3 style="font-size: var(--mt-text-h3);">Ships</h3>
+      <p>The spec rule aligns across the row however uneven the copy above it
+      happens to be.</p>
+      <div class="mt-sku-card__spec">75 kW &nbsp;·&nbsp; 40–50 kg</div>
+      <div><a class="mt-btn" href="#">See it</a></div>
+    </div>
+    <div class="mt-sku-card mt-sku-card--quiet">
+      <h3 style="font-size: var(--mt-text-h3);">Pipeline</h3>
+      <p>Steel rule, narrower column.</p>
+      <div class="mt-sku-card__spec">3 · 20 · 200 kW</div>
+      <div><a class="mt-btn mt-btn--secondary" href="#">Schedule</a></div>
+    </div>
+  </div>
+
+  <h3>Comparison table · .mt-table / .mt-table-wrap</h3>
+  <div class="mt-table-wrap">
+    <table class="mt-table mt-figures">
+      <thead>
+        <tr>
+          <th scope="col">Measure</th>
+          <th scope="col">Theirs</th>
+          <th scope="col" class="mt-ours">Ours</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="mt-metric">Weight</td>
+          <td>50–120 kg</td>
+          <td class="mt-ours"><strong>9–12 kg</strong></td>
+        </tr>
+        <tr>
+          <td class="mt-metric">Service life</td>
+          <td class="mt-trade"><strong>500–800 hours</strong></td>
+          <td class="mt-ours"><strong>3000+ hours</strong></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p style="font-size: var(--mt-text-sm); color: var(--mt-text-3); max-width: 62ch;">
+    Our column takes the surface fill and the ignition rule; theirs is left
+    uncoloured. Below 640px the wrapper scrolls rather than letting the table
+    wrap — a three-column comparison that wraps has stopped comparing.
+  </p>
+
+  <h3>Use-case grid · .mt-use / .mt-uses</h3>
+  <div class="mt-uses">
+    <div class="mt-use">
+      <div class="mt-shot mt-shot--use">.mt-shot--use<br>4 / 3</div>
+      <h4>Picture-led</h4>
+      <p>Image, heading, one line of copy.</p>
+    </div>
+    <div class="mt-use">
+      <div class="mt-shot mt-shot--use">.mt-shot--use<br>4 / 3</div>
+      <h4>Three across</h4>
+      <p>Then 2 at 860px, then 1 at 480px.</p>
+    </div>
+    <div class="mt-use">
+      <div class="mt-shot mt-shot--use">.mt-shot--use<br>4 / 3</div>
+      <h4>Ratio held</h4>
+      <p>.mt-shot--img puts a real photo in the same box.</p>
+    </div>
+  </div>
+
+  <h3 style="margin-top: var(--mt-space-7);">Timeline · .mt-time</h3>
+  <div class="mt-time">
+    <div class="mt-time__group">
+      <div class="mt-time__year">2027</div>
+      <ul class="mt-time__list">
+        <li><span class="mt-time__when">March</span><span class="mt-time__what"><strong>MT-6K</strong> enters production</span></li>
+        <li><span class="mt-time__when">September</span><span class="mt-time__what">MT-3K development complete</span></li>
+      </ul>
+    </div>
+    <div class="mt-time__group">
+      <div class="mt-time__year">2028</div>
+      <ul class="mt-time__list">
+        <li><span class="mt-time__when">December</span><span class="mt-time__what"><strong>MT-200K</strong> enters production</span></li>
+      </ul>
+    </div>
+  </div>
+  <p style="font-size: var(--mt-text-sm); color: var(--mt-text-3); max-width: 62ch; margin-top: var(--mt-space-5);">
+    A vertical spine. The when-column is --mt-time-when: 104px, dropping to 88px
+    below 560px — a token because the column and its override have to move
+    together, and the longest month name sets both.
+  </p>
+
+  <h3>Status, backlink and SKU intro</h3>
+  <p class="mt-backlink"><a href="#">← All products</a></p>
+  <div class="mt-status">
+    <p>Development status: a hairline column, not a card. It is a caveat on the
+    claims above it, not a claim of its own.</p>
+  </div>
+  <p style="font-size: var(--mt-text-sm); color: var(--mt-text-3); max-width: 62ch;">
+    .mt-hero--sku is not shown standalone — it is an override on .mt-hero and
+    only means anything in that grid. It is visible on either SKU page.
+  </p>
+
   <p style="font-size: var(--mt-text-xs); color: var(--mt-text-faint);">
     Internal reference. Published so it stays bookmarkable; linked from nowhere;
     no robots.txt entry. This is obscurity, not privacy — nothing
