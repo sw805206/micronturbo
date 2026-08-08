@@ -1,4 +1,4 @@
-/* v005 | 2026-08-07 | 681 lines
+/* v006 | 2026-08-07 | 688 lines
    micronturbo.com design tokens and shared patterns.
    The decisions this file implements are recorded in STYLE.md.
    Pages consume tokens, never raw hex or px. See STYLE.md section 8. */
@@ -667,7 +667,14 @@ td {
   .mt-nav__list a.mt-lang { margin-top: var(--mt-space-4); }
 
   body.mt-nav-open { overflow: hidden; }
+}
 
+/* The hero stacks earlier than the nav does. Between 768px and ~900px the two
+   column split leaves the text column around 264px, which is narrower than the
+   slogan needs on one line — it wrapped there at every wording we have tried.
+   Stacking at 1000px clears it with room to spare and reads better anyway:
+   two cramped columns at 900px serve neither the copy nor the image. */
+@media (max-width: 1000px) {
   .mt-hero {
     grid-template-columns: 1fr;
     gap: var(--mt-space-6);
