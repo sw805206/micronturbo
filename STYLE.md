@@ -1,4 +1,4 @@
-v007 | 2026-08-08 | 473 lines
+v008 | 2026-08-08 | 507 lines
 # Style
 
 The design-system decisions for micronturbo.com, in words. STYLE.css is the
@@ -145,6 +145,8 @@ Neutral figures let the icon hue do the categorising and the number do the
 reading. The rule holds everywhere a figure is the only coloured thing in its
 component — which is every other case in this file.
 
+### Inverted band
+
 DEFINED AND UNUSED, still. These tokens exist so that a light section can be
 built without inventing values, but no page uses them and no component has an
 inverted variant yet. Variants are built when a page needs one — not in advance.
@@ -214,7 +216,7 @@ request rather than fetched unused on every page.
 
 | Token | Size | Use |
 |---|---|---|
-| `--mt-text-display` | `clamp(2.5rem, 5vw, 4rem)` | Hero only, once per page |
+| `--mt-text-display` | `clamp(2.5rem, 5vw, 4rem)` | Home page and hub hero only, once per page |
 | `--mt-text-h1` | `3rem` | Page title |
 | `--mt-text-h2` | `2.125rem` | Section heading |
 | `--mt-text-h3` | `1.375rem` | Subsection heading |
@@ -224,6 +226,21 @@ request rather than fetched unused on every page.
 | `--mt-text-xs` | `0.75rem` | Tracked micro-labels |
 
 Root is 16px. Line heights: 1.05 display, 1.2 headings, 1.7 body.
+
+**`--mt-text-display` means the home page and the products hub specifically, not
+any page with a hero.** SKU heroes use `--mt-text-h1` with display leading —
+`.mt-hero--sku h1` sets `line-height: var(--mt-leading-display)`, so the headline
+keeps display rhythm at heading size.
+
+The reason is the column, not the type. A SKU hero splits its row between a
+headline-plus-paragraph and an image, so its text column runs roughly 430–515px
+where the home page hero gives the slogan the full measure. At display size in
+that column the headline wrapped to three lines, which drove the text column to
+1.5–1.7× the height of the image beside it and left the image floating in a
+half-empty row. At `--mt-text-h1` it sits on two lines and the columns pair
+within ~10%. The 75K headline still takes three lines between 1000 and ~1150px
+because its second line is the longer of the two — that band is accepted as a
+mild imbalance rather than shrinking the type again.
 
 **The tracked micro-label** is a named pattern, not an ad-hoc style:
 `--mt-text-xs`, weight 500, `letter-spacing: 0.28em`, uppercase, ignition orange.
@@ -350,13 +367,30 @@ of them early and the other late.
   cannot hold at 375px, and a scrolling axis hides half the schedule. The
   when-column is `--mt-time-when`, a token because the column and its narrow
   override have to move together and the longest month name sets both.
-- **Image slot** — `.mt-shot`, with `--hero` at 16/9 and `--use` at 4/3.
+- **Image slot** — `.mt-shot`, with `--hero` at 3/2 and `--use` at 4/3.
   `.mt-shot--img` puts a real image in the same box at the same ratio, so
   replacing a render with photography does not reflow the page.
-- **SKU hero** — `.mt-hero--sku`, overriding `.mt-hero` to `1.15fr 1fr` with
-  `align-items: start`. The home page carries a short slogan in the text column;
-  a SKU page carries a headline plus a paragraph, and at `1fr` the display type
-  wrapped to five lines.
+
+  `--hero` was 16/9 and moved to 3/2 for two reasons pointing the same way: the
+  taller slot brings the image nearer the height of the text column beside it,
+  and 3/2 is the native ratio of the landscape hero source, which crops
+  losslessly there where 16/9 cost it 15.7%. Crop position is per-image data and
+  is set inline on the image, not here.
+- **SKU hero** — `.mt-hero--sku`, overriding `.mt-hero` to `1.05fr 1.1fr` with
+  `align-items: center`, stacking at 1000px like the base hero. The home page
+  carries a short slogan in the text column; a SKU page carries a headline plus
+  a paragraph, so the home ratio is wrong in both directions.
+
+  The first attempt was `1.15fr 1fr` with `align-items: start`, which made the
+  text column both wider and taller than the image and then pinned the image to
+  the top of it. The image sat in a half-empty column. Centring pairs the two on
+  their midlines; near-equal tracks give the copy room, because the copy is the
+  argument on a SKU page and the image is support. Compressing the text column
+  instead only pushes the headline onto a third line, which is what caused the
+  imbalance in the first place.
+
+  Its image slot is `.mt-shot--hero` at 3:2 — see the note under section 4 on
+  why the headline drops to `--mt-text-h1` here.
 - **Status note** — `.mt-status`. A hairline column, not a card: it is a caveat
   on the claims above it, not a claim of its own.
 - **Backlink** — `.mt-backlink`. The return path from a SKU page to the hub.
@@ -374,7 +408,7 @@ change waits.
 
 **Every page's `?v=` query matches the current STYLE.css version, and is bumped
 in the same commit that bumps the stamp.** Each page links the stylesheet as
-`href="STYLE.css?v=008"`, where the number is STYLE.css's own `v###`. Changing
+`href="STYLE.css?v=009"`, where the number is STYLE.css's own `v###`. Changing
 the query changes the URL, so a browser holding the old file has nothing to
 match against and must refetch.
 
@@ -391,13 +425,13 @@ a warm cache, which is why it cannot be reproduced with `curl`.
 Verify before pushing any STYLE.css change:
 
 ```
-grep -l 'rel="stylesheet"' *.html | xargs grep -L 'STYLE.css?v=008'
+grep -l 'rel="stylesheet"' *.html | xargs grep -L 'STYLE.css?v=009'
 ```
 
 It lists any page out of step and should return nothing. The scoping matters:
 `partials.html` and `partials-zh.html` are fragments injected into pages that
 already carry the link, so they hold no stylesheet reference of their own. A
-bare `grep -L 'STYLE.css?v=008' *.html` reports both as failures — the check
+bare `grep -L 'STYLE.css?v=009' *.html` reports both as failures — the check
 must ask only pages that link a stylesheet at all.
 
 This is a mitigation, not the fix. It costs a returning visitor a full CSS
