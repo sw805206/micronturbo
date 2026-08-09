@@ -1,4 +1,4 @@
-v004 | 2026-08-09 | 187 lines
+v005 | 2026-08-09 | 212 lines
 # Language
 
 The canonical termbase for micronturbo.com, in ENGLISH. English is the source
@@ -55,6 +55,8 @@ not published, but they are the prose a writer reads immediately before writing
 page copy, and a spelling met there is the spelling that gets reproduced. The
 one exception is this section, which has to name the rejected forms in order to
 reject them.
+
+**No contractions.** The site writes "it is", "does not", "cannot" in full.
 
 **SI unit symbols are unaffected** — they are international, not English.
 
@@ -114,11 +116,34 @@ and is free to say the unit however that language says it.
 
 **Comma every three digits**: 2,000 W/kg, 160,000 rpm, 3,000 hours.
 
+That rule applies to **measurement figures in copy** and to nothing else —
+4,000 m, 3,000 hours, 2,000 W/kg, 160,000 rpm. It does NOT apply to CSS values
+and breakpoints (1000px, 1180px), hex colors, years, version stamps, or line
+counts. The scope has to be stated because a blind four-digit sweep would
+corrupt every one of those, and the sweep is the obvious way to enforce the
+rule.
+
+Note that ISO and SI both permit an unseparated four-digit number, so 4000 m is
+not wrong in the abstract. This site takes the comma for internal consistency:
+3,000 小时 and 2,000 W/kg are already set that way, and a page carrying both
+forms is the actual defect.
+
 **En dash for ranges, no spaces**: 9–12 kg, 500–800 hours, 50–130 W/kg.
 
 **Power density is expressed in W/kg site-wide; battery capacity in kWh.** Never
 kW/hr — that is not a unit of power density, and it is the error a reader who
 half-remembers kWh reaches for.
+
+### Punctuation
+
+**Punctuation follows the conventions of the language it appears in, never the
+other language's.**
+
+English takes `,` and `—` with surrounding spaces.
+
+Chinese takes `，` and `——`. The 破折号 is two em-widths per GB/T 15834 and
+carries no surrounding spaces. Chinese uses `、` only between list items and
+`，` between clauses, including before 还是 and 而非.
 
 ## 7. Terms
 
@@ -147,7 +172,7 @@ half-remembers kWh reaches for.
 | rated output | The power the unit is specified to deliver continuously, as distinct from a peak. It is the basis on which the comparison tables pair us with a competitor: same rated output, different everything else. Claims about holding output at altitude are stated as a percentage of it. |
 | power density | Power per unit mass, at system level, in W/kg. System level is the point — it counts the complete unit, not a core or a module. The 2,000 W/kg platform figure and the two SKU figures (~600 and ~1,875 W/kg) are different measurements and are never presented as one. |
 | cold start | Starting from cold at −40 °C, in seconds. It is a START claim. It does not assert an operating range, a rated output at that temperature, or storage limits, and must not be loosened into "works at −40 °C". |
-| fuels | The multi-fuel capability, always counted rather than enumerated: "8 fuels". Individual fuels are named only as examples ("petrol, diesel, gas and more") or where a specific one carries its own claim. A full list invites a specification argument the page is not making. |
+| fuels | The multi-fuel capability, always counted rather than enumerated: "8 fuels". Individual fuels are named only as examples ("gasoline, diesel, gas and more") or where a specific one carries its own claim. A full list invites a specification argument the page is not making. |
 | hydrogen | One of the two low-carbon fuels the system supports. Named explicitly because it is the fuel that makes the sustainability claim structural rather than incremental. |
 | methanol | The other low-carbon fuel. Appears paired with hydrogen: on its own it is not enough to carry the low-carbon claim, and the pairing is what distinguishes the claim from a fossil-fuel engine that happens to tolerate a blend. |
 | AC + DC | Dual electrical output from one unit. The contrast is the AC-only piston set, and that contrast is the reason the term appears at all — DC alone would read as a limitation rather than an addition. |
@@ -157,7 +182,7 @@ half-remembers kWh reaches for.
 | EN | Definition |
 |---|---|
 | Lithium station | A portable lithium battery power station — the class of product a person carries to a site. Not a vehicle traction pack and not grid-scale storage; both are different products with different numbers, and the comparison lines only hold against the portable class. |
-| Piston set | A reciprocating internal-combustion generator set, petrol or diesel. The site's second named comparator throughout. "Set" is doing real work: the comparison is against the complete generator set, not against an engine. |
+| Piston set | A reciprocating internal-combustion generator set, gasoline or diesel. The site's second named comparator throughout. "Set" is doing real work: the comparison is against the complete generator set, not against an engine. |
 | piston engine | The reciprocating internal-combustion architecture itself, as a class of technology — not a product. Distinct from `piston set`, which is the packaged generator built around one. The site uses the architecture term only in statements about technology class, where the peers are "battery" and "turbine" ("neither a battery nor a piston engine"), and the product term everywhere a comparison is made. Swapping one for the other either compares us to an engine we do not sell against, or claims a whole product category where only an architecture was meant. |
 
 ### Feature words

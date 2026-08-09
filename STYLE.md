@@ -1,4 +1,4 @@
-v017 | 2026-08-09 | 646 lines
+v018 | 2026-08-09 | 646 lines
 # Style
 
 The design-system decisions for micronturbo.com, in words. STYLE.css is the
@@ -425,7 +425,7 @@ of them early and the other late.
   labels. That ordering is the argument: the claim first, the context second,
   never the competitor's number at the same weight as ours.
 - **Comparison table** — `.mt-table` in `.mt-table-wrap`. Our column takes a
-  surface fill and an ignition rule; the competitor's is left uncoloured. It
+  surface fill and an ignition rule; the competitor's is left uncolored. It
   scrolls below its breakpoint rather than wrapping, because a three-column
   comparison that wraps has stopped being a comparison.
 - **SKU cards** — `.mt-sku-card` in `.mt-skus`, at `1fr 1fr 0.7fr`. The narrow
