@@ -86,8 +86,8 @@
   --mt-gutter: 40px;
 
   /* --mt-bg as channels, so a translucent layer can be built from the ground
-     colour with rgba() instead of a hex-derived literal. The feature-row scrim
-     is the only consumer; it needs two alphas of the same colour. Keep this in
+     color with rgba() instead of a hex-derived literal. The feature-row scrim
+     is the only consumer; it needs two alphas of the same color. Keep this in
      step with --mt-bg above — CSS cannot derive one from the other. */
   --mt-bg-rgb: 12, 26, 43;
 }
@@ -991,7 +991,7 @@ td {
   border-radius: var(--mt-radius);
 }
 
-/* Bottom-left, not centred. Centred put the word across whatever the
+/* Bottom-left, not centered. Centered put the word across whatever the
    photograph was of — a helicopter, a person, a drone — and stamped it there.
    Down here it reads as a label on the image instead, it clears the subject,
    and it sits in the densest part of the scrim where the contrast is best. */
@@ -1033,7 +1033,7 @@ td {
   padding-top: var(--mt-space-5);
 }
 
-/* Ours leads, at figure scale with the coloured icon. */
+/* Ours leads, at figure scale with the colored icon. */
 .mt-alt__ours {
   display: flex;
   align-items: center;
@@ -1118,8 +1118,8 @@ td {
 .mt-table td:first-child { width: 28%; }
 .mt-table .mt-metric { color: var(--mt-text-3); font-weight: 500; }
 
-/* The emphasised column. Surface fill plus an ignition rule lifts our column
-   off the ground without colouring the competitor's. */
+/* The emphasized column. Surface fill plus an ignition rule lifts our column
+   off the ground without coloring the competitor's. */
 .mt-table th.mt-ours {
   background: var(--mt-surface);
   border-top: 3px solid var(--mt-ignition);
