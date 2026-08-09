@@ -1,4 +1,4 @@
-v015 | 2026-08-09 | 637 lines
+v016 | 2026-08-09 | 637 lines
 # Style
 
 The design-system decisions for micronturbo.com, in words. STYLE.css is the
@@ -26,7 +26,7 @@ defines an inverted band for that case. It remains defined and unused.
 
 The English wordmark is **Micronturbo**. The Chinese wordmark is **安恒燃动**.
 These are the same company; neither is a translation of the other, and the
-romanisation "Anheng Randong" appears in the identity deck but is NOT used on the
+romanization "Anheng Randong" appears in the identity deck but is NOT used on the
 site.
 
 The logo is Power Flame (焰启电源) — an opening power ring around a flame. The
@@ -36,13 +36,13 @@ Usage rules, from the identity system:
 
 - Minimum size 16px.
 - Clear space on all sides of at least 20% of the mark's height.
-- Mono versions (single-colour, `#0C1A2B` or `#F6F3EE`) for stamps, greyscale
-  output, and any context where the two-colour mark cannot reproduce.
+- Mono versions (single-color, `#0C1A2B` or `#F6F3EE`) for stamps, grayscale
+  output, and any context where the two-color mark cannot reproduce.
 
 The mark does not yet exist as an SVG file. It exists only as a Claude Design
 component and must be exported before any page can use it.
 
-## 3. Colour
+## 3. Color
 
 ### Ground and surfaces
 
@@ -54,10 +54,10 @@ component and must be exported before any page can use it.
 | `--mt-border` | `rgba(255,255,255,0.08)` | — | Hairline on dark |
 | `--mt-bg-rgb` | `12, 26, 43` | — | `--mt-bg` as channels, for `rgba()` |
 
-`--mt-bg-rgb` is not a second colour. It is `--mt-bg` written as bare channels so
-a translucent layer can be built from the ground colour with `rgba()` instead of
+`--mt-bg-rgb` is not a second color. It is `--mt-bg` written as bare channels so
+a translucent layer can be built from the ground color with `rgba()` instead of
 a hex literal that merely happens to match. The feature-row scrim is its only
-consumer and needs two alphas of the same colour. The cost is that the two must
+consumer and needs two alphas of the same color. The cost is that the two must
 be kept in step by hand — CSS cannot derive one from the other — so a change to
 `--mt-bg` is a change to both.
 
@@ -65,12 +65,12 @@ be kept in step by hand — CSS cannot derive one from the other — so a change
 the English name assigned here. 航天 is the aerospace-industry term rather than
 outer space, and 墨蓝 is ink-blue — the sense is engineering, not cosmos.
 
-Cabin and Instrument are confirmed. Neither colour appears in the deck's palette
+Cabin and Instrument are confirmed. Neither color appears in the deck's palette
 section — both were extracted from how the deck uses them, and the Chinese names
 were coined here rather than by whoever designed the Chinese identity. They were
 provisional on that basis until the names were confirmed directly.
 
-`--mt-border` is not a colour. It is white at 8% alpha and renders differently
+`--mt-border` is not a color. It is white at 8% alpha and renders differently
 over every ground it sits on, so naming it would be naming a treatment.
 
 ### Text on dark
@@ -101,22 +101,22 @@ convention and does not carry to the site.
 Contrast on `--mt-bg`: amber ~9:1 and is safe for text at any size; ignition
 ~4.5:1, which passes AA for normal text but sits close enough to the line that it
 is reserved for display type, borders, rules and graphic elements rather than
-running copy; steel ~2.2:1 and is NOT a text colour on dark — it is a graphic
-colour only.
+running copy; steel ~2.2:1 and is NOT a text color on dark — it is a graphic
+color only.
 
 The three added hues all clear AA on `--mt-bg` — hydro 6.9:1, magnet 5.3:1,
 vortex 5.3:1 — so unlike steel, each is legal as text on dark. They exist because
 six categories needed six distinguishable hues and the three original accents are
 all warm; nothing in the palette separated a fuel claim from a thermal one.
 
-Amber is the figure colour. When a number is the point of a component, it is
+Amber is the figure color. When a number is the point of a component, it is
 amber; ignition carries the label or the rule above it. This is the one place the
 two warm accents are not interchangeable — with one exception, recorded under the
 six-way exception below.
 
 #### Categorical order
 
-Where a component assigns colour by category rather than by meaning — chart
+Where a component assigns color by category rather than by meaning — chart
 series, icon sets, anything counted rather than ranked — the order is fixed:
 
 | Slot | Token |
@@ -129,10 +129,10 @@ series, icon sets, anything counted rather than ranked — the order is fixed:
 | c6 | `--mt-vortex` |
 
 **c1 and c2 are only 23° apart in hue and must not sit adjacent as chart series.**
-Side by side in a legend they read as one colour in two lightnesses rather than
+Side by side in a legend they read as one color in two lightnesses rather than
 as two categories, and the distinction collapses entirely for a red-green
-colour-blind reader. The order above is the assignment order, not a promise that
-any two consecutive slots are safe neighbours: a two-series chart takes c1 and
+color-blind reader. The order above is the assignment order, not a promise that
+any two consecutive slots are safe neighbors: a two-series chart takes c1 and
 c3, not c1 and c2. Where the six are spatially separated — six cards in a grid,
 each with its own label — the adjacency problem does not arise and the full order
 is usable as written.
@@ -144,19 +144,19 @@ for fills, rules and icon strokes; it does not make steel legal as text.
 
 Where six categorical icons appear together, the figure beside them is NOT amber.
 `.mt-alt__ours` in section 6 sets its figure to `--mt-text` and lets the icon
-carry the colour.
+carry the color.
 
 Amber was tried first, as the rule says it should be. With six of them on screen,
-each pairing a coloured icon with an amber number, amber stopped signalling and
-started competing: the icons already carried the categorical colour, so the amber
-figures added a seventh colour that meant nothing and drowned the six that did.
-Neutral figures let the icon hue do the categorising and the number do the
+each pairing a colored icon with an amber number, amber stopped signaling and
+started competing: the icons already carried the categorical color, so the amber
+figures added a seventh color that meant nothing and drowned the six that did.
+Neutral figures let the icon hue do the categorizing and the number do the
 reading.
 
 This was first established on the point card, which the alternating feature rows
 replaced. The rule outlived the component because it was never about that
 component — it holds wherever the six categorical hues appear together, and the
-amber rule holds everywhere a figure is the only coloured thing in its own.
+amber rule holds everywhere a figure is the only colored thing in its own.
 
 ### Inverted band
 
@@ -182,7 +182,7 @@ The deep accents exist because `--mt-ignition` on `--mt-inv-bg` is ~3.3:1 and
 `--mt-amber` is far worse. Neither is legal as text on a light ground. The deep
 variants clear AA — ignition ~5.7:1, amber ~5.4:1, hydro 4.60:1, magnet 4.50:1,
 vortex 4.55:1. Steel needs no variant — it reads at ~5.1:1 on light and is a
-legal text colour there, which it is not on dark.
+legal text color there, which it is not on dark.
 
 The three new deep variants are tighter to the 4.5:1 line than the two originals.
 That is deliberate: pulling them darker still would have cost the hue separation
@@ -202,7 +202,7 @@ served from Google Fonts — the CDN exception is recorded in SCOPE.md section 3
 
 STYLE.css declares the family in `--mt-font`; it does NOT fetch it. The fetch is
 three `<link>` tags in each page's own `<head>` — two `preconnect`, one
-stylesheet. This is deliberate: an `@import` inside STYLE.css would serialise the
+stylesheet. This is deliberate: an `@import` inside STYLE.css would serialize the
 font request behind the stylesheet fetch, delaying first paint on every page. The
 cost is that a page omitting those tags falls back to `system-ui` silently, with
 no error anywhere, so the head block is carried verbatim in PROCESS.md when that
@@ -242,7 +242,7 @@ Root is 16px. Line heights: 1.05 display, 1.2 headings, 1.7 body.
 
 ### Title case
 
-Headings use Chicago-style title case at h1 and h2. Capitalise the first and
+Headings use Chicago-style title case at h1 and h2. Capitalize the first and
 last word of each unit, plus all nouns, pronouns, verbs, adjectives, adverbs and
 subordinating conjunctions. Lowercase articles (a, an, the), coordinating
 conjunctions (and, but, or, for, nor, so, yet) and all prepositions regardless of
@@ -273,7 +273,7 @@ mild imbalance rather than shrinking the type again.
 
 **The tracked micro-label** is a named pattern, not an ad-hoc style:
 `--mt-text-xs`, weight 500, `letter-spacing: 0.28em`, uppercase, ignition orange.
-It sits above a heading to categorise the section. Those are its Latin values —
+It sits above a heading to categorize the section. Those are its Latin values —
 CJK does not take letter-spacing this way.
 
 The Chinese equivalent was DECIDED when the first Chinese page was built, which
@@ -348,7 +348,7 @@ partials files, per SCOPE.md section 3.
   nav item rules with `:not(.mt-lang)` so it keeps its own box, which also lets
   it render outside a nav — the stylebook shows it standalone.
 - **Burger** — below 768px only. 44px tap target, three bars that cross into an
-  X on open. Honours `prefers-reduced-motion`.
+  X on open. Honors `prefers-reduced-motion`.
 - **Footer** — hairline top border, legal line left, links right, both at
   `--mt-text-xs` in `--mt-text-3`.
 - **Buttons** — `.mt-btn` is a hairline box in ignition. `.mt-btn--secondary`
@@ -379,7 +379,7 @@ partials files, per SCOPE.md section 3.
   panel has nothing to float over. It collapses by `max-height` so the rows
   below close up rather than leaving a gap. Crossing the breakpoint closes any
   open panel, because an overlay left over from the other layout reads as stuck.
-  Honours `prefers-reduced-motion`.
+  Honors `prefers-reduced-motion`.
 
   Rows inside the panel are full width, so the hit area is the panel rather than
   the word. That is why the current row takes an inset amber rule instead of the
@@ -417,7 +417,7 @@ of them early and the other late.
   image is bright enough to read; and the scrim alone handles legibility. That
   recovers about **2.6× the tonal range**. The word moves to the bottom to pay
   for it — the scrim is densest there, which is worth roughly a third more
-  contrast than the centre, and it also stops the word being stamped across
+  contrast than the center, and it also stops the word being stamped across
   whatever the photograph is of.
 
   Our figure leads at `--mt-text-h3` with the categorical icon; the two
@@ -551,7 +551,7 @@ regression reads as the Chinese row opening out to match the Latin one above it.
 The nav dropdown is the one deliberate exception. Section 10 renders it inline
 and open, because a panel that is invisible at rest cannot be reviewed any other
 way. Only its resting appearance is the specimen — `partials.js` is not loaded
-there, so nothing in it responds to a key. The behaviour is proven on a real
+there, so nothing in it responds to a key. The behavior is proven on a real
 page. An inline specimen that pretended otherwise would be the same drift.
 
 ## 8. The reuse rule
@@ -565,7 +565,7 @@ wants it promotes it rather than rebuilding it.
 
 The inverted band tokens in section 3 are the one deliberate exception to
 "patterns are defined when they are needed." They are defined in advance because
-inventing colour values under deadline is how a palette drifts.
+inventing color values under deadline is how a palette drifts.
 
 ## 9. Ratchet record
 

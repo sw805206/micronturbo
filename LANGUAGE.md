@@ -1,4 +1,4 @@
-v002 | 2026-08-09 | 174 lines
+v003 | 2026-08-09 | 182 lines
 # Language
 
 The canonical termbase for micronturbo.com, in ENGLISH. English is the source
@@ -43,6 +43,13 @@ modeling, canceled).
 This applies to **alt text and HTML comments** as well as visible copy. Mixed
 spellings in comments get reproduced in copy: a comment is where the next
 writer looks to see how the last one spelled something.
+
+By the same reasoning it applies to **the governance docs** — this file,
+SCOPE.md, STYLE.md, BACKLOG.md and the comment blocks in STYLE.css. They are
+not published, but they are the prose a writer reads immediately before writing
+page copy, and a spelling met there is the spelling that gets reproduced. The
+one exception is this section, which has to name the rejected forms in order to
+reject them.
 
 **SI unit symbols are unaffected** — they are international, not English.
 
@@ -146,6 +153,7 @@ half-remembers kWh reaches for.
 |---|---|
 | Lithium station | A portable lithium battery power station — the class of product a person carries to a site. Not a vehicle traction pack and not grid-scale storage; both are different products with different numbers, and the comparison lines only hold against the portable class. |
 | Piston set | A reciprocating internal-combustion generator set, petrol or diesel. The site's second named comparator throughout. "Set" is doing real work: the comparison is against the complete generator set, not against an engine. |
+| piston engine | The reciprocating internal-combustion architecture itself, as a class of technology — not a product. Distinct from `piston set`, which is the packaged generator built around one. The site uses the architecture term only in statements about technology class, where the peers are "battery" and "turbine" ("neither a battery nor a piston engine"), and the product term everywhere a comparison is made. Swapping one for the other either compares us to an engine we do not sell against, or claims a whole product category where only an architecture was meant. |
 
 ### Feature words
 

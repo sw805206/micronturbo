@@ -1,4 +1,4 @@
-v009 | 2026-08-09 | 250 lines
+v010 | 2026-08-09 | 250 lines
 # Scope
 
 ## 1. Project
@@ -84,14 +84,14 @@ section covers it.
   carry six icons, vendored inline as SVG markup in the page. Nothing is fetched
   at runtime and nothing is installed at build time, so this takes no exception
   against the rule above — it is recorded because the artwork is third-party and
-  the licences travel with it.
+  the licenses travel with it.
 
-  | Icon | Source | Licence |
+  | Icon | Source | License |
   |---|---|---|
   | Feather | Bootstrap Icons | MIT |
   | Clock, fuel, leaf, snowflake, zap | Lucide | ISC |
 
-  Both licences permit use and modification with attribution retained. Inline
+  Both licenses permit use and modification with attribution retained. Inline
   rather than a sprite or an icon font because six icons on three pages do not
   justify either, and inline SVG takes `currentColor`, which is what lets the
   categorical hues come from tokens.
@@ -182,7 +182,7 @@ unlisted in that language. Dropdowns are flat and single-tier, using the
 `.mt-has-dropdown` mechanism, which is now BUILT and used by Products in both
 languages — the English parent lists MT-6K and MT-75K, the Chinese parent lists
 the same two under the same product names. The parent link still navigates to
-the hub; the keyboard map and the mobile behaviour are specified in STYLE.md
+the hub; the keyboard map and the mobile behavior are specified in STYLE.md
 section 6. Both partials files exist, along with `partials.js`, which derives
 which one to fetch from the page's own filename and wires the dropdown after
 injection.
