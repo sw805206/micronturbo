@@ -1,4 +1,4 @@
-v013 | 2026-08-09 | 600 lines
+v014 | 2026-08-09 | 609 lines
 # Style
 
 The design-system decisions for micronturbo.com, in words. STYLE.css is the
@@ -467,8 +467,6 @@ of them early and the other late.
 
   Its image slot is `.mt-shot--hero` at 3:2 — see the note under section 4 on
   why the headline drops to `--mt-text-h1` here.
-- **Status note** — `.mt-status`. A hairline column, not a card: it is a caveat
-  on the claims above it, not a claim of its own.
 - **Backlink** — `.mt-backlink`. The return path from a SKU page to the hub.
 
 ## 7. The stylebook
@@ -484,7 +482,7 @@ change waits.
 
 **Every page's `?v=` query matches the current STYLE.css version, and is bumped
 in the same commit that bumps the stamp.** Each page links the stylesheet as
-`href="STYLE.css?v=012"`, where the number is STYLE.css's own `v###`. Changing
+`href="STYLE.css?v=013"`, where the number is STYLE.css's own `v###`. Changing
 the query changes the URL, so a browser holding the old file has nothing to
 match against and must refetch.
 
@@ -501,13 +499,13 @@ a warm cache, which is why it cannot be reproduced with `curl`.
 Verify before pushing any STYLE.css change:
 
 ```
-grep -l 'rel="stylesheet"' *.html | xargs grep -L 'STYLE.css?v=012'
+grep -l 'rel="stylesheet"' *.html | xargs grep -L 'STYLE.css?v=013'
 ```
 
 It lists any page out of step and should return nothing. The scoping matters:
 `partials.html` and `partials-zh.html` are fragments injected into pages that
 already carry the link, so they hold no stylesheet reference of their own. A
-bare `grep -L 'STYLE.css?v=012' *.html` reports both as failures — the check
+bare `grep -L 'STYLE.css?v=013' *.html` reports both as failures — the check
 must ask only pages that link a stylesheet at all.
 
 This is a mitigation, not the fix. It costs a returning visitor a full CSS
@@ -572,7 +570,18 @@ was carried, forgotten, or orphaned.
 | `.mt-use` / `.mt-uses` use-case grid | MT-6K, MT-75K | v008 §10 |
 | `.mt-shot` image slot | MT-6K, MT-75K | v008 §10 |
 | `.mt-hero--sku` hero ratio override | MT-6K, MT-75K | v008 §10 |
-| `.mt-intro`, `.mt-status`, `.mt-backlink` | MT-6K, MT-75K | v008 §10 |
+| `.mt-intro`, `.mt-backlink` | MT-6K, MT-75K | v008 §10 |
+
+**Retired in v013:** `.mt-status`. The development-status notes were removed from
+both SKU pages, which left it with no consumer. Its row is edited rather than
+deleted, because `.mt-intro` and `.mt-backlink` shared it and both remain.
+
+Worth recording alongside the rule below: the pattern was retired in the commit
+after the one that removed its consumers, not the same one. That was deliberate —
+the page change was a content decision that might have been reversed, and
+retiring the CSS in the same breath would have made reverting it a two-file job.
+The rule's intent is that dead CSS does not survive the decision, not that the
+two must land in a single commit.
 
 **Retired in v010:** `.mt-point` / `.mt-points`, `.mt-time*` and `--mt-time-when`.
 The hub rebuild replaced the point cards with the alternating feature rows and

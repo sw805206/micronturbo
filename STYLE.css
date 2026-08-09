@@ -1,4 +1,4 @@
-/* v012 | 2026-08-08 | 1205 lines
+/* v013 | 2026-08-09 | 1195 lines
    micronturbo.com design tokens and shared patterns.
    The decisions this file implements are recorded in STYLE.md.
    Pages consume tokens, never raw hex or px. See STYLE.md section 8. */
@@ -1191,15 +1191,5 @@ td {
   display: block;
   margin-top: var(--mt-space-2);
 }
-
-/* Development status. A hairline column rather than a card: it is a caveat on
-   the claims above it, not a claim of its own. */
-.mt-status {
-  border-left: 2px solid var(--mt-border);
-  padding-left: var(--mt-space-5);
-  margin-bottom: var(--mt-space-8);
-}
-
-.mt-status p { font-size: var(--mt-text-sm); color: var(--mt-text-3); margin: 0; }
 
 .mt-backlink { margin-bottom: var(--mt-space-6); font-size: var(--mt-text-sm); }
