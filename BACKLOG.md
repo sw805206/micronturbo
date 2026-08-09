@@ -1,4 +1,4 @@
-v009 | 2026-08-08 | 60 lines
+v010 | 2026-08-08 | 60 lines
 # Backlog
 
 The backlog for micronturbo.com. Tracks both short-term items (bugs, UI
@@ -51,7 +51,7 @@ Closed-by stays empty on every other status.
 | BL-006 | open | feature | Build `int-backlog.html`, the rendered backlog view; until it exists, Part C flush verification is performed in the raw file | 2026-08-07 | |
 | BL-007 | open | style | Export the Power Flame logo (variant 4a) from Claude Design to real SVG files: two-colour dark, two-colour light, and mono; plus favicon renders at 16/32/48. Blocks partials.html | 2026-08-07 | |
 | BL-008 | closed | style | Build STYLE.css and int-stylebook.html together on a branch, per STYLE.md section 7 | 2026-08-07 | PR01 |
-| BL-009 | close | style | Confirm or replace the placeholder Chinese/English names for `--mt-surface` (舱体蓝 Cabin) and `--mt-surface-high` (仪表蓝 Instrument); both were coined outside the Chinese identity source | 2026-08-07 | names confirmed by human 2026-08-08 |
+| BL-009 | closed | style | Confirm or replace the placeholder Chinese/English names for `--mt-surface` (舱体蓝 Cabin) and `--mt-surface-high` (仪表蓝 Instrument); both were coined outside the Chinese identity source | 2026-08-07 | names confirmed by human 2026-08-08 |
 | BL-010 | open | feature | Build the Traditional Chinese pages once Simplified is complete; needs a filename convention for a second Chinese script, a third partials file, a three-way language toggle, and a rewrite of the `-zh` suffix rule in SCOPE.md section 3 | 2026-08-07 | |
 | BL-011 | open | governance | Write PROCESS.md, the procedure for building or adding a page; SCOPE.md section 3 defers it until the first real page exists, which it now does | 2026-08-07 | |
 | BL-012 | open | content | Build `products`, `about`, `contact` and `privacy` in both languages; all four are linked from the nav and 404, and the hero's secondary button points at `contact` | 2026-08-07 | |
