@@ -1,4 +1,4 @@
-v007 | 2026-08-08 | 214 lines
+v008 | 2026-08-09 | 230 lines
 # Scope
 
 ## 1. Project
@@ -30,8 +30,16 @@ Product docs, all in this repo:
 
 - **SCOPE.md** — this file
 - **BACKLOG.md** — the backlog table. Its rendered view is `int-backlog.html`,
-  which is not yet built; until it exists, Part C flush verification is
-  performed in the raw file
+  which is BUILT; Part C flush verification is performed there
+- **LANGUAGE.md** — the canonical ENGLISH termbase. English is the source of
+  truth for terminology and the file carries no translations: it records which
+  word the site uses for a thing and why. Each language keeps its own
+  `LANGUAGE-xx.md` keyed to the English term, `LANGUAGE-zh.md` being the first.
+  The English term is the join key, so renaming one is an edit to every language
+  file in the same commit; a term with no row in a language file is an
+  untranslated gap rather than an omission. Only terms where the wrong choice is
+  tempting earn a row. Which words are used lives here — how they are set lives
+  in STYLE.md
 - **STYLE.md** — design-system decisions in words; the ratchet record of which
   page defined which pattern
 - **STYLE.css** — design tokens and shared patterns; the single source of truth
@@ -150,13 +158,20 @@ and all three product pages are indexable. `about`, `contact` and `privacy` are
 linked from the nav in both languages but do not exist yet, so those links 404
 until they are built.
 
-`products-zh.html`, `products-6k-zh.html` and `products-75k-zh.html` exist as
-holding pages only. Each carries `noindex,nofollow`, `lang="zh-Hans"`, minimal
-content and a link to its English counterpart, following the pattern
-`index.html` used during DNS setup. They exist so the Chinese dropdown does not
-404 — the Chinese nav lists the same page set as the English one, and a listed
-page that 404s is worse than a listed page that is honestly under construction.
-Real content follows later, and the `noindex` comes off with it.
+`products-zh.html`, `products-6k-zh.html` and `products-75k-zh.html` carry real
+translated content and are indexable. They stood as holding pages under
+`noindex,nofollow` while the Chinese dropdown needed somewhere to point; that
+directive is gone, and the Chinese product tree is now live in full.
+
+Each was built by copying its English counterpart and replacing text in place,
+so the three pairs are structurally identical — same classes, same inline
+styles, same vendored SVGs, same image sources and crop positions. That is the
+convention for a translated page, not an accident of how these three were made:
+it keeps every STYLE.css pattern proven once rather than once per language, and
+it makes a structural diff against the English page a usable check. A Chinese
+page that needs different markup is a signal that the pattern, not the page,
+needs work. Terminology comes from `LANGUAGE-zh.md`; the typographic
+consequences of setting that terminology are in STYLE.md.
 
 The partials files are the source of truth for the nav, and therefore for which
 pages are publicly reachable — a page not linked there is live but unlisted. No
@@ -187,9 +202,10 @@ belongs on them.
 
 - `int-stylebook.html` — BUILT. Renders every STYLE.css token and pattern live.
   Per STYLE.md section 7 it ships in the same commit as STYLE.css, always.
-- `int-backlog.html` — the rendered backlog view, and the place Part C flush
-  verification is performed. Fetches BACKLOG.md at runtime. NOT yet built; until
-  it is, flushes are verified in the raw file.
+- `int-backlog.html` — BUILT. The rendered backlog view, and the place Part C
+  flush verification is performed. Fetches BACKLOG.md at runtime with
+  `cache: 'no-cache'`, so it revalidates rather than reporting the state before
+  a flush that was pushed moments earlier.
 
 ### Build approach
 
