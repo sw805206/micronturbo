@@ -191,10 +191,15 @@
       if (zh && zh !== '不变') {
         terms.push({ text: zh, en: en, reason: reason, kind: 'ok' });
       }
-      if (variants) {
+      /* An empty 变体 cell may be blank or a dash placeholder. Taking a dash
+         literally would register "—" as a rejected term and flag every em dash
+         in the copy. */
+      if (variants && !/^[-—–]+$/.test(variants.trim())) {
         variants.split(/[、,，]/).forEach(function (v) {
           v = v.trim();
-          if (v) { terms.push({ text: v, en: en, canonical: zh, reason: reason, kind: 'variant' }); }
+          if (v && !/^[-—–]+$/.test(v)) {
+            terms.push({ text: v, en: en, canonical: zh, reason: reason, kind: 'variant' });
+          }
         });
       }
     }
