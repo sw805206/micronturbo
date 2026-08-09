@@ -1,4 +1,4 @@
-v008 | 2026-08-08 | 58 lines
+v009 | 2026-08-08 | 60 lines
 # Backlog
 
 The backlog for micronturbo.com. Tracks both short-term items (bugs, UI
@@ -56,3 +56,5 @@ Closed-by stays empty on every other status.
 | BL-011 | open | governance | Write PROCESS.md, the procedure for building or adding a page; SCOPE.md section 3 defers it until the first real page exists, which it now does | 2026-08-07 | |
 | BL-012 | open | content | Build `products`, `about`, `contact` and `privacy` in both languages; all four are linked from the nav and 404, and the hero's secondary button points at `contact` | 2026-08-07 | |
 | BL-013 | closed | bug | `partials.js` fetched the header with default caching, so a browser could inject a stale nav into a current page — it kept rendering 繁 after the site switched to 简. Fixed by revalidating with `cache: 'no-cache'` | 2026-08-07 | PR04 |
+| BL-014 | open | content | Confirm with the tech team what the 2 kW/kg power-density figure measures — turbine core, engine module, or complete system — and whether it is a platform peak rather than a launch-SKU figure; neither launch SKU reaches it (MT-6K ~600 W/kg, MT-75K ~1875 W/kg) | 2026-08-08 | |
+| BL-015 | open | content | Replace the three Chinese placeholder pages (`products-zh.html`, `products-6k-zh.html`, `products-75k-zh.html`) with real translated content and remove their `noindex,nofollow` | 2026-08-08 | |
