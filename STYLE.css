@@ -1,4 +1,4 @@
-/* v009 | 2026-08-08 | 1151 lines
+/* v010 | 2026-08-08 | 1155 lines
    micronturbo.com design tokens and shared patterns.
    The decisions this file implements are recorded in STYLE.md.
    Pages consume tokens, never raw hex or px. See STYLE.md section 8. */
@@ -85,10 +85,11 @@
   --mt-container: 1180px;
   --mt-gutter: 40px;
 
-  /* Timeline when-column. A token rather than a section 8 exception because the
-     value is shared by the column and its narrow-breakpoint override, and the
-     two have to move together — the month names are what set it. */
-  --mt-time-when: 104px;
+  /* --mt-bg as channels, so a translucent layer can be built from the ground
+     colour with rgba() instead of a hex-derived literal. The feature-row scrim
+     is the only consumer; it needs two alphas of the same colour. Keep this in
+     step with --mt-bg above — CSS cannot derive one from the other. */
+  --mt-bg-rgb: 12, 26, 43;
 }
 
 @media (max-width: 768px) {
@@ -97,13 +98,6 @@
     --mt-text-h1: 2.25rem;
     --mt-text-h2: 1.75rem;
   }
-}
-
-/* The timeline keeps its own breakpoint, narrower than the global one: the
-   when-column is sized by the longest month name, not by the page gutter, so it
-   survives well past the width at which the gutter has to give. */
-@media (max-width: 560px) {
-  :root { --mt-time-when: 88px; }
 }
 
 /* ---------------------------------------------------------------
@@ -888,53 +882,131 @@ td {
   background: none;
 }
 
-/* Selling-point card. The carried stat card with an icon in the label slot.
-   The figure is --mt-text, not amber: six coloured icons beside six amber
-   numbers made amber compete rather than signal. STYLE.md section 3. */
-.mt-points {
+/* Alternating feature rows. Media and text swap sides down the page; the media
+   always comes first in the DOM so the stacked order is image-then-text. */
+.mt-alt__row {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: var(--mt-space-4);
-  margin-bottom: var(--mt-space-9);
+  grid-template-columns: 1fr 1fr;
+  gap: var(--mt-space-8);
+  align-items: start;
+  padding: var(--mt-space-8) 0;
+  border-bottom: 1px solid var(--mt-border);
 }
 
-@media (max-width: 900px) { .mt-points { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media (max-width: 520px) { .mt-points { grid-template-columns: 1fr; } }
+.mt-alt__row:first-child { border-top: 1px solid var(--mt-border); }
+.mt-alt__row--flip .mt-alt__media { order: 2; }
 
-/* Neutral top border, unlike .mt-stat — the icon carries the colour here, and
-   a coloured rule as well would be a second categorical signal saying the
-   same thing. */
-.mt-point {
+@media (max-width: 860px) {
+  .mt-alt__row {
+    grid-template-columns: 1fr;
+    gap: var(--mt-space-5);
+    padding: var(--mt-space-7) 0;
+  }
+  /* Stacked, the flip has nothing to flip — reset it so every row reads
+     image-then-text rather than alternating for no reason. */
+  .mt-alt__row--flip .mt-alt__media { order: 0; }
+}
+
+/* Muted image with the feature word over it. The scrim is what keeps the word
+   legible over an arbitrary photograph. */
+.mt-alt__media { position: relative; }
+
+.mt-alt__shot {
+  aspect-ratio: 4 / 3;
   background: var(--mt-surface);
-  border-top: 3px solid var(--mt-border);
+  border: 1px dashed var(--mt-border);
+  border-radius: var(--mt-radius);
+  overflow: hidden;
+}
+
+.mt-alt__shot img { width: 100%; height: 100%; object-fit: cover; opacity: 0.45; }
+
+/* Built from --mt-bg-rgb rather than a hex-derived literal, so the scrim is
+   demonstrably the page ground at two alphas. Denser at the bottom because the
+   word sits centred and the copy below it needs the darker end. */
+.mt-alt__scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg,
+              rgba(var(--mt-bg-rgb), 0.25),
+              rgba(var(--mt-bg-rgb), 0.75));
+  border-radius: var(--mt-radius);
+}
+
+.mt-alt__word {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: var(--mt-text-h1);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--mt-text);
+  text-align: center;
   padding: var(--mt-space-5);
 }
 
-.mt-point__head {
+.mt-alt__ph {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: var(--mt-space-4);
+  text-align: center;
+  font-size: var(--mt-text-xs);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--mt-text-faint);
+}
+
+.mt-alt__desc {
+  font-size: var(--mt-text-lg);
+  color: var(--mt-text-2);
+  margin: 0 0 var(--mt-space-6);
+}
+
+.mt-alt__spec {
+  border-top: 1px solid var(--mt-border);
+  padding-top: var(--mt-space-5);
+}
+
+/* Ours leads, at figure scale with the coloured icon. */
+.mt-alt__ours {
   display: flex;
   align-items: center;
   gap: var(--mt-space-3);
-  margin-bottom: var(--mt-space-3);
-}
-
-.mt-point__icon { flex: 0 0 auto; display: inline-flex; }
-.mt-point__icon svg { display: block; }
-
-.mt-point__figure {
-  display: block;
-  font-size: var(--mt-text-lg);
+  font-size: var(--mt-text-h3);
   font-weight: 700;
   font-variant-numeric: tabular-nums;
   color: var(--mt-text);
-  line-height: 1.25;
-  min-width: 0;
+  line-height: 1.2;
 }
 
-.mt-point__note {
+.mt-alt__ours svg { display: block; flex: 0 0 auto; }
+
+/* The two comparisons sit beneath it, muted — context, not the claim. */
+.mt-alt__vs { margin: var(--mt-space-4) 0 0; }
+
+.mt-alt__vsline {
+  display: grid;
+  grid-template-columns: 150px 1fr;
+  gap: var(--mt-space-4);
+  padding: var(--mt-space-2) 0;
   font-size: var(--mt-text-sm);
   color: var(--mt-text-3);
   line-height: 1.6;
-  margin: 0;
+}
+
+@media (max-width: 520px) {
+  .mt-alt__vsline { grid-template-columns: 1fr; gap: 0; }
+}
+
+.mt-alt__vslbl {
+  font-size: var(--mt-text-xs);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--mt-text-faint);
+  padding-top: 3px;
 }
 
 /* SKU cards on the hub. The third column is narrower because it holds the
@@ -1007,74 +1079,6 @@ td {
 
 .mt-use h4 { margin: var(--mt-space-3) 0 var(--mt-space-1); font-size: var(--mt-text-base); }
 .mt-use p { font-size: var(--mt-text-sm); color: var(--mt-text-3); margin: 0; line-height: 1.6; }
-
-/* Timeline. Vertical spine — nine nodes on a horizontal axis cannot hold at
-   375px, and a scrolling axis hides the second half of the schedule. */
-.mt-time { position: relative; padding-left: var(--mt-space-6); }
-
-.mt-time::before {
-  content: "";
-  position: absolute;
-  left: 5px;
-  top: 10px;
-  bottom: 10px;
-  width: 2px;
-  background: var(--mt-border);
-}
-
-.mt-time__group + .mt-time__group { margin-top: var(--mt-space-6); }
-
-.mt-time__year {
-  position: relative;
-  font-size: var(--mt-text-h3);
-  font-weight: 700;
-  font-variant-numeric: tabular-nums;
-  color: var(--mt-text);
-  margin-bottom: var(--mt-space-4);
-}
-
-.mt-time__year::before {
-  content: "";
-  position: absolute;
-  left: calc(-1 * var(--mt-space-6));
-  top: 0.55em;
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: var(--mt-ignition);
-}
-
-.mt-time__list { list-style: none; margin: 0; padding: 0; }
-
-.mt-time__list li {
-  position: relative;
-  display: grid;
-  grid-template-columns: var(--mt-time-when) 1fr;
-  gap: var(--mt-space-4);
-  padding: var(--mt-space-3) 0;
-  margin: 0;
-}
-
-.mt-time__list li::before {
-  content: "";
-  position: absolute;
-  left: calc(-1 * var(--mt-space-6) + 3px);
-  top: 1.35em;
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--mt-text-faint);
-}
-
-.mt-time__when {
-  font-size: var(--mt-text-sm);
-  font-weight: 500;
-  font-variant-numeric: tabular-nums;
-  color: var(--mt-text-3);
-}
-
-.mt-time__what { font-size: var(--mt-text-sm); color: var(--mt-text-2); }
-.mt-time__what strong { color: var(--mt-text); font-weight: 700; }
 
 /* SKU hero. Reuses .mt-hero but overrides the ratio: the home page carries a
    short slogan in the text column, a SKU page carries a headline plus a
