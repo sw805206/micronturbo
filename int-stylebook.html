@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="STYLE.css?v=009">
+  <link rel="stylesheet" href="STYLE.css?v=011">
   <style>
     .sb-swatch { border: 1px solid var(--mt-border); border-radius: var(--mt-radius-sm); overflow: hidden; }
     .sb-swatch__chip { height: 88px; }
@@ -462,36 +462,51 @@
     breaks. Resize the window to see them go.
   </p>
 
-  <h3 style="margin-top: var(--mt-space-7);">Point card · .mt-point / .mt-points</h3>
-  <div class="mt-points mt-figures">
-    <div class="mt-point">
-      <div class="mt-point__head">
-        <span class="mt-point__icon" style="color: var(--mt-magnet);">
-          <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/></svg>
-        </span>
-        <span class="mt-point__figure">c5 magnet</span>
+  <h3 style="margin-top: var(--mt-space-7);">Alternating feature row · .mt-alt__row</h3>
+  <div class="mt-alt">
+    <div class="mt-alt__row">
+      <div class="mt-alt__media">
+        <div class="mt-alt__shot"></div>
+        <div class="mt-alt__scrim"></div>
+        <div class="mt-alt__word">Toughness</div>
+        <div class="mt-alt__ph">no image — scrim over the empty slot</div>
       </div>
-      <p class="mt-point__note">Neutral rule, neutral figure, coloured icon.</p>
+      <div class="mt-alt__body">
+        <p class="mt-alt__desc">The description sits at --mt-text-lg. Our figure
+        leads below it with the categorical icon; the two comparisons sit under
+        that, muted, because they are context rather than the claim.</p>
+        <div class="mt-alt__spec">
+          <div class="mt-alt__ours">
+            <span style="color: var(--mt-steel);"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/></svg></span>−40 °C, 75% at 4000 m
+          </div>
+          <div class="mt-alt__vs">
+            <div class="mt-alt__vsline"><span class="mt-alt__vslbl">Lithium station</span><span>Muted, at --mt-text-3, with a --mt-text-faint label</span></div>
+            <div class="mt-alt__vsline"><span class="mt-alt__vslbl">Piston set</span><span>150px label column, collapsing to one column at 520px</span></div>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="mt-point">
-      <div class="mt-point__head">
-        <span class="mt-point__icon" style="color: var(--mt-amber);">
-          <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/></svg>
-        </span>
-        <span class="mt-point__figure">c2 amber</span>
+    <div class="mt-alt__row mt-alt__row--flip">
+      <div class="mt-alt__media">
+        <div class="mt-alt__shot"></div>
+        <div class="mt-alt__scrim"></div>
+        <div class="mt-alt__word">Flipped</div>
+        <div class="mt-alt__ph">--flip puts the media second</div>
       </div>
-      <p class="mt-point__note">The figure is --mt-text, not amber. Section 3.</p>
-    </div>
-    <div class="mt-point">
-      <div class="mt-point__head">
-        <span class="mt-point__icon" style="color: var(--mt-hydro);">
-          <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/></svg>
-        </span>
-        <span class="mt-point__figure">c4 hydro</span>
+      <div class="mt-alt__body">
+        <p class="mt-alt__desc">--flip swaps the sides with order, not with
+        source order. The media stays first in the DOM, so below 860px every row
+        stacks image-then-text and the flip resets rather than alternating.</p>
       </div>
-      <p class="mt-point__note">3 across, then 2 at 900px, then 1 at 520px.</p>
     </div>
   </div>
+  <p style="font-size: var(--mt-text-sm); color: var(--mt-text-3); max-width: 62ch; margin-top: var(--mt-space-5);">
+    The scrim is a --mt-bg gradient built from --mt-bg-rgb at 0.15 to 0.5, over
+    an image held at 70% opacity on a --mt-bg ground. Shown here with no image
+    behind it, so the scrim itself is visible; on the hub it is what keeps the
+    word legible over an arbitrary photograph. The word sits bottom-left, in the
+    dense end of the gradient and clear of whatever the picture is of.
+  </p>
 
   <h3>One-liner · .mt-line / .mt-lines</h3>
   <div class="mt-lines mt-figures">
@@ -595,28 +610,6 @@
       <p>.mt-shot--img puts a real photo in the same box.</p>
     </div>
   </div>
-
-  <h3 style="margin-top: var(--mt-space-7);">Timeline · .mt-time</h3>
-  <div class="mt-time">
-    <div class="mt-time__group">
-      <div class="mt-time__year">2027</div>
-      <ul class="mt-time__list">
-        <li><span class="mt-time__when">March</span><span class="mt-time__what"><strong>MT-6K</strong> enters production</span></li>
-        <li><span class="mt-time__when">September</span><span class="mt-time__what">MT-3K development complete</span></li>
-      </ul>
-    </div>
-    <div class="mt-time__group">
-      <div class="mt-time__year">2028</div>
-      <ul class="mt-time__list">
-        <li><span class="mt-time__when">December</span><span class="mt-time__what"><strong>MT-200K</strong> enters production</span></li>
-      </ul>
-    </div>
-  </div>
-  <p style="font-size: var(--mt-text-sm); color: var(--mt-text-3); max-width: 62ch; margin-top: var(--mt-space-5);">
-    A vertical spine. The when-column is --mt-time-when: 104px, dropping to 88px
-    below 560px — a token because the column and its override have to move
-    together, and the longest month name sets both.
-  </p>
 
   <h3>SKU hero · .mt-hero--sku</h3>
   <div class="mt-hero mt-hero--sku" style="padding-top: 0; padding-bottom: 0;">

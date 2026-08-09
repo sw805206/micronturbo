@@ -1,4 +1,4 @@
-v008 | 2026-08-08 | 507 lines
+v010 | 2026-08-08 | 548 lines
 # Style
 
 The design-system decisions for micronturbo.com, in words. STYLE.css is the
@@ -52,6 +52,14 @@ component and must be exported before any page can use it.
 | `--mt-surface` | `#12283F` | 舱体蓝 Cabin | Cards, panels |
 | `--mt-surface-high` | `#1B3350` | 仪表蓝 Instrument | Raised within a surface |
 | `--mt-border` | `rgba(255,255,255,0.08)` | — | Hairline on dark |
+| `--mt-bg-rgb` | `12, 26, 43` | — | `--mt-bg` as channels, for `rgba()` |
+
+`--mt-bg-rgb` is not a second colour. It is `--mt-bg` written as bare channels so
+a translucent layer can be built from the ground colour with `rgba()` instead of
+a hex literal that merely happens to match. The feature-row scrim is its only
+consumer and needs two alphas of the same colour. The cost is that the two must
+be kept in step by hand — CSS cannot derive one from the other — so a change to
+`--mt-bg` is a change to both.
 
 航天墨蓝 carries a Chinese name in the identity deck but no English one; Ink is
 the English name assigned here. 航天 is the aerospace-industry term rather than
@@ -104,7 +112,7 @@ all warm; nothing in the palette separated a fuel claim from a thermal one.
 Amber is the figure colour. When a number is the point of a component, it is
 amber; ignition carries the label or the rule above it. This is the one place the
 two warm accents are not interchangeable — with one exception, recorded under the
-point card below.
+six-way exception below.
 
 #### Categorical order
 
@@ -132,18 +140,23 @@ is usable as written.
 Steel remains graphic-only on dark. Its place at c3 is a categorical assignment
 for fills, rules and icon strokes; it does not make steel legal as text.
 
-#### The point card exception
+#### The six-way exception
 
-The point card (`.mt-point`, section 6) is the one place a figure is NOT amber.
-Its figure is `--mt-text` and its icon carries the colour instead.
+Where six categorical icons appear together, the figure beside them is NOT amber.
+`.mt-alt__ours` in section 6 sets its figure to `--mt-text` and lets the icon
+carry the colour.
 
-Amber was tried first, as the rule says it should be. With six cards on screen,
+Amber was tried first, as the rule says it should be. With six of them on screen,
 each pairing a coloured icon with an amber number, amber stopped signalling and
 started competing: the icons already carried the categorical colour, so the amber
 figures added a seventh colour that meant nothing and drowned the six that did.
 Neutral figures let the icon hue do the categorising and the number do the
-reading. The rule holds everywhere a figure is the only coloured thing in its
-component — which is every other case in this file.
+reading.
+
+This was first established on the point card, which the alternating feature rows
+replaced. The rule outlived the component because it was never about that
+component — it holds wherever the six categorical hues appear together, and the
+amber rule holds everywhere a figure is the only coloured thing in its own.
 
 ### Inverted band
 
@@ -345,12 +358,36 @@ content breaks. A six-card grid and a three-column comparison table do not fail
 at the same width, and forcing both onto the page's breakpoint would break one
 of them early and the other late.
 
-- **Point card** — `.mt-point` in `.mt-points`, a 3×2 grid. The carried stat
-  card with an icon in the label slot. Its top border is neutral and its figure
-  is `--mt-text`, both departures from `.mt-stat`, and both for the same reason:
-  the icon already carries the categorical colour, so a coloured rule and a
-  coloured number would be two more signals saying what the icon has said.
-  Section 3 records the amber exception in full.
+- **Alternating feature row** — `.mt-alt__row`, with `--flip` swapping the
+  sides. Two equal columns: a muted image carrying the feature word, and a
+  description with our figure under it and two comparison lines beneath that.
+  The media is always first in the DOM, so the stacked order below 860px reads
+  image-then-text on every row; `--flip` resets there rather than alternating,
+  which in one column would only look like an inconsistency.
+
+  The image sits at 70% opacity over `--mt-bg`, under a scrim built from
+  `--mt-bg-rgb` running 0.15 to 0.5 down the frame, and the word sits
+  bottom-left in the dense end.
+
+  Those three numbers were set together, after the first attempt got them
+  wrong. At 45% over `--mt-surface` with a 0.25–0.75 scrim, the image was being
+  darkened twice: the mid-navy surface showing through lifted every black off
+  the floor, the scrim crushed the whites, and the photograph kept **7% of its
+  tonal range** — its brightest pixel landing barely above the page ground. It
+  read as blue haze rather than as a picture. Muting an image and darkening it
+  for legibility are two jobs, and opacity was doing both badly.
+
+  Now the ground behind the image is `--mt-bg`, so shadows reach the floor; the
+  image is bright enough to read; and the scrim alone handles legibility. That
+  recovers about **2.6× the tonal range**. The word moves to the bottom to pay
+  for it — the scrim is densest there, which is worth roughly a third more
+  contrast than the centre, and it also stops the word being stamped across
+  whatever the photograph is of.
+
+  Our figure leads at `--mt-text-h3` with the categorical icon; the two
+  comparison lines sit beneath it in `--mt-text-3` with `--mt-text-faint`
+  labels. That ordering is the argument: the claim first, the context second,
+  never the competitor's number at the same weight as ours.
 - **One-liner** — `.mt-line` in `.mt-lines`. The same six claims on a SKU page,
   where the hero has already made the argument and they only need restating.
   A bounded band, hairline top and bottom, rather than six more cards.
@@ -363,10 +400,6 @@ of them early and the other late.
   product, and takes `--mt-steel` so it reads as future rather than as a third
   thing competing with the two that ship.
 - **Use-case grid** — `.mt-use` in `.mt-uses`. Picture-led, three across.
-- **Timeline** — `.mt-time`. A vertical spine. Nine nodes on a horizontal axis
-  cannot hold at 375px, and a scrolling axis hides half the schedule. The
-  when-column is `--mt-time-when`, a token because the column and its narrow
-  override have to move together and the longest month name sets both.
 - **Image slot** — `.mt-shot`, with `--hero` at 3/2 and `--use` at 4/3.
   `.mt-shot--img` puts a real image in the same box at the same ratio, so
   replacing a render with photography does not reflow the page.
@@ -408,7 +441,7 @@ change waits.
 
 **Every page's `?v=` query matches the current STYLE.css version, and is bumped
 in the same commit that bumps the stamp.** Each page links the stylesheet as
-`href="STYLE.css?v=009"`, where the number is STYLE.css's own `v###`. Changing
+`href="STYLE.css?v=011"`, where the number is STYLE.css's own `v###`. Changing
 the query changes the URL, so a browser holding the old file has nothing to
 match against and must refetch.
 
@@ -425,13 +458,13 @@ a warm cache, which is why it cannot be reproduced with `curl`.
 Verify before pushing any STYLE.css change:
 
 ```
-grep -l 'rel="stylesheet"' *.html | xargs grep -L 'STYLE.css?v=009'
+grep -l 'rel="stylesheet"' *.html | xargs grep -L 'STYLE.css?v=011'
 ```
 
 It lists any page out of step and should return nothing. The scoping matters:
 `partials.html` and `partials-zh.html` are fragments injected into pages that
 already carry the link, so they hold no stylesheet reference of their own. A
-bare `grep -L 'STYLE.css?v=009' *.html` reports both as failures — the check
+bare `grep -L 'STYLE.css?v=011' *.html` reports both as failures — the check
 must ask only pages that link a stylesheet at all.
 
 This is a mitigation, not the fix. It costs a returning visitor a full CSS
@@ -479,16 +512,24 @@ Which page defined which pattern. One line each, appended as pages are built.
 | Secondary button, `.mt-hero__actions` | Home page | v004 §9 |
 | `.mt-has-dropdown`, `.mt-dd` nav dropdown | Products (both languages) | v007 §8 |
 | Categorical accents — hydro, magnet, vortex, and the three deep variants | Products hub | v008 §1 |
-| `--mt-time-when` | Products hub | v008 §1 |
-| `.mt-point` / `.mt-points` point card | Products hub | v008 §10 |
 | `.mt-sku-card` / `.mt-skus` SKU cards | Products hub | v008 §10 |
-| `.mt-time` timeline | Products hub | v008 §10 |
+| `.mt-alt__row` alternating feature row | Products hub | v010 §10 |
+| `--mt-bg-rgb` | Products hub | v010 §1 |
 | `.mt-line` / `.mt-lines` one-liners | MT-6K, MT-75K | v008 §10 |
 | `.mt-table` / `.mt-table-wrap` comparison table | MT-6K, MT-75K | v008 §10 |
 | `.mt-use` / `.mt-uses` use-case grid | MT-6K, MT-75K | v008 §10 |
 | `.mt-shot` image slot | MT-6K, MT-75K | v008 §10 |
 | `.mt-hero--sku` hero ratio override | MT-6K, MT-75K | v008 §10 |
 | `.mt-intro`, `.mt-status`, `.mt-backlink` | MT-6K, MT-75K | v008 §10 |
+
+**Retired in v010:** `.mt-point` / `.mt-points`, `.mt-time*` and `--mt-time-when`.
+The hub rebuild replaced the point cards with the alternating feature rows and
+deleted the pipeline section, which left the timeline with no consumer. Their
+rows are removed rather than struck through — the ratchet record tracks what is
+in STYLE.css now, and a row for a selector that no longer exists would send the
+next page looking for it. A pattern that loses its last consumer comes out of the
+CSS in the same commit that removes the consumer, or it becomes dead weight
+nobody dares delete later.
 
 Every row up to the dropdown is the home page. That was expected for the first
 page built and was not evidence of reuse — the rule in section 8 earns its keep
