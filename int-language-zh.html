@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <title>中英文案对照 — 安恒燃动（内部）</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="STYLE.css?v=014">
+  <style>
+    /* The three highlight states. Everything else on this page comes from
+       STYLE.css tokens; these three do not exist there because nothing else
+       needs a term-level annotation. Adjust here, once. */
+    :root {
+      --lz-ok: #3fa66a;
+      --lz-variant: #d9642a;
+      --lz-generic: #c9a227;
+    }
+
+    .lz-meta { display: flex; flex-wrap: wrap; gap: var(--mt-space-5); font-size: var(--mt-text-xs); color: var(--mt-text-3); margin-bottom: var(--mt-space-5); }
+    .lz-meta strong { color: var(--mt-text-2); font-weight: 500; }
+
+    .lz-check { border-left: 2px solid var(--mt-border); padding-left: var(--mt-space-4); margin-bottom: var(--mt-space-2); font-size: var(--mt-text-sm); color: var(--mt-text-2); }
+    .lz-check--pass { border-left-color: var(--mt-steel); }
+    .lz-check--fail { border-left-color: var(--mt-ignition); color: var(--mt-text); }
+    .lz-check__detail { color: var(--mt-text-3); }
+
+    .lz-legend { display: flex; flex-wrap: wrap; gap: var(--mt-space-5); margin: var(--mt-space-6) 0; font-size: var(--mt-text-xs); color: var(--mt-text-3); }
+    .lz-legend span { display: inline-flex; align-items: center; gap: var(--mt-space-2); }
+    .lz-swatch { width: 10px; height: 10px; border-radius: var(--mt-radius-sm); display: inline-block; }
+
+    /* Page group */
+    .lz-group { margin-top: var(--mt-space-8); }
+    .lz-group__head { display: flex; flex-wrap: wrap; align-items: baseline; gap: var(--mt-space-4); padding-bottom: var(--mt-space-3); border-bottom: 1px solid var(--mt-border); }
+    .lz-group__name { font-size: var(--mt-text-lg); font-weight: 700; color: var(--mt-text); }
+    .lz-group__files { font-size: var(--mt-text-xs); color: var(--mt-text-faint); }
+    .lz-tally { margin-left: auto; display: flex; gap: var(--mt-space-4); font-size: var(--mt-text-xs); font-variant-numeric: tabular-nums; }
+    .lz-tally b { font-weight: 700; }
+    .lz-tally--clean { color: var(--lz-ok); }
+    .lz-tally--variant { color: var(--lz-variant); }
+    .lz-tally--generic { color: var(--lz-generic); }
+
+    /* Two columns, EN left, CN right. One row per paired slot. */
+    .lz-row { display: grid; grid-template-columns: 1fr 1fr; gap: var(--mt-space-5); padding: var(--mt-space-4) 0; border-bottom: 1px solid var(--mt-border); }
+    .lz-row:hover { background: var(--mt-surface); }
+    .lz-slot { grid-column: 1 / -1; font-size: var(--mt-text-xs); letter-spacing: 0.08em; text-transform: uppercase; color: var(--mt-text-faint); }
+    /* position: relative makes this the containing block for .lz-tip, which is
+       what keeps the panel inside the cell's width instead of the viewport's. */
+    .lz-cell { position: relative; font-size: var(--mt-text-sm); color: var(--mt-text-2); line-height: var(--mt-leading-body); min-width: 0; overflow-wrap: anywhere; }
+    .lz-cell--zh { color: var(--mt-text); }
+    .lz-cell--empty { color: var(--mt-text-faint); }
+
+    @media (max-width: 720px) {
+      .lz-row { grid-template-columns: 1fr; gap: var(--mt-space-2); }
+      .lz-cell--zh { padding-top: var(--mt-space-2); border-top: 1px dashed var(--mt-border); }
+    }
+
+    /* Term annotation. No radius on the inline mark: STYLE.md section 5
+       collapses radii to three tokens and none of them suit one. */
+    .lz-t { border-bottom: 2px solid currentColor; cursor: help; }
+    .lz-t--ok { color: var(--lz-ok); }
+    .lz-t--variant { color: var(--lz-variant); font-weight: 700; }
+    .lz-t--generic { color: var(--lz-generic); }
+    .lz-t:focus-visible { outline: 2px solid var(--mt-amber); outline-offset: 2px; }
+
+    /* Hover panel. Anchored to the cell rather than the word so it can never
+       run off the viewport, which a word-anchored panel does as soon as the
+       term sits near the right edge. The native title attribute is not used:
+       it is slow to appear, cannot be styled, and is unreachable on touch. */
+    .lz-tip {
+      display: none;
+      position: absolute; top: 100%; left: 0; right: 0; z-index: 5;
+      margin-top: var(--mt-space-2);
+      padding: var(--mt-space-3) var(--mt-space-4);
+      background: var(--mt-surface-high);
+      border: 1px solid var(--mt-border);
+      border-left-width: 2px;
+      border-radius: var(--mt-radius-sm);
+      font-size: var(--mt-text-xs);
+      font-weight: 400;
+      line-height: var(--mt-leading-body);
+      color: var(--mt-text-3);
+    }
+    .lz-t:hover .lz-tip, .lz-t:focus .lz-tip { display: block; }
+
+    .lz-t--ok .lz-tip { border-left-color: var(--lz-ok); }
+    .lz-t--variant .lz-tip { border-left-color: var(--lz-variant); }
+    .lz-t--generic .lz-tip { border-left-color: var(--lz-generic); }
+
+    .lz-tip__status { display: block; font-weight: 700; }
+    .lz-t--ok .lz-tip__status { color: var(--lz-ok); }
+    .lz-t--variant .lz-tip__status { color: var(--lz-variant); }
+    .lz-t--generic .lz-tip__status { color: var(--lz-generic); }
+
+    /* The standard term is what a reviewer needs first, so it is the one line
+       set at full contrast. */
+    .lz-tip__std { display: block; margin-top: var(--mt-space-2); color: var(--mt-text); font-weight: 700; font-size: var(--mt-text-sm); }
+    .lz-tip__en { display: block; margin-top: var(--mt-space-2); color: var(--mt-text-2); }
+    .lz-tip__why { display: block; margin-top: var(--mt-space-2); }
+
+    .lz-error { border-left: 2px solid var(--mt-ignition); padding-left: var(--mt-space-4); margin: var(--mt-space-4) 0; color: var(--mt-text); font-size: var(--mt-text-sm); }
+    .lz-error strong { color: var(--mt-ignition); }
+  </style>
+</head>
+<body>
+
+<div class="mt-container mt-section">
+
+  <p class="mt-label">内部页面 · 无外链 · noindex</p>
+  <h1>中英文案对照</h1>
+
+  <div id="lz-meta" class="lz-meta"></div>
+  <div id="lz-checks"></div>
+  <div id="lz-legend"></div>
+  <div id="lz-body"></div>
+
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  /* Every pair the page reviews. Adding a language means a sibling file —
+     int-language-ja.html with LANGUAGE-ja.md and the -ja pages. The filename
+     is the configuration; see SCOPE.md section 3. */
+  var SUFFIX = '-zh';
+  var TERMBASE = 'LANGUAGE-zh.md';
+  var PAIRS = [
+    { en: 'index.html' },
+    { en: 'products.html' },
+    { en: 'products-6k.html' },
+    { en: 'products-75k.html' }
+  ];
+
+  /* Text-bearing slots. Derived from tag and class, never from a list of
+     expected content — a page that gains a paragraph gains a row here without
+     this file being touched. */
+  var SLOTS = 'h1, h2, h3, h4, p, td, th, li, .mt-label, .mt-display, .mt-lead,' +
+    '.mt-alt__word, .mt-alt__desc, .mt-alt__ours, .mt-alt__vslbl, .mt-line,' +
+    '.mt-sku-card__spec, .mt-btn';
+
+  function esc(s) {
+    return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+
+  function norm(s) { return String(s).replace(/\s+/g, ' ').trim(); }
+
+  function check(pass, label, detail) {
+    return '<div class="lz-check ' + (pass ? 'lz-check--pass' : 'lz-check--fail') + '">' +
+      (pass ? '✓ ' : '✕ ') + esc(label) +
+      (detail ? ' <span class="lz-check__detail">' + esc(detail) + '</span>' : '') +
+      '</div>';
+  }
+
+  function errBox(html) { return '<div class="lz-error">' + html + '</div>'; }
+
+  /* ---------- termbase ---------- */
+
+  /* Rows are | EN | 中文 | 变体 | 理由与来源 |. The 泛称 table is three cells
+     and lives under its own heading, so the heading is tracked rather than the
+     cell count guessed at. */
+  function parseTerms(md) {
+    var terms = [], generics = [], section = '';
+    var lines = md.split('\n');
+
+    for (var i = 0; i < lines.length; i++) {
+      var ln = lines[i];
+      if (/^##\s/.test(ln)) { section = ln.replace(/^#+\s*/, ''); continue; }
+      if (!/^\s*\|/.test(ln)) { continue; }
+
+      var cells = ln.trim().replace(/^\|/, '').replace(/\|$/, '').split('|')
+        .map(function (c) { return c.trim(); });
+      if (!cells.length) { continue; }
+      if (cells[0] === 'EN' || cells[0] === '泛称') { continue; }
+      if (/^-+$/.test(cells[0])) { continue; }
+
+      if (section.indexOf('泛称') !== -1) {
+        if (cells.length >= 3 && cells[0]) {
+          generics.push({ text: cells[0], suggest: cells[1], note: cells[2] });
+        }
+        continue;
+      }
+
+      if (cells.length < 4) { continue; }
+      var en = cells[0], zh = cells[1], variants = cells[2], reason = cells[3];
+
+      /* 不变 is a instruction, not a term: matching it in copy would be
+         meaningless. Model designations carry no Chinese form to match. */
+      if (zh && zh !== '不变') {
+        terms.push({ text: zh, en: en, reason: reason, kind: 'ok' });
+      }
+      /* An empty 变体 cell may be blank or a dash placeholder. Taking a dash
+         literally would register "—" as a rejected term and flag every em dash
+         in the copy. */
+      if (variants && !/^[-—–]+$/.test(variants.trim())) {
+        variants.split(/[、,，]/).forEach(function (v) {
+          v = v.trim();
+          if (v && !/^[-—–]+$/.test(v)) {
+            terms.push({ text: v, en: en, canonical: zh, reason: reason, kind: 'variant' });
+          }
+        });
+      }
+    }
+
+    generics.forEach(function (g) {
+      terms.push({ text: g.text, en: '', canonical: g.suggest, reason: g.note, kind: 'generic' });
+    });
+
+    /* Longest first, so 工业无人机 beats 无人机 and 足式机器人 beats 机器人. */
+    terms.sort(function (a, b) { return b.text.length - a.text.length; });
+    return terms;
+  }
+
+  /* Annotate a plain string. Built from text, never by replacing inside
+     markup, so a match can never land inside a tag. */
+  function annotate(text, terms, tally) {
+    var out = '', i = 0;
+    while (i < text.length) {
+      var hit = null;
+      for (var t = 0; t < terms.length; t++) {
+        if (text.startsWith(terms[t].text, i)) { hit = terms[t]; break; }
+      }
+      if (!hit) { out += esc(text.charAt(i)); i++; continue; }
+
+      var note = hit.kind === 'variant' ? '偏离标准术语'
+        : hit.kind === 'generic' ? '泛称，可能需收窄' : '标准术语';
+
+      /* The standard term is what a reviewer needs first, so it leads the
+         panel. An approved term carries no suggestion — it is already the
+         standard one, and a "建议" line there would read as a correction. */
+      var stdLabel = hit.kind === 'variant' ? '标准术语'
+        : hit.kind === 'generic' ? '建议改用' : '';
+      var hasStd = stdLabel && hit.canonical;
+
+      if (hit.kind === 'variant') { tally.variant++; }
+      if (hit.kind === 'generic') { tally.generic++; }
+
+      /* Only the actionable states take a tab stop. Making all ~75 approved
+         terms focusable would bury the handful that need attention. */
+      var focusable = hit.kind === 'ok' ? '' : ' tabindex="0"';
+      var label = note + (hasStd ? '，' + stdLabel + '：' + hit.canonical : '');
+
+      out += '<span class="lz-t lz-t--' + hit.kind + '"' + focusable +
+        ' aria-label="' + esc(label) + '">' + esc(hit.text) +
+        '<span class="lz-tip" role="tooltip">' +
+        '<b class="lz-tip__status">' + esc(note) + '</b>' +
+        (hasStd ? '<b class="lz-tip__std">' + esc(stdLabel) + '：' + esc(hit.canonical) + '</b>' : '') +
+        (hit.en ? '<span class="lz-tip__en">EN：' + esc(hit.en) + '</span>' : '') +
+        (hit.reason ? '<span class="lz-tip__why">' + esc(hit.reason) + '</span>' : '') +
+        '</span></span>';
+      i += hit.text.length;
+    }
+    return out;
+  }
+
+  /* ---------- pairing ---------- */
+
+  function sig(el) {
+    var cls = (el.getAttribute('class') || '').split(/\s+/)
+      .filter(function (c) { return c.indexOf('mt-') === 0; }).sort().join('.');
+    return el.tagName.toLowerCase() + (cls ? '.' + cls : '');
+  }
+
+  /* querySelectorAll already dedupes, but a slot nested inside another slot
+     would still be counted twice. Dropping any element with a selected
+     ancestor keeps one row per slot. */
+  function collect(doc) {
+    var all = [].slice.call(doc.querySelectorAll(SLOTS));
+    var set = new Set(all);
+    return all.filter(function (el) {
+      for (var p = el.parentElement; p; p = p.parentElement) {
+        if (set.has(p)) { return false; }
+      }
+      return true;
+    });
+  }
+
+  function pair(enDoc, zhDoc) {
+    var a = collect(enDoc), b = collect(zhDoc);
+    var rows = [], n = Math.min(a.length, b.length), i;
+
+    for (i = 0; i < n; i++) {
+      if (sig(a[i]) !== sig(b[i])) {
+        return { rows: rows, desync: { at: i, enSig: sig(a[i]), zhSig: sig(b[i]),
+          last: i > 0 ? sig(a[i - 1]) : null, enN: a.length, zhN: b.length } };
+      }
+      rows.push({ slot: sig(a[i]), en: norm(a[i].textContent), zh: norm(b[i].textContent) });
+    }
+
+    if (a.length !== b.length) {
+      return { rows: rows, desync: { at: n, enSig: null, zhSig: null,
+        last: n > 0 ? sig(a[n - 1]) : null, enN: a.length, zhN: b.length } };
+    }
+    return { rows: rows, desync: null };
+  }
+
+  /* ---------- fetch ---------- */
+
+  /* cache: 'no-cache' revalidates. This page reviews copy that may have been
+     pushed moments earlier; a cached page would report the previous wording
+     and quietly defeat the point. Same reasoning as int-backlog.html. */
+  function get(url) {
+    return fetch(url, { cache: 'no-cache' }).then(function (r) {
+      if (!r.ok) { throw new Error(url + ' ' + r.status); }
+      return r.text();
+    }).then(function (text) {
+      return { url: url, text: text };
+    }, function (err) {
+      return { url: url, error: err.message || String(err) };
+    });
+  }
+
+  var wanted = ['LANGUAGE.md', TERMBASE];
+  PAIRS.forEach(function (p) {
+    p.zh = p.en.replace(/\.html$/, SUFFIX + '.html');
+    wanted.push(p.en, p.zh);
+  });
+
+  Promise.all(wanted.map(get)).then(function (results) {
+    var byUrl = {};
+    results.forEach(function (r) { byUrl[r.url] = r; });
+
+    var failures = results.filter(function (r) { return r.error; });
+
+    /* ---- meta ---- */
+    var enStamp = byUrl['LANGUAGE.md'].text ? byUrl['LANGUAGE.md'].text.split('\n')[0].trim() : '—';
+    var zhStamp = byUrl[TERMBASE].text ? byUrl[TERMBASE].text.split('\n')[0].trim() : '—';
+    document.getElementById('lz-meta').innerHTML =
+      '<div>LANGUAGE.md <strong>' + esc(enStamp) + '</strong></div>' +
+      '<div>' + esc(TERMBASE) + ' <strong>' + esc(zhStamp) + '</strong></div>' +
+      '<div>生成于 <strong>' + new Date().toLocaleString() + '</strong></div>';
+
+    /* ---- termbase ---- */
+    var terms = byUrl[TERMBASE].text ? parseTerms(byUrl[TERMBASE].text) : [];
+    var nVariant = terms.filter(function (t) { return t.kind === 'variant'; }).length;
+    var nGeneric = terms.filter(function (t) { return t.kind === 'generic'; }).length;
+    var nOk = terms.filter(function (t) { return t.kind === 'ok'; }).length;
+
+    var checks = '';
+
+    if (failures.length) {
+      checks += check(false, failures.length + ' 个文件加载失败',
+        failures.map(function (f) { return f.url + '（' + f.error + '）'; }).join('；'));
+    } else {
+      checks += check(true, '全部文件加载成功', wanted.length + ' 个');
+    }
+
+    /* An empty termbase must fail loudly. Every cell would come back clean,
+       which reads exactly like a healthy page. */
+    if (terms.length === 0) {
+      checks += check(false, '术语表为空',
+        TERMBASE + ' 已加载，但未解析出任何词条 —— 高亮全部失效，本页结论不可信。');
+    } else {
+      checks += check(true, '术语表解析完成',
+        '标准术语 ' + nOk + ' 条 · 变体 ' + nVariant + ' 条 · 泛称 ' + nGeneric + ' 条');
+    }
+
+    /* ---- legend ---- */
+    document.getElementById('lz-legend').innerHTML =
+      '<span><i class="lz-swatch" style="background: var(--lz-ok);"></i>标准术语</span>' +
+      '<span><i class="lz-swatch" style="background: var(--lz-variant);"></i>变体 —— 偏离标准术语</span>' +
+      '<span><i class="lz-swatch" style="background: var(--lz-generic);"></i>泛称 —— 可能需收窄</span>' +
+      '<span style="color: var(--mt-text-faint);">悬停查看标准术语、英文词条与理由</span>';
+
+    /* ---- pages ---- */
+    var parser = new DOMParser();
+    var html = '', totalRows = 0, totalVariant = 0, totalGeneric = 0, desyncPages = [];
+
+    PAIRS.forEach(function (p) {
+      var en = byUrl[p.en], zh = byUrl[p.zh];
+
+      if (en.error || zh.error) {
+        html += '<div class="lz-group"><div class="lz-group__head">' +
+          '<span class="lz-group__name">' + esc(p.zh) + '</span></div>' +
+          errBox('<strong>无法加载</strong> ' +
+          [en.error, zh.error].filter(Boolean).map(esc).join('；') +
+          ' —— 本对照跳过，其余页面照常。') + '</div>';
+        return;
+      }
+
+      var enDoc = parser.parseFromString(en.text, 'text/html');
+      var zhDoc = parser.parseFromString(zh.text, 'text/html');
+
+      /* The group name comes from the page's own <title>, not from a label in
+         this file. Nothing here is copy; everything shown is fetched. */
+      var title = norm((zhDoc.querySelector('title') || {}).textContent || '') || p.zh;
+
+      html += '<div class="lz-group"><div class="lz-group__head">' +
+        '<span class="lz-group__name" lang="zh-Hans">' + esc(title) + '</span>' +
+        '<span class="lz-group__files">' + esc(p.en) + ' ↔ ' + esc(p.zh) + '</span>';
+
+      var result = pair(enDoc, zhDoc);
+
+      var tally = { variant: 0, generic: 0 };
+      var rowsHtml = result.rows.map(function (r) {
+        return '<div class="lz-row">' +
+          '<div class="lz-slot">' + esc(r.slot) + '</div>' +
+          '<div class="lz-cell">' + (r.en ? esc(r.en) : '<span class="lz-cell--empty">（空）</span>') + '</div>' +
+          '<div class="lz-cell lz-cell--zh" lang="zh-Hans">' +
+          (r.zh ? annotate(r.zh, terms, tally) : '<span class="lz-cell--empty">（空）</span>') +
+          '</div></div>';
+      }).join('');
+
+      totalRows += result.rows.length;
+      totalVariant += tally.variant;
+      totalGeneric += tally.generic;
+
+      html += '<div class="lz-tally">' +
+        '<span class="' + (tally.variant === 0 ? 'lz-tally--clean' : 'lz-tally--variant') + '">变体 <b>' + tally.variant + '</b></span>' +
+        '<span class="' + (tally.generic === 0 ? 'lz-tally--clean' : 'lz-tally--generic') + '">泛称 <b>' + tally.generic + '</b></span>' +
+        '<span style="color: var(--mt-text-faint);">对照 <b>' + result.rows.length + '</b> 项</span>' +
+        '</div></div>';
+
+      if (result.desync) {
+        var d = result.desync;
+        desyncPages.push(p.zh);
+        html += errBox('<strong>结构不一致</strong> —— ' + esc(p.en) + ' 与 ' + esc(p.zh) +
+          ' 的结构在第 ' + (d.at + 1) + ' 项处分歧，对照到此为止。' +
+          '英文 <b>' + d.enN + '</b> 项，中文 <b>' + d.zhN + '</b> 项。' +
+          (d.enSig ? '该项英文为 <code>' + esc(d.enSig) + '</code>，中文为 <code>' + esc(d.zhSig) + '</code>。' : '') +
+          (d.last ? '最后一个对齐的位置是 <code>' + esc(d.last) + '</code>。' : '') +
+          ' 中文页是英文页的副本，结构分歧属于缺陷，需修正后再审校。');
+      }
+
+      html += rowsHtml;
+    });
+
+    /* Zero pairs is indistinguishable from a clean page unless it is said. */
+    if (totalRows === 0) {
+      checks += check(false, '未解析出任何对照项',
+        '页面已加载，但未取到可配对的文本元素 —— 本页没有可审校的内容。');
+    } else {
+      checks += check(desyncPages.length === 0,
+        desyncPages.length === 0 ? '四组页面结构一致' : desyncPages.length + ' 组页面结构不一致',
+        desyncPages.length === 0 ? '共 ' + totalRows + ' 项对照' : desyncPages.join('、'));
+      checks += check(totalVariant === 0,
+        totalVariant === 0 ? '未发现变体' : '发现 ' + totalVariant + ' 处变体',
+        totalVariant === 0 ? '全部中文用词符合术语表' : '见下方橙色标注');
+    }
+
+    document.getElementById('lz-checks').innerHTML = checks;
+    document.getElementById('lz-body').innerHTML = html;
+
+  }).catch(function (err) {
+    document.getElementById('lz-checks').innerHTML =
+      errBox('<strong>页面生成失败</strong> —— ' + esc(err.message || String(err)));
+  });
+
+})();
+</script>
+
+</body>
+</html>
