@@ -1,4 +1,4 @@
-v009 | 2026-08-08 | 534 lines
+v010 | 2026-08-08 | 548 lines
 # Style
 
 The design-system decisions for micronturbo.com, in words. STYLE.css is the
@@ -365,10 +365,24 @@ of them early and the other late.
   image-then-text on every row; `--flip` resets there rather than alternating,
   which in one column would only look like an inconsistency.
 
-  The image sits at 45% opacity under a `--mt-bg` scrim built from
-  `--mt-bg-rgb`, because the word has to stay legible over an arbitrary
-  photograph. The gradient runs 0.25 to 0.75 down the frame — denser at the
-  bottom, where the eye leaves the image for the copy.
+  The image sits at 70% opacity over `--mt-bg`, under a scrim built from
+  `--mt-bg-rgb` running 0.15 to 0.5 down the frame, and the word sits
+  bottom-left in the dense end.
+
+  Those three numbers were set together, after the first attempt got them
+  wrong. At 45% over `--mt-surface` with a 0.25–0.75 scrim, the image was being
+  darkened twice: the mid-navy surface showing through lifted every black off
+  the floor, the scrim crushed the whites, and the photograph kept **7% of its
+  tonal range** — its brightest pixel landing barely above the page ground. It
+  read as blue haze rather than as a picture. Muting an image and darkening it
+  for legibility are two jobs, and opacity was doing both badly.
+
+  Now the ground behind the image is `--mt-bg`, so shadows reach the floor; the
+  image is bright enough to read; and the scrim alone handles legibility. That
+  recovers about **2.6× the tonal range**. The word moves to the bottom to pay
+  for it — the scrim is densest there, which is worth roughly a third more
+  contrast than the centre, and it also stops the word being stamped across
+  whatever the photograph is of.
 
   Our figure leads at `--mt-text-h3` with the categorical icon; the two
   comparison lines sit beneath it in `--mt-text-3` with `--mt-text-faint`
@@ -427,7 +441,7 @@ change waits.
 
 **Every page's `?v=` query matches the current STYLE.css version, and is bumped
 in the same commit that bumps the stamp.** Each page links the stylesheet as
-`href="STYLE.css?v=010"`, where the number is STYLE.css's own `v###`. Changing
+`href="STYLE.css?v=011"`, where the number is STYLE.css's own `v###`. Changing
 the query changes the URL, so a browser holding the old file has nothing to
 match against and must refetch.
 
@@ -444,13 +458,13 @@ a warm cache, which is why it cannot be reproduced with `curl`.
 Verify before pushing any STYLE.css change:
 
 ```
-grep -l 'rel="stylesheet"' *.html | xargs grep -L 'STYLE.css?v=010'
+grep -l 'rel="stylesheet"' *.html | xargs grep -L 'STYLE.css?v=011'
 ```
 
 It lists any page out of step and should return nothing. The scoping matters:
 `partials.html` and `partials-zh.html` are fragments injected into pages that
 already carry the link, so they hold no stylesheet reference of their own. A
-bare `grep -L 'STYLE.css?v=010' *.html` reports both as failures — the check
+bare `grep -L 'STYLE.css?v=011' *.html` reports both as failures — the check
 must ask only pages that link a stylesheet at all.
 
 This is a mitigation, not the fix. It costs a returning visitor a full CSS

@@ -1,4 +1,4 @@
-/* v010 | 2026-08-08 | 1155 lines
+/* v011 | 2026-08-08 | 1172 lines
    micronturbo.com design tokens and shared patterns.
    The decisions this file implements are recorded in STYLE.md.
    Pages consume tokens, never raw hex or px. See STYLE.md section 8. */
@@ -911,48 +911,65 @@ td {
    legible over an arbitrary photograph. */
 .mt-alt__media { position: relative; }
 
+/* The ground behind the image is --mt-bg, not --mt-surface. Whatever shows
+   through the image is the floor its shadows can reach, and a mid-navy floor
+   lifts every black in the photograph off the bottom of the range. */
 .mt-alt__shot {
   aspect-ratio: 4 / 3;
-  background: var(--mt-surface);
+  background: var(--mt-bg);
   border: 1px dashed var(--mt-border);
   border-radius: var(--mt-radius);
   overflow: hidden;
 }
 
-.mt-alt__shot img { width: 100%; height: 100%; object-fit: cover; opacity: 0.45; }
+/* 0.7, not 0.45. Muting the image and darkening it for the word are two
+   different jobs, and doing both with opacity did neither well: at 0.45 over a
+   mid surface, with the scrim on top, the photograph kept 7% of its tonal range
+   and the brightest pixel landed barely above the page ground. It read as blue
+   haze rather than as a picture. The scrim does the darkening now. */
+.mt-alt__shot img { width: 100%; height: 100%; object-fit: cover; opacity: 0.7; }
 
 /* Built from --mt-bg-rgb rather than a hex-derived literal, so the scrim is
-   demonstrably the page ground at two alphas. Denser at the bottom because the
-   word sits centred and the copy below it needs the darker end. */
+   demonstrably the page ground at two alphas.
+
+   0.15 to 0.5, lighter than it was, because the image is no longer being
+   darkened twice. The gradient still runs denser downward, and the word now
+   sits in that dense end rather than in the middle — which is what buys back
+   the contrast the brighter image gives up. */
 .mt-alt__scrim {
   position: absolute;
   inset: 0;
   background: linear-gradient(180deg,
-              rgba(var(--mt-bg-rgb), 0.25),
-              rgba(var(--mt-bg-rgb), 0.75));
+              rgba(var(--mt-bg-rgb), 0.15),
+              rgba(var(--mt-bg-rgb), 0.5));
   border-radius: var(--mt-radius);
 }
 
+/* Bottom-left, not centred. Centred put the word across whatever the
+   photograph was of — a helicopter, a person, a drone — and stamped it there.
+   Down here it reads as a label on the image instead, it clears the subject,
+   and it sits in the densest part of the scrim where the contrast is best. */
 .mt-alt__word {
   position: absolute;
   inset: 0;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  align-items: flex-end;
+  justify-content: flex-start;
   font-size: var(--mt-text-h1);
   font-weight: 700;
   letter-spacing: 0.02em;
   color: var(--mt-text);
-  text-align: center;
+  text-align: left;
   padding: var(--mt-space-5);
 }
 
+/* Top-right, out of the word's corner. It only appears when there is no image
+   behind the scrim, but the two would otherwise stack in the same place. */
 .mt-alt__ph {
   position: absolute;
-  left: 0;
-  right: 0;
-  bottom: var(--mt-space-4);
-  text-align: center;
+  top: var(--mt-space-4);
+  right: var(--mt-space-5);
+  text-align: right;
   font-size: var(--mt-text-xs);
   letter-spacing: 0.16em;
   text-transform: uppercase;
