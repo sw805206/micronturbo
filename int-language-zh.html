@@ -46,7 +46,9 @@
     .lz-row { display: grid; grid-template-columns: 1fr 1fr; gap: var(--mt-space-5); padding: var(--mt-space-4) 0; border-bottom: 1px solid var(--mt-border); }
     .lz-row:hover { background: var(--mt-surface); }
     .lz-slot { grid-column: 1 / -1; font-size: var(--mt-text-xs); letter-spacing: 0.08em; text-transform: uppercase; color: var(--mt-text-faint); }
-    .lz-cell { font-size: var(--mt-text-sm); color: var(--mt-text-2); line-height: var(--mt-leading-body); min-width: 0; overflow-wrap: anywhere; }
+    /* position: relative makes this the containing block for .lz-tip, which is
+       what keeps the panel inside the cell's width instead of the viewport's. */
+    .lz-cell { position: relative; font-size: var(--mt-text-sm); color: var(--mt-text-2); line-height: var(--mt-leading-body); min-width: 0; overflow-wrap: anywhere; }
     .lz-cell--zh { color: var(--mt-text); }
     .lz-cell--empty { color: var(--mt-text-faint); }
 
@@ -55,12 +57,48 @@
       .lz-cell--zh { padding-top: var(--mt-space-2); border-top: 1px dashed var(--mt-border); }
     }
 
-    /* Term annotation. No radius: STYLE.md section 5 collapses radii to three
-       tokens and none of them suit an inline mark. */
+    /* Term annotation. No radius on the inline mark: STYLE.md section 5
+       collapses radii to three tokens and none of them suit one. */
     .lz-t { border-bottom: 2px solid currentColor; cursor: help; }
     .lz-t--ok { color: var(--lz-ok); }
     .lz-t--variant { color: var(--lz-variant); font-weight: 700; }
     .lz-t--generic { color: var(--lz-generic); }
+    .lz-t:focus-visible { outline: 2px solid var(--mt-amber); outline-offset: 2px; }
+
+    /* Hover panel. Anchored to the cell rather than the word so it can never
+       run off the viewport, which a word-anchored panel does as soon as the
+       term sits near the right edge. The native title attribute is not used:
+       it is slow to appear, cannot be styled, and is unreachable on touch. */
+    .lz-tip {
+      display: none;
+      position: absolute; top: 100%; left: 0; right: 0; z-index: 5;
+      margin-top: var(--mt-space-2);
+      padding: var(--mt-space-3) var(--mt-space-4);
+      background: var(--mt-surface-high);
+      border: 1px solid var(--mt-border);
+      border-left-width: 2px;
+      border-radius: var(--mt-radius-sm);
+      font-size: var(--mt-text-xs);
+      font-weight: 400;
+      line-height: var(--mt-leading-body);
+      color: var(--mt-text-3);
+    }
+    .lz-t:hover .lz-tip, .lz-t:focus .lz-tip { display: block; }
+
+    .lz-t--ok .lz-tip { border-left-color: var(--lz-ok); }
+    .lz-t--variant .lz-tip { border-left-color: var(--lz-variant); }
+    .lz-t--generic .lz-tip { border-left-color: var(--lz-generic); }
+
+    .lz-tip__status { display: block; font-weight: 700; }
+    .lz-t--ok .lz-tip__status { color: var(--lz-ok); }
+    .lz-t--variant .lz-tip__status { color: var(--lz-variant); }
+    .lz-t--generic .lz-tip__status { color: var(--lz-generic); }
+
+    /* The standard term is what a reviewer needs first, so it is the one line
+       set at full contrast. */
+    .lz-tip__std { display: block; margin-top: var(--mt-space-2); color: var(--mt-text); font-weight: 700; font-size: var(--mt-text-sm); }
+    .lz-tip__en { display: block; margin-top: var(--mt-space-2); color: var(--mt-text-2); }
+    .lz-tip__why { display: block; margin-top: var(--mt-space-2); }
 
     .lz-error { border-left: 2px solid var(--mt-ignition); padding-left: var(--mt-space-4); margin: var(--mt-space-4) 0; color: var(--mt-text); font-size: var(--mt-text-sm); }
     .lz-error strong { color: var(--mt-ignition); }
@@ -183,16 +221,30 @@
 
       var note = hit.kind === 'variant' ? '偏离标准术语'
         : hit.kind === 'generic' ? '泛称，可能需收窄' : '标准术语';
-      var tip = note +
-        (hit.canonical ? ' · 建议：' + hit.canonical : '') +
-        (hit.en ? ' · EN：' + hit.en : '') +
-        (hit.reason ? ' · ' + hit.reason : '');
+
+      /* The standard term is what a reviewer needs first, so it leads the
+         panel. An approved term carries no suggestion — it is already the
+         standard one, and a "建议" line there would read as a correction. */
+      var stdLabel = hit.kind === 'variant' ? '标准术语'
+        : hit.kind === 'generic' ? '建议改用' : '';
+      var hasStd = stdLabel && hit.canonical;
 
       if (hit.kind === 'variant') { tally.variant++; }
       if (hit.kind === 'generic') { tally.generic++; }
 
-      out += '<span class="lz-t lz-t--' + hit.kind + '" title="' + esc(tip) + '">' +
-        esc(hit.text) + '</span>';
+      /* Only the actionable states take a tab stop. Making all ~75 approved
+         terms focusable would bury the handful that need attention. */
+      var focusable = hit.kind === 'ok' ? '' : ' tabindex="0"';
+      var label = note + (hasStd ? '，' + stdLabel + '：' + hit.canonical : '');
+
+      out += '<span class="lz-t lz-t--' + hit.kind + '"' + focusable +
+        ' aria-label="' + esc(label) + '">' + esc(hit.text) +
+        '<span class="lz-tip" role="tooltip">' +
+        '<b class="lz-tip__status">' + esc(note) + '</b>' +
+        (hasStd ? '<b class="lz-tip__std">' + esc(stdLabel) + '：' + esc(hit.canonical) + '</b>' : '') +
+        (hit.en ? '<span class="lz-tip__en">EN：' + esc(hit.en) + '</span>' : '') +
+        (hit.reason ? '<span class="lz-tip__why">' + esc(hit.reason) + '</span>' : '') +
+        '</span></span>';
       i += hit.text.length;
     }
     return out;
