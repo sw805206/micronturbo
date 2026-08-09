@@ -1,4 +1,4 @@
-v012 | 2026-08-08 | 584 lines
+v013 | 2026-08-09 | 600 lines
 # Style
 
 The design-system decisions for micronturbo.com, in words. STYLE.css is the
@@ -239,6 +239,22 @@ request rather than fetched unused on every page.
 | `--mt-text-xs` | `0.75rem` | Tracked micro-labels |
 
 Root is 16px. Line heights: 1.05 display, 1.2 headings, 1.7 body.
+
+### Title case
+
+Headings use Chicago-style title case at h1 and h2. Capitalise the first and
+last word of each unit, plus all nouns, pronouns, verbs, adjectives, adverbs and
+subordinating conjunctions. Lowercase articles (a, an, the), coordinating
+conjunctions (and, but, or, for, nor, so, yet) and all prepositions regardless of
+length (at, on, to, for, with, between). Where a heading is two sentences, each
+sentence is its own unit — the word before each full stop is a last word and
+capitalises.
+
+h3 and below stay sentence case. The tracked micro-label is uppercase and is
+unaffected.
+
+English only. Chinese has no case, so the `-zh` pages are unaffected and this
+rule does not create a translation obligation.
 
 **`--mt-text-display` means the home page and the products hub specifically, not
 any page with a hero.** SKU heroes use `--mt-text-h1` with display leading —
