@@ -1,0 +1,23 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "micronturbo",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [
+        "-c",
+        "import http.server,socketserver\nclass H(http.server.SimpleHTTPRequestHandler):\n    def end_headers(self):\n        self.send_header('Cache-Control','no-store, no-cache, must-revalidate, max-age=0')\n        self.send_header('Pragma','no-cache')\n        self.send_header('Expires','0')\n        super().end_headers()\nsocketserver.TCPServer.allow_reuse_address=True\nsocketserver.TCPServer(('127.0.0.1',8420),H).serve_forever()"
+      ],
+      "port": 8420
+    },
+    {
+      "name": "micronturbo-zh",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": [
+        "-c",
+        "import http.server,socketserver\nclass H(http.server.SimpleHTTPRequestHandler):\n    def end_headers(self):\n        self.send_header('Cache-Control','no-store, no-cache, must-revalidate, max-age=0')\n        self.send_header('Pragma','no-cache')\n        self.send_header('Expires','0')\n        super().end_headers()\nsocketserver.TCPServer.allow_reuse_address=True\nsocketserver.TCPServer(('127.0.0.1',8421),H).serve_forever()"
+      ],
+      "port": 8421
+    }
+  ]
+}
