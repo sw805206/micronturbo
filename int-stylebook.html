@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="STYLE.css">
+  <link rel="stylesheet" href="STYLE.css?v=009">
   <style>
     .sb-swatch { border: 1px solid var(--mt-border); border-radius: var(--mt-radius-sm); overflow: hidden; }
     .sb-swatch__chip { height: 88px; }
@@ -618,16 +618,32 @@
     together, and the longest month name sets both.
   </p>
 
+  <h3>SKU hero · .mt-hero--sku</h3>
+  <div class="mt-hero mt-hero--sku" style="padding-top: 0; padding-bottom: 0;">
+    <div class="mt-intro" style="margin-bottom: 0;">
+      <p class="mt-label">MT-0K</p>
+      <h1>Two lines.<br>Not three.</h1>
+      <p>The headline is --mt-text-h1 with display leading, not
+      --mt-text-display. At display size in a column this narrow it wraps to
+      three lines and the row stops balancing.</p>
+    </div>
+    <div class="mt-hero__media">
+      <div class="mt-shot mt-shot--hero" style="margin-bottom: 0;">.mt-shot--hero · 3 / 2</div>
+    </div>
+  </div>
+  <p style="font-size: var(--mt-text-sm); color: var(--mt-text-3); max-width: 62ch; margin-top: var(--mt-space-5);">
+    1.05fr 1.1fr, centred on the midline, stacking at 1000px. Near-equal tracks
+    rather than image-led: the copy is the argument on a SKU page and the image
+    is support, so the narrow band above the stack point is fixed by giving the
+    text room, not by compressing it.
+  </p>
+
   <h3>Status, backlink and SKU intro</h3>
   <p class="mt-backlink"><a href="#">← All products</a></p>
   <div class="mt-status">
     <p>Development status: a hairline column, not a card. It is a caveat on the
     claims above it, not a claim of its own.</p>
   </div>
-  <p style="font-size: var(--mt-text-sm); color: var(--mt-text-3); max-width: 62ch;">
-    .mt-hero--sku is not shown standalone — it is an override on .mt-hero and
-    only means anything in that grid. It is visible on either SKU page.
-  </p>
 
   <p style="font-size: var(--mt-text-xs); color: var(--mt-text-faint);">
     Internal reference. Published so it stays bookmarkable; linked from nowhere;

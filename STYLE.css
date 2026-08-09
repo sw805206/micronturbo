@@ -1,4 +1,4 @@
-/* v008 | 2026-08-08 | 1130 lines
+/* v009 | 2026-08-08 | 1151 lines
    micronturbo.com design tokens and shared patterns.
    The decisions this file implements are recorded in STYLE.md.
    Pages consume tokens, never raw hex or px. See STYLE.md section 8. */
@@ -868,7 +868,12 @@ td {
   padding: var(--mt-space-4);
 }
 
-.mt-shot--hero { aspect-ratio: 16 / 9; margin-bottom: var(--mt-space-8); }
+/* 3:2, not 16:9. Two reasons, and they point the same way: a taller slot puts
+   the image nearer the height of the text column beside it, and 3:2 is the
+   native ratio of the landscape hero source, so that one crops losslessly
+   where 16:9 cost it 15.7%. The portrait source in the other slot loses 55.8%
+   of its height here — less than the 62.7% that 16:9 was already taking. */
+.mt-shot--hero { aspect-ratio: 3 / 2; margin-bottom: var(--mt-space-8); }
 .mt-shot--use { aspect-ratio: 4 / 3; }
 
 /* A real image standing in the same slot. object-fit keeps the ratio the
@@ -1073,8 +1078,24 @@ td {
 
 /* SKU hero. Reuses .mt-hero but overrides the ratio: the home page carries a
    short slogan in the text column, a SKU page carries a headline plus a
-   paragraph, so 1fr is too narrow and the display type wraps to five lines. */
-.mt-hero--sku { grid-template-columns: 1.15fr 1fr; align-items: start; }
+   paragraph, so the home ratio is wrong in both directions.
+
+   1.05fr 1.1fr gives the image marginally the larger track, and align-items:
+   center pairs the two columns on their midlines. The previous 1.15fr 1fr with
+   align-items: start made the text column both wider and taller than the image
+   and then pinned the image to the top of it, so the image sat in a half-empty
+   column.
+
+   The two tracks are near-equal rather than image-led on purpose. The copy is
+   the argument on a SKU page and the image is support, so between 1000 and
+   ~1150px the fix is to give the text room rather than compress it — squeezing
+   the text column there only pushes the headline onto a third line. */
+.mt-hero--sku { grid-template-columns: 1.05fr 1.1fr; align-items: center; }
+
+/* Display leading on a heading-sized headline. The SKU headline is
+   --mt-text-h1, not --mt-text-display — see STYLE.md section 4 — but it is
+   still a headline and wants display leading rather than heading leading. */
+.mt-hero--sku h1 { line-height: var(--mt-leading-display); }
 
 @media (max-width: 1000px) { .mt-hero--sku { grid-template-columns: 1fr; } }
 
