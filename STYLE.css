@@ -1,4 +1,4 @@
-/* v014 | 2026-08-09 | 1208 lines
+/* v015 | 2026-08-09 | 1172 lines
    micronturbo.com design tokens and shared patterns.
    The decisions this file implements are recorded in STYLE.md.
    Pages consume tokens, never raw hex or px. See STYLE.md section 8. */
@@ -1168,41 +1168,5 @@ td {
 
 .mt-intro { margin-bottom: var(--mt-space-8); }
 .mt-intro p { font-size: var(--mt-text-lg); color: var(--mt-text-2); }
-
-/* One-line selling points on a SKU page. The hub states the six claims as
-   cards; a SKU page has already made its argument in the hero and only needs
-   them restated, so they collapse to a bounded band of one-liners. */
-.mt-lines {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: var(--mt-space-4) var(--mt-space-5);
-  margin-bottom: var(--mt-space-9);
-  padding: var(--mt-space-6) 0;
-  border-top: 1px solid var(--mt-border);
-  border-bottom: 1px solid var(--mt-border);
-}
-
-@media (max-width: 860px) { .mt-lines { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media (max-width: 480px) { .mt-lines { grid-template-columns: 1fr; } }
-
-.mt-line { display: block; }
-.mt-line__head { display: flex; align-items: center; gap: var(--mt-space-3); }
-.mt-line__ic { flex: 0 0 auto; display: inline-flex; }
-.mt-line__ic svg { display: block; }
-
-.mt-line__fig {
-  font-size: var(--mt-text-lg);
-  font-weight: 700;
-  font-variant-numeric: tabular-nums;
-  color: var(--mt-text);
-  line-height: 1.25;
-}
-
-.mt-line__txt {
-  font-size: var(--mt-text-sm);
-  color: var(--mt-text-3);
-  display: block;
-  margin-top: var(--mt-space-2);
-}
 
 .mt-backlink { margin-bottom: var(--mt-space-6); font-size: var(--mt-text-sm); }
