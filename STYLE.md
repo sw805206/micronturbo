@@ -1,4 +1,4 @@
-v011 | 2026-08-08 | 577 lines
+v012 | 2026-08-08 | 584 lines
 # Style
 
 The design-system decisions for micronturbo.com, in words. STYLE.css is the
@@ -530,8 +530,15 @@ inventing colour values under deadline is how a palette drifts.
 
 Which page defined which pattern. One line each, appended as pages are built.
 
+The first row is not a page. The four carried patterns came from the identity
+system rather than from anything built here, and they are recorded so the table
+accounts for everything in STYLE.css rather than only for what pages added. A
+reader who finds `.mt-rule` in the CSS and no row for it cannot tell whether it
+was carried, forgotten, or orphaned.
+
 | Pattern | Defined by | Promoted to STYLE.css |
 |---|---|---|
+| `.mt-label`, `.mt-rule`, `.mt-stat`, `.mt-datum` | Identity system | v001 §5 |
 | Header, nav, language toggle, burger | Home page | v002 §8 |
 | Footer | Home page | v002 §8 |
 | Hero grid, slogan, primary button | Home page | v002 §9 |
