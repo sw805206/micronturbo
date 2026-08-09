@@ -1,4 +1,4 @@
-v008 | 2026-08-09 | 230 lines
+v009 | 2026-08-09 | 250 lines
 # Scope
 
 ## 1. Project
@@ -206,6 +206,26 @@ belongs on them.
   flush verification is performed. Fetches BACKLOG.md at runtime with
   `cache: 'no-cache'`, so it revalidates rather than reporting the state before
   a flush that was pushed moments earlier.
+- `int-language-zh.html` — BUILT. The EN/CN pair review page. Puts each English
+  page beside its Chinese counterpart, slot by slot, and highlights any Chinese
+  cell carrying a `变体` (a rejected form) or a `泛称` (a generic term that may
+  want narrowing) from LANGUAGE-zh.md. It holds NO copy of its own: the page
+  pairs and both LANGUAGE files are fetched at load time with
+  `cache: 'no-cache'` and paired by DOM position, so it cannot drift from the
+  pages it reviews. A snapshot needing regeneration whenever copy changes is
+  the failure mode the page exists to avoid.
+
+  Its chrome — headings, column labels, legend, error states — is in Chinese,
+  unlike the other two internal pages. This is deliberate and not an
+  inconsistency: `int-stylebook.html` and `int-backlog.html` are read by the
+  maintainer, while this page is read by the Chinese-side marketing and
+  engineering reviewers, and a review tool in a language its reviewers do not
+  read is a tool nobody uses.
+
+  The filename is the configuration. `int-language-zh.html` reads
+  `LANGUAGE-zh.md` and the `-zh` page pairs; a future `int-language-ja.html`
+  would read `LANGUAGE-ja.md` and the `-ja` pairs, with no other change to the
+  convention.
 
 ### Build approach
 
