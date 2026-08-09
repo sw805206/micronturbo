@@ -1,4 +1,4 @@
-v001 | 2026-08-09 | 122 lines
+v002 | 2026-08-09 | 174 lines
 # Language
 
 The canonical termbase for micronturbo.com, in ENGLISH. English is the source
@@ -6,7 +6,7 @@ of truth for terminology: this file records which word the site uses for a
 thing and why, and it contains no translations.
 
 Each language keeps its own file — `LANGUAGE-zh.md` for Simplified Chinese —
-keyed to the English term in section 5.
+keyed to the English term in section 7.
 
 ## 1. Rules
 
@@ -28,21 +28,60 @@ it, or a company-deck phrase the site has deliberately moved away from. Words
 with one obvious rendering do not earn a row, and adding them dilutes the ones
 that do.
 
-## 2. Scope
+## 2. English variant
+
+**The site is written in American English.** Spelling and word choice follow US
+usage:
+
+gray not grey · meter not metre · liter not litre · metric ton not tonne ·
+-ize not -ise (organize, optimize, realize) · -or not -our (color, favor,
+labor) · center not centre · analyze not analyse · license as both noun and
+verb · defense not defence · catalog not catalogue · program not programme ·
+aluminum not aluminium · single -l- in inflections (traveled, fueled,
+modeling, canceled).
+
+This applies to **alt text and HTML comments** as well as visible copy. Mixed
+spellings in comments get reproduced in copy: a comment is where the next
+writer looks to see how the last one spelled something.
+
+**SI unit symbols are unaffected** — they are international, not English.
+
+**American English does NOT license imperial units.** The site is metric
+throughout: kW, kg, W/kg, °C, m, rpm, h. US spelling and US customary units are
+separate decisions, and only the first has been made.
+
+## 3. Localization policy
+
+**Leads and scenario copy are LOCALIZED, not translated.** Paragraph count,
+rhythm, framing and which scenarios are named may differ between languages. A
+lead that lands in English may need three paragraphs where another language
+needs two, or may need to name a different set of situations to reach the same
+reader.
+
+**What must hold across languages is TERMS** — especially any term that also
+appears as a repeated label elsewhere on the same page. A comparison label that
+drifts between its column heading and the prose around it reads as two
+different things being compared.
+
+**Chinese copy deliberately takes a stronger register than the English.** This
+is intended, not drift, and should not be flattened toward the English on the
+grounds that the two do not match.
+
+## 4. Scope
 
 This file owns **which words are used**. It does not own how they are set.
 
 Typographic and CSS treatment lives in STYLE.md: the tracked micro-label and
 its Latin-only restriction, the English-only Chicago title case at h1 and h2,
 and any `:lang()` override that resets tracking or case for CJK. A decision
-about letter-spacing, capitalisation or font stack is a STYLE.md decision even
+about letter-spacing, capitalization or font stack is a STYLE.md decision even
 when it is provoked by a translation.
 
 The dividing question is whether the decision would survive a change of
 typeface. If it would, it belongs here; if it would not, it belongs in
 STYLE.md.
 
-## 3. Privacy
+## 5. Privacy
 
 This file and every language file are committed to a public repo, and any page
 built from them is publicly fetchable. Static hosting has no auth layer.
@@ -51,7 +90,7 @@ No competitor pricing. No unpublished performance claims. A figure that has not
 cleared for publication does not get a row here on the grounds that a termbase
 is an internal document — it is not one.
 
-## 4. Units and numbers
+## 6. Units and numbers
 
 **SI symbols stay Latin in figures and spec lines**: kW, kg, W/kg, °C, m, rpm,
 h. This holds in every language. The figure patterns — the one-liner band, the
@@ -65,13 +104,26 @@ and is free to say the unit however that language says it.
 
 **En dash for ranges, no spaces**: 9–12 kg, 500–800 hours, 50–130 W/kg.
 
-## 5. Terms
+**Power density is expressed in W/kg site-wide; battery capacity in kWh.** Never
+kW/hr — that is not a unit of power density, and it is the error a reader who
+half-remembers kWh reaches for.
+
+## 7. Terms
+
+### Market and product categories
+
+| EN | Definition |
+|---|---|
+| mobile power | The market category the site competes in: power that travels to where the work is. Deliberately broad — it includes trailer-mounted sets, which a person cannot carry. The category, not a claim about any one product. |
+| portable power | The subset of mobile power that a person moves without machinery. Narrower than mobile power and not a synonym for it: every portable product is mobile, and the trailer-mounted majority of the category is not portable. |
+| turbine generator | The public-facing category name for the architecture, set against "piston generator" as its opposite number. Used where a reader needs the class rather than the full technical phrase. |
+| microturbine generator system | The full product-category phrase, and the whole technical claim in four parts: a turbine, at micro scale, driving a generator, as a complete system. It is what the brand callout exists to say. Not abbreviated in running copy to "turbine", "the engine" or "generator" — each drops one of the parts. |
 
 ### Brand and product names
 
 | EN | Definition |
 |---|---|
-| Micronturbo | The English company name and wordmark. Not an abbreviation and never shortened on the site. It has a Chinese counterpart rather than a translation — see STYLE.md section 2, which also records that the romanisation in the identity deck is not used here. |
+| Micronturbo | The English company name and wordmark. Not an abbreviation and never shortened on the site. It has a Chinese counterpart rather than a translation — see STYLE.md section 2, which also records that the romanization in the identity deck is not used here. |
 | MT-6K | The 6 kW launch SKU. A model designation, invariant across languages and never translated, transliterated or spaced. |
 | MT-75K | The 75 kW launch SKU. Same rule as MT-6K. |
 | More in pipeline | The third card on the products hub. A signpost that further systems follow, NOT a third product: it names no SKU, carries three indicative ratings rather than a spec, and takes the secondary button. Wording must sit clearly below the two that ship. |
@@ -80,7 +132,6 @@ and is free to say the unit however that language says it.
 
 | EN | Definition |
 |---|---|
-| micro gas turbine generator system | The full product-category phrase, and the whole technical claim in five words: a gas turbine, at micro scale, driving a generator, as a complete system. It is what the brand callout exists to say. Not abbreviated in running copy to "turbine", "the engine" or "generator" — each drops one of the four parts. |
 | rated output | The power the unit is specified to deliver continuously, as distinct from a peak. It is the basis on which the comparison tables pair us with a competitor: same rated output, different everything else. Claims about holding output at altitude are stated as a percentage of it. |
 | power density | Power per unit mass, at system level, in W/kg. System level is the point — it counts the complete unit, not a core or a module. The 2,000 W/kg platform figure and the two SKU figures (~600 and ~1,875 W/kg) are different measurements and are never presented as one. |
 | cold start | Starting from cold at −40 °C, in seconds. It is a START claim. It does not assert an operating range, a rated output at that temperature, or storage limits, and must not be loosened into "works at −40 °C". |
@@ -104,7 +155,7 @@ what it excludes as much as for what it says.
 
 | EN | Definition |
 |---|---|
-| Mobility | Whether the unit can reach the site at all — carried, flown, taken up stairs. Deliberately broader than portability, which is only a statement about weight; the claim is about arrival. |
+| Mobility | Whether the unit can reach the site at all — carried, flown, taken up stairs. Deliberately broader than portability, which is only a statement about weight; the claim is about arrival. Kept in English because it also has to cover the MT-75K, which two people carry rather than one. |
 | Efficiency | Power out per kilogram carried. On this page it is the power-density argument, not a thermal or fuel-conversion claim, and it must not be allowed to drift into one. |
 | Toughness | Survival and full function in hostile conditions. It covers two environments at once — extreme cold and altitude — and any narrowing to one of them loses half the row. |
 | Versatility | Adapting to what the site has, principally in fuel but not only. Narrowing it to "multi-fuel" would make the word a restatement of its own figure. |
@@ -120,3 +171,4 @@ what it excludes as much as for what it says.
 | eVTOL | Electric vertical take-off and landing aircraft. Kept as the Latin acronym in every language — it is how the industry names the category. |
 | off-grid | A site with no mains supply available, as a property of the place rather than a description of a fault. Distinct from a grid outage, which is what standby power answers. |
 | standby power | Power held ready against the loss of a supply that normally exists. The opposite case to off-grid, and the two are not interchangeable: one replaces a grid that failed, the other serves a place that never had one. |
+| home backup | Standby power at consumer scale, in a dwelling. A scenario rather than a product class, and the one place on the site where the reader is not a professional operator. |
