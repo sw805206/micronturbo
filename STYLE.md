@@ -1,4 +1,4 @@
-v014 | 2026-08-09 | 609 lines
+v015 | 2026-08-09 | 637 lines
 # Style
 
 The design-system decisions for micronturbo.com, in words. STYLE.css is the
@@ -273,9 +273,29 @@ mild imbalance rather than shrinking the type again.
 
 **The tracked micro-label** is a named pattern, not an ad-hoc style:
 `--mt-text-xs`, weight 500, `letter-spacing: 0.28em`, uppercase, ignition orange.
-It sits above a heading to categorise the section. Latin only — CJK does not take
-letter-spacing this way, and the Chinese equivalent is decided when the first
-Chinese page is built.
+It sits above a heading to categorise the section. Those are its Latin values —
+CJK does not take letter-spacing this way.
+
+The Chinese equivalent was DECIDED when the first Chinese page was built, which
+is the products hub. `:lang(zh)` resets `.mt-label` and `.mt-alt__vslbl` to
+`letter-spacing: 0.1em` and `text-transform: none`, in STYLE.css section 7.
+
+Two decisions are packed into that. **0.1em rather than 0** because a CJK label
+still wants to read as a label: the glyphs are already on a fixed body and a
+little air separates the label from body copy without opening the word up.
+**`text-transform: none` rather than leaving it** because uppercase is a no-op on
+Chinese glyphs but not on a Latin run sharing the element — a model number or an
+SI symbol inside a Chinese label would have been the only thing the rule touched,
+which is the opposite of what it is for.
+
+The value matches the `:lang(zh) .mt-btn` override already in STYLE.css. Same
+problem, same treatment, deliberately the same number: two tracked-CJK values
+that differ by a hair would be a distinction nobody could see and everybody
+would have to maintain.
+
+Without the reset, 产品 renders at 0.28em and 锂电电源 at 0.14em — which reads
+as broken spacing rather than as tracking, because a reader parses the gaps as
+word boundaries in a script that has none.
 
 ## 5. Spacing, radii, layout
 
@@ -482,7 +502,7 @@ change waits.
 
 **Every page's `?v=` query matches the current STYLE.css version, and is bumped
 in the same commit that bumps the stamp.** Each page links the stylesheet as
-`href="STYLE.css?v=013"`, where the number is STYLE.css's own `v###`. Changing
+`href="STYLE.css?v=014"`, where the number is STYLE.css's own `v###`. Changing
 the query changes the URL, so a browser holding the old file has nothing to
 match against and must refetch.
 
@@ -499,13 +519,13 @@ a warm cache, which is why it cannot be reproduced with `curl`.
 Verify before pushing any STYLE.css change:
 
 ```
-grep -l 'rel="stylesheet"' *.html | xargs grep -L 'STYLE.css?v=013'
+grep -l 'rel="stylesheet"' *.html | xargs grep -L 'STYLE.css?v=014'
 ```
 
 It lists any page out of step and should return nothing. The scoping matters:
 `partials.html` and `partials-zh.html` are fragments injected into pages that
 already carry the link, so they hold no stylesheet reference of their own. A
-bare `grep -L 'STYLE.css?v=013' *.html` reports both as failures — the check
+bare `grep -L 'STYLE.css?v=014' *.html` reports both as failures — the check
 must ask only pages that link a stylesheet at all.
 
 This is a mitigation, not the fix. It costs a returning visitor a full CSS
@@ -517,9 +537,16 @@ allows a purge at release instead of waiting out someone else's TTL.
 The stylebook still carries NO header or footer section, now by choice rather
 than by absence. Both are injected at runtime from the partials files and are
 visible on any real page; an inline copy in the stylebook would be exactly the
-drift this section exists to prevent. What it does carry, in section 10, is the
-parts that are not injected: the two button variants, the language toggle
-standalone, and a Simplified Chinese specimen for `--mt-font-cjk`.
+drift this section exists to prevent. What it does carry is the parts that are
+not injected: the two button variants and the language toggle standalone, both
+in section 10, and the Simplified Chinese specimen for `--mt-font-cjk`, which
+sits in section 04 beside the type scale it belongs to.
+
+That specimen also carries the `:lang(zh)` label resets, as four rows pairing
+each label with its own Latin setting: `.mt-label` at 0.28em against 产品, and
+`.mt-alt__vslbl` at 0.14em against 锂电电源. A reset is a difference, not a
+value, so a single specimen would prove nothing — the pair is the test, and a
+regression reads as the Chinese row opening out to match the Latin one above it.
 
 The nav dropdown is the one deliberate exception. Section 10 renders it inline
 and open, because a panel that is invisible at rest cannot be reviewed any other
@@ -571,6 +598,7 @@ was carried, forgotten, or orphaned.
 | `.mt-shot` image slot | MT-6K, MT-75K | v008 §10 |
 | `.mt-hero--sku` hero ratio override | MT-6K, MT-75K | v008 §10 |
 | `.mt-intro`, `.mt-backlink` | MT-6K, MT-75K | v008 §10 |
+| `:lang(zh)` label reset | Products (zh) | v014 §7 |
 
 **Retired in v013:** `.mt-status`. The development-status notes were removed from
 both SKU pages, which left it with no consumer. Its row is edited rather than

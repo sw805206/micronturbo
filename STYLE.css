@@ -1,4 +1,4 @@
-/* v013 | 2026-08-09 | 1195 lines
+/* v014 | 2026-08-09 | 1208 lines
    micronturbo.com design tokens and shared patterns.
    The decisions this file implements are recorded in STYLE.md.
    Pages consume tokens, never raw hex or px. See STYLE.md section 8. */
@@ -394,6 +394,19 @@ td {
 
 :lang(zh) {
   font-family: var(--mt-font-cjk);
+}
+
+/* CJK takes neither Latin tracking nor case. Same problem and same treatment as
+   the :lang(zh) .mt-btn override in section 9. Without this the tracked
+   micro-label and the comparison-line label keep the letter-spacing they were
+   given for Latin — 0.28em and 0.14em — which on 产品 and 锂电电源 reads as
+   broken spacing rather than as tracking. text-transform is reset alongside it
+   because uppercase is a no-op on CJK and would only apply to any Latin run
+   sharing the element. */
+:lang(zh) .mt-label,
+:lang(zh) .mt-alt__vslbl {
+  letter-spacing: 0.1em;
+  text-transform: none;
 }
 
 /* ---------------------------------------------------------------
