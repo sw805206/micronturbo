@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="STYLE.css?v=011">
+  <link rel="stylesheet" href="STYLE.css?v=012">
 </head>
 <body>
 
@@ -20,7 +20,7 @@
   <div class="mt-container">
     <p class="mt-label">Products</p>
     <h1 class="mt-display">Light to carry.<br>Long on power.</h1>
-    <p class="mt-lead">Anything working away from a socket carries its own power
+    <p class="mt-lead mt-lead--full">Anything working away from a socket carries its own power
     — a rescue truck, an industrial drone, a walking robot — and pays for it in
     weight, in service hours, in fuel it cannot find. Lithium and piston have each
     pushed one of those limits and surrendered another. Micronturbo moves every
@@ -30,8 +30,15 @@
 
 <section class="mt-section" style="padding-top: 0;">
   <div class="mt-container">
-    <div class="mt-rule"><span class="mt-rule__num">01</span><span class="mt-rule__line"></span></div>
-    <h2 style="margin-bottom: var(--mt-space-7);">What a micro gas turbine changes</h2>
+    <!-- The only place on the page that says what the product physically is.
+         It replaces the section heading rather than sitting under one. -->
+    <div class="mt-callout">
+      <p><strong>Micronturbo builds micro gas turbine generator systems</strong> — a
+      jet engine shrunk to the size of a fire extinguisher, spinning past 160,000 rpm,
+      turning a generator instead of a fan. It is the first architecture below 300 kW
+      that is neither a battery nor a piston engine, and that is why the numbers below
+      look the way they do.</p>
+    </div>
 
     <!-- Icons vendored inline: Bootstrap Icons (MIT) for the feather, Lucide
          (ISC) for the other five. No CDN, no build-time dependency. Licences
@@ -183,9 +190,8 @@
 
 <section class="mt-section" style="padding-top: 0;">
   <div class="mt-container">
-    <div class="mt-rule"><span class="mt-rule__num">02</span><span class="mt-rule__line"></span></div>
     <h2>Two systems at launch</h2>
-    <p class="mt-lead" style="margin-bottom: var(--mt-space-7);">They do not compete
+    <p class="mt-lead mt-lead--full" style="margin-bottom: var(--mt-space-7);">They do not compete
     with each other. Each replaces a different class of equipment.</p>
 
     <div class="mt-skus">

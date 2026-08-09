@@ -1,4 +1,4 @@
-/* v011 | 2026-08-08 | 1172 lines
+/* v012 | 2026-08-08 | 1205 lines
    micronturbo.com design tokens and shared patterns.
    The decisions this file implements are recorded in STYLE.md.
    Pages consume tokens, never raw hex or px. See STYLE.md section 8. */
@@ -880,6 +880,39 @@ td {
   border: 0;
   padding: 0;
   background: none;
+}
+
+/* Full-measure lead. .mt-lead is capped at 62ch site-wide, which is right for
+   sustained reading. A section lead is not sustained reading — it is one or two
+   lines introducing the thing below it, and at 62ch it stops around 800px above
+   a table or a row of cards that runs to 1190, which reads as a mistake rather
+   than as a measure.
+
+   The rule: a paragraph in a full-width section runs the full width; a paragraph
+   in a grid column takes its column. A modifier rather than an edit to .mt-lead,
+   because the home page uses the base class and the cap is right there. */
+.mt-lead--full { max-width: none; }
+
+/* Brand callout. Box spans the container so its edges match the feature rows;
+   the text fills the box rather than being capped inside it, so the inset comes
+   only from the padding. An earlier version capped the text inside a full-width
+   box and left dead space down the right-hand side.
+
+   Single-sided accent border, so no radius — the data column idiom in STYLE.md
+   section 6. */
+.mt-callout {
+  background: var(--mt-surface);
+  border-left: 3px solid var(--mt-ignition);
+  border-radius: 0;
+  padding: var(--mt-space-6) var(--mt-space-7);
+  margin-bottom: var(--mt-space-8);
+}
+
+.mt-callout p { font-size: var(--mt-text-lg); color: var(--mt-text-2); margin: 0; }
+.mt-callout strong { color: var(--mt-text); font-weight: 700; }
+
+@media (max-width: 768px) {
+  .mt-callout { padding: var(--mt-space-5); }
 }
 
 /* Alternating feature rows. Media and text swap sides down the page; the media

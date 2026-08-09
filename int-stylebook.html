@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="STYLE.css?v=011">
+  <link rel="stylesheet" href="STYLE.css?v=012">
   <style>
     .sb-swatch { border: 1px solid var(--mt-border); border-radius: var(--mt-radius-sm); overflow: hidden; }
     .sb-swatch__chip { height: 88px; }
@@ -460,6 +460,32 @@
     STYLE.css section 10. Each carries its own breakpoints rather than the global
     768 — these are content-shaped grids and they break where their content
     breaks. Resize the window to see them go.
+  </p>
+
+  <h3 style="margin-top: var(--mt-space-7);">Brand callout · .mt-callout</h3>
+  <div class="mt-callout">
+    <p><strong>The box spans its container and the text fills the box.</strong> The
+    inset comes from the padding alone — there is deliberately no max-width on the
+    paragraph, because capping the text inside a full-width box leaves dead space
+    down the right and makes the box look broken rather than measured.</p>
+  </div>
+  <p style="font-size: var(--mt-text-sm); color: var(--mt-text-3); max-width: 62ch;">
+    Single-sided ignition border, so no radius — the data column idiom. On the hub
+    it replaces the section heading rather than sitting under one.
+  </p>
+
+  <h3 style="margin-top: var(--mt-space-7);">Full-measure lead · .mt-lead--full</h3>
+  <p class="mt-lead" style="margin-bottom: var(--mt-space-3);">.mt-lead — capped at
+  62ch. Right for sustained reading, and this line stops well short of the container
+  edge to show where the cap falls.</p>
+  <p class="mt-lead mt-lead--full">.mt-lead mt-lead--full — the cap released. A
+  section lead is a line or two introducing the thing beneath it, so it runs the
+  full width of the section rather than stopping around 800px above a grid that
+  reaches 1190.</p>
+  <p style="font-size: var(--mt-text-sm); color: var(--mt-text-3); max-width: 62ch;">
+    The rule: a paragraph in a full-width section runs the full width; a paragraph
+    in a grid column takes its column. Not applied to the SKU hero intros, which
+    are already measured by their column.
   </p>
 
   <h3 style="margin-top: var(--mt-space-7);">Alternating feature row · .mt-alt__row</h3>

@@ -1,4 +1,4 @@
-v010 | 2026-08-08 | 548 lines
+v011 | 2026-08-08 | 577 lines
 # Style
 
 The design-system decisions for micronturbo.com, in words. STYLE.css is the
@@ -400,6 +400,33 @@ of them early and the other late.
   product, and takes `--mt-steel` so it reads as future rather than as a third
   thing competing with the two that ship.
 - **Use-case grid** — `.mt-use` in `.mt-uses`. Picture-led, three across.
+- **Brand callout** — `.mt-callout`. A surface box with a single-sided ignition
+  border and therefore no radius, following the data column idiom above. On the
+  hub it replaces the section heading rather than sitting under one: it is the
+  only place on the page that says what the product physically is, so it carries
+  more weight than a heading would.
+
+  The box spans the container so its edges line up with the feature rows below
+  it, and **the text has no max-width** — it fills the box and is inset only by
+  the padding. An earlier version capped the text inside a full-width box, which
+  left a band of dead space down the right and made the box look broken rather
+  than measured. If a future edit reaches for `max-width` here, this is why it
+  is not there.
+
+- **Full-measure lead** — `.mt-lead--full`, releasing `.mt-lead`'s 62ch cap.
+
+  The cap is right for sustained reading and wrong for a section lead, which is
+  a line or two introducing the thing beneath it. At 62ch such a lead stops
+  around 800px above a table or a row of cards running to 1190, and the ragged
+  right edge reads as a mistake rather than as a measure.
+
+  **The rule this sets: a paragraph in a full-width section runs the full width;
+  a paragraph in a grid column takes its column.** So the modifier goes on the
+  hub's hero lead and section leads, and on the three SKU section leads — and
+  NOT on the SKU hero intros, which sit in the hero grid's left column and are
+  already measured by it, nor on the feature-row descriptions, nor on `.mt-lead`
+  itself, which the home page uses at the correct cap.
+
 - **Image slot** — `.mt-shot`, with `--hero` at 3/2 and `--use` at 4/3.
   `.mt-shot--img` puts a real image in the same box at the same ratio, so
   replacing a render with photography does not reflow the page.
@@ -441,7 +468,7 @@ change waits.
 
 **Every page's `?v=` query matches the current STYLE.css version, and is bumped
 in the same commit that bumps the stamp.** Each page links the stylesheet as
-`href="STYLE.css?v=011"`, where the number is STYLE.css's own `v###`. Changing
+`href="STYLE.css?v=012"`, where the number is STYLE.css's own `v###`. Changing
 the query changes the URL, so a browser holding the old file has nothing to
 match against and must refetch.
 
@@ -458,13 +485,13 @@ a warm cache, which is why it cannot be reproduced with `curl`.
 Verify before pushing any STYLE.css change:
 
 ```
-grep -l 'rel="stylesheet"' *.html | xargs grep -L 'STYLE.css?v=011'
+grep -l 'rel="stylesheet"' *.html | xargs grep -L 'STYLE.css?v=012'
 ```
 
 It lists any page out of step and should return nothing. The scoping matters:
 `partials.html` and `partials-zh.html` are fragments injected into pages that
 already carry the link, so they hold no stylesheet reference of their own. A
-bare `grep -L 'STYLE.css?v=011' *.html` reports both as failures — the check
+bare `grep -L 'STYLE.css?v=012' *.html` reports both as failures — the check
 must ask only pages that link a stylesheet at all.
 
 This is a mitigation, not the fix. It costs a returning visitor a full CSS
@@ -515,6 +542,8 @@ Which page defined which pattern. One line each, appended as pages are built.
 | `.mt-sku-card` / `.mt-skus` SKU cards | Products hub | v008 §10 |
 | `.mt-alt__row` alternating feature row | Products hub | v010 §10 |
 | `--mt-bg-rgb` | Products hub | v010 §1 |
+| `.mt-callout` brand callout | Products hub | v012 §10 |
+| `.mt-lead--full` full-measure lead | Products hub, MT-6K, MT-75K | v012 §10 |
 | `.mt-line` / `.mt-lines` one-liners | MT-6K, MT-75K | v008 §10 |
 | `.mt-table` / `.mt-table-wrap` comparison table | MT-6K, MT-75K | v008 §10 |
 | `.mt-use` / `.mt-uses` use-case grid | MT-6K, MT-75K | v008 §10 |
