@@ -1,4 +1,4 @@
-v003 | 2026-08-09 | 182 lines
+v004 | 2026-08-09 | 187 lines
 # Language
 
 The canonical termbase for micronturbo.com, in ENGLISH. English is the source
@@ -37,8 +37,13 @@ gray not grey · meter not metre · liter not litre · metric ton not tonne ·
 -ize not -ise (organize, optimize, realize) · -or not -our (color, favor,
 labor) · center not centre · analyze not analyse · license as both noun and
 verb · defense not defence · catalog not catalogue · program not programme ·
-aluminum not aluminium · single -l- in inflections (traveled, fueled,
-modeling, canceled).
+aluminum not aluminium · story not storey (a floor of a building) · single
+-l- in inflections (traveled, fueled, modeling, canceled).
+
+The list is illustrative, not exhaustive — US usage governs whether or not a
+given pair appears above. Checking copy against these examples alone is how a
+British form survives a sweep: `behaviour`, `labelled` and `storey` all did,
+each belonging to a class named here without being spelled out.
 
 This applies to **alt text and HTML comments** as well as visible copy. Mixed
 spellings in comments get reproduced in copy: a comment is where the next

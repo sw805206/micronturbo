@@ -248,7 +248,7 @@ subordinating conjunctions. Lowercase articles (a, an, the), coordinating
 conjunctions (and, but, or, for, nor, so, yet) and all prepositions regardless of
 length (at, on, to, for, with, between). Where a heading is two sentences, each
 sentence is its own unit — the word before each full stop is a last word and
-capitalises.
+capitalizes.
 
 h3 and below stay sentence case. The tracked micro-label is uppercase and is
 unaffected.
