@@ -1,4 +1,4 @@
-v016 | 2026-08-09 | 637 lines
+v017 | 2026-08-09 | 646 lines
 # Style
 
 The design-system decisions for micronturbo.com, in words. STYLE.css is the
@@ -387,7 +387,7 @@ partials files, per SCOPE.md section 3.
 
 ### Defined by the product pages
 
-Ten patterns, in STYLE.css section 10. They share one property worth stating
+Nine patterns, in STYLE.css section 10. They share one property worth stating
 once: each carries its own breakpoints — 900/520, 860/480, 560, 1000 — rather
 than the global 768. These are content-shaped grids and they break where their
 content breaks. A six-card grid and a three-column comparison table do not fail
@@ -424,9 +424,6 @@ of them early and the other late.
   comparison lines sit beneath it in `--mt-text-3` with `--mt-text-faint`
   labels. That ordering is the argument: the claim first, the context second,
   never the competitor's number at the same weight as ours.
-- **One-liner** — `.mt-line` in `.mt-lines`. The same six claims on a SKU page,
-  where the hero has already made the argument and they only need restating.
-  A bounded band, hairline top and bottom, rather than six more cards.
 - **Comparison table** — `.mt-table` in `.mt-table-wrap`. Our column takes a
   surface fill and an ignition rule; the competitor's is left uncoloured. It
   scrolls below its breakpoint rather than wrapping, because a three-column
@@ -502,7 +499,7 @@ change waits.
 
 **Every page's `?v=` query matches the current STYLE.css version, and is bumped
 in the same commit that bumps the stamp.** Each page links the stylesheet as
-`href="STYLE.css?v=014"`, where the number is STYLE.css's own `v###`. Changing
+`href="STYLE.css?v=015"`, where the number is STYLE.css's own `v###`. Changing
 the query changes the URL, so a browser holding the old file has nothing to
 match against and must refetch.
 
@@ -519,13 +516,13 @@ a warm cache, which is why it cannot be reproduced with `curl`.
 Verify before pushing any STYLE.css change:
 
 ```
-grep -l 'rel="stylesheet"' *.html | xargs grep -L 'STYLE.css?v=014'
+grep -l 'rel="stylesheet"' *.html | xargs grep -L 'STYLE.css?v=015'
 ```
 
 It lists any page out of step and should return nothing. The scoping matters:
 `partials.html` and `partials-zh.html` are fragments injected into pages that
 already carry the link, so they hold no stylesheet reference of their own. A
-bare `grep -L 'STYLE.css?v=014' *.html` reports both as failures — the check
+bare `grep -L 'STYLE.css?v=015' *.html` reports both as failures — the check
 must ask only pages that link a stylesheet at all.
 
 This is a mitigation, not the fix. It costs a returning visitor a full CSS
@@ -592,13 +589,25 @@ was carried, forgotten, or orphaned.
 | `--mt-bg-rgb` | Products hub | v010 §1 |
 | `.mt-callout` brand callout | Products hub | v012 §10 |
 | `.mt-lead--full` full-measure lead | Products hub, MT-6K, MT-75K | v012 §10 |
-| `.mt-line` / `.mt-lines` one-liners | MT-6K, MT-75K | v008 §10 |
 | `.mt-table` / `.mt-table-wrap` comparison table | MT-6K, MT-75K | v008 §10 |
 | `.mt-use` / `.mt-uses` use-case grid | MT-6K, MT-75K | v008 §10 |
 | `.mt-shot` image slot | MT-6K, MT-75K | v008 §10 |
 | `.mt-hero--sku` hero ratio override | MT-6K, MT-75K | v008 §10 |
 | `.mt-intro`, `.mt-backlink` | MT-6K, MT-75K | v008 §10 |
 | `:lang(zh)` label reset | Products (zh) | v014 §7 |
+
+**Retired in v015:** `.mt-line` / `.mt-lines`. The one-liner band was removed
+from all four SKU pages, which left it with no consumer. Its row is deleted
+rather than edited, because nothing shared it — the v013 note below explains
+when a row is kept instead.
+
+The claim the band carried that the table did not is power density, and it
+survives as a row in the comparison table rather than as a pattern. That is the
+test worth recording: a pattern is retired when its last consumer goes, not when
+the content it carried goes, and those were two different questions here.
+
+Same shape as v013 — the consumers came off in one commit and the CSS in the
+next, so the content decision stays revertible on its own.
 
 **Retired in v013:** `.mt-status`. The development-status notes were removed from
 both SKU pages, which left it with no consumer. Its row is edited rather than
