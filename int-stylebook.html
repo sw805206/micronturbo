@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="STYLE.css?v=013">
+  <link rel="stylesheet" href="STYLE.css?v=014">
   <style>
     .sb-swatch { border: 1px solid var(--mt-border); border-radius: var(--mt-radius-sm); overflow: hidden; }
     .sb-swatch__chip { height: 88px; }
@@ -248,10 +248,29 @@
     attribute is the switch.
   </p>
 
+  <h4 style="margin-top: var(--mt-space-5);">Label resets under :lang(zh)</h4>
+  <!-- The lang goes on a WRAPPER, not on the label. The rule is a descendant
+       selector, :lang(zh) .mt-label, so it needs a Chinese ancestor — which on a
+       real page is <html lang="zh-Hans">. A lang on the label itself renders at
+       the Latin tracking and the specimen would report a reset that is not
+       there. -->
+  <div class="sb-row"><span class="sb-row__token">.mt-label · Latin · 0.28em</span><span class="mt-label" style="margin-bottom: 0;">Products</span></div>
+  <div class="sb-row"><span class="sb-row__token">.mt-label · zh · 0.1em</span><span lang="zh-Hans"><span class="mt-label" style="margin-bottom: 0;">产品</span></span></div>
+  <div class="sb-row"><span class="sb-row__token">.mt-alt__vslbl · Latin · 0.14em</span><span class="mt-alt__vslbl">Lithium station</span></div>
+  <div class="sb-row"><span class="sb-row__token">.mt-alt__vslbl · zh · 0.1em</span><span lang="zh-Hans"><span class="mt-alt__vslbl">锂电电源</span></span></div>
+  <p style="font-size: var(--mt-text-sm); color: var(--mt-text-3); max-width: 62ch;">
+    Both labels are tracked and uppercased for Latin. CJK takes neither, so the
+    :lang(zh) rule in section 7 resets them to 0.1em and text-transform: none —
+    the same treatment .mt-btn already had. The pairs above are the proof: the
+    Chinese rows must sit tighter than the Latin rows directly over them, and a
+    regression shows up here as 产品 spaced like 产 品.
+  </p>
+
   <h3 style="margin-top: var(--mt-space-6);">Tracked micro-label</h3>
   <p class="mt-label">Micro gas-turbine power</p>
   <p style="font-size: var(--mt-text-sm); color: var(--mt-text-3);">
-    .mt-label · --mt-text-xs · 500 · 0.28em · uppercase · ignition. Latin only.
+    .mt-label · --mt-text-xs · 500 · 0.28em · uppercase · ignition. Latin values;
+    :lang(zh) resets the tracking and the case, as shown above.
   </p>
 
   <div class="mt-rule" style="margin-top: var(--mt-space-9);">
