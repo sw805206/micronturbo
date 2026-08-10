@@ -1,4 +1,4 @@
-v010 | 2026-08-09 | 250 lines
+v011 | 2026-08-09 | 269 lines
 # Scope
 
 ## 1. Project
@@ -125,10 +125,29 @@ The toggle resolves to the current page's counterpart when it exists, and to
 the home page in the other language when it does not. That fallback is what
 lets the two language trees diverge without breaking navigation.
 
-The toggle is BUILT, as of the home page. Both partials files carry it, each
-pointing one direction only, and each carries a reciprocal `hreflang`. Until a
-second translated page exists both toggles resolve to the other language's home
-page, which is the documented fallback rather than a gap.
+The toggle is BUILT and resolves across all four page pairs. Both partials files
+carry it, each pointing one direction only, and the toggle anchor carries an
+`hreflang` attribute naming the language it offers — `zh-Hans` on the English
+toggle, `en` on the Chinese one. That attribute sits on the anchor, not in the
+head. It is not an SEO alternate and never was; the head-level
+`<link rel="alternate" hreflang>` that each page carries is a separate artifact,
+and it is the one the resolver reads.
+
+That link is the authoritative existence signal for a counterpart page, because
+it is written by hand only where a counterpart really exists.
+`resolveLangToggle()` in `partials.js` reads the toggle anchor's own `hreflang`
+to learn which language the toggle offers, finds the matching
+`link[rel="alternate"]` in the page's own head, and sets that href on the anchor
+after the partials are injected. The counterpart filename is NOT derived from
+the `-zh` suffix: a derived URL cannot be known to exist, and a toggle that 404s
+is worse than one that lands on the home page. A page whose alternate is
+missing, empty, or stale sends its toggle to the language home page.
+
+This is the one thing the suffix convention does not give for free. A new
+translated page must carry a reciprocal alternate on BOTH sides — the new page
+pointing at its counterpart, the counterpart pointing back — or its toggle
+silently goes home, with no error in the console and nothing wrong on the page.
+Everything else about adding a page remains filename-driven.
 
 DECIDED: Chinese is **Simplified**. `lang="zh-Hans"`, `hreflang="zh-Hans"`, and
 the CJK stack in STYLE.css is Noto Sans SC / PingFang SC / Microsoft YaHei. The
