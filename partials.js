@@ -33,6 +33,39 @@
     }
   }
 
+  /* Language toggle. The partials markup ships it pointing at the other
+     language's home page; this resolves it to the current page's counterpart
+     where one exists, leaving the home page as the fallback where one does
+     not. Both halves of that are SCOPE.md section 3.
+
+     The page's own <link rel="alternate" hreflang> is the authoritative
+     existence signal, because it is written by hand only where a counterpart
+     really exists. The counterpart is deliberately NOT derived from the -zh
+     suffix as a second fallback: a derived URL cannot be known to exist, and a
+     toggle that 404s is worse than one that lands on the home page.
+
+     Resolved on the anchor itself rather than in a click handler, so
+     middle-click and open-in-new-tab get the same target as a plain click.
+     Page to page only — no hash, no query string. */
+  function resolveLangToggle(root) {
+    var toggle = root.querySelector('.mt-lang');
+    if (!toggle) { return; }
+
+    /* The toggle's own hreflang names the language it offers, so it picks out
+       the matching alternate without this file needing to know which language
+       the page is in — the same reason the suffix rule drives everything else. */
+    var offers = toggle.getAttribute('hreflang');
+    if (!offers) { return; }
+
+    var alt = document.head.querySelector(
+      'link[rel="alternate"][hreflang="' + offers + '"]');
+    var href = alt ? (alt.getAttribute('href') || '').replace(/^\s+|\s+$/g, '') : '';
+
+    /* No alternate, or an empty one: the shipped home-page href already is the
+       fallback, so leave it exactly as the markup has it. */
+    if (href) { toggle.setAttribute('href', href); }
+  }
+
   /* Crossing the breakpoint swaps the panel between an absolute overlay and an
      inline block. An open panel left over from the other layout reads as stuck,
      so both layouts start closed after a resize. */
@@ -208,6 +241,7 @@
     if (headerSlot && headerTpl) {
       headerSlot.appendChild(document.importNode(headerTpl.content, true));
       markActive(headerSlot, currentFile());
+      resolveLangToggle(headerSlot);
       wireBurger(headerSlot);
       wireDropdowns(headerSlot);
     }
