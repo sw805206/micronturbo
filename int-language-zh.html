@@ -351,7 +351,7 @@
        which reads exactly like a healthy page. */
     if (terms.length === 0) {
       checks += check(false, '术语表为空',
-        TERMBASE + ' 已加载，但未解析出任何词条 —— 高亮全部失效，本页结论不可信。');
+        TERMBASE + ' 已加载，但未解析出任何词条——高亮全部失效，本页结论不可信。');
     } else {
       checks += check(true, '术语表解析完成',
         '标准术语 ' + nOk + ' 条 · 变体 ' + nVariant + ' 条 · 泛称 ' + nGeneric + ' 条');
@@ -360,8 +360,8 @@
     /* ---- legend ---- */
     document.getElementById('lz-legend').innerHTML =
       '<span><i class="lz-swatch" style="background: var(--lz-ok);"></i>标准术语</span>' +
-      '<span><i class="lz-swatch" style="background: var(--lz-variant);"></i>变体 —— 偏离标准术语</span>' +
-      '<span><i class="lz-swatch" style="background: var(--lz-generic);"></i>泛称 —— 可能需收窄</span>' +
+      '<span><i class="lz-swatch" style="background: var(--lz-variant);"></i>变体——偏离标准术语</span>' +
+      '<span><i class="lz-swatch" style="background: var(--lz-generic);"></i>泛称——可能需收窄</span>' +
       '<span style="color: var(--mt-text-faint);">悬停查看标准术语、英文词条与理由</span>';
 
     /* ---- pages ---- */
@@ -376,7 +376,7 @@
           '<span class="lz-group__name">' + esc(p.zh) + '</span></div>' +
           errBox('<strong>无法加载</strong> ' +
           [en.error, zh.error].filter(Boolean).map(esc).join('；') +
-          ' —— 本对照跳过，其余页面照常。') + '</div>';
+          '——本对照跳过，其余页面照常。') + '</div>';
         return;
       }
 
@@ -416,7 +416,7 @@
       if (result.desync) {
         var d = result.desync;
         desyncPages.push(p.zh);
-        html += errBox('<strong>结构不一致</strong> —— ' + esc(p.en) + ' 与 ' + esc(p.zh) +
+        html += errBox('<strong>结构不一致</strong>——' + esc(p.en) + ' 与 ' + esc(p.zh) +
           ' 的结构在第 ' + (d.at + 1) + ' 项处分歧，对照到此为止。' +
           '英文 <b>' + d.enN + '</b> 项，中文 <b>' + d.zhN + '</b> 项。' +
           (d.enSig ? '该项英文为 <code>' + esc(d.enSig) + '</code>，中文为 <code>' + esc(d.zhSig) + '</code>。' : '') +
@@ -430,7 +430,7 @@
     /* Zero pairs is indistinguishable from a clean page unless it is said. */
     if (totalRows === 0) {
       checks += check(false, '未解析出任何对照项',
-        '页面已加载，但未取到可配对的文本元素 —— 本页没有可审校的内容。');
+        '页面已加载，但未取到可配对的文本元素——本页没有可审校的内容。');
     } else {
       checks += check(desyncPages.length === 0,
         desyncPages.length === 0 ? '四组页面结构一致' : desyncPages.length + ' 组页面结构不一致',
@@ -445,7 +445,7 @@
 
   }).catch(function (err) {
     document.getElementById('lz-checks').innerHTML =
-      errBox('<strong>页面生成失败</strong> —— ' + esc(err.message || String(err)));
+      errBox('<strong>页面生成失败</strong>——' + esc(err.message || String(err)));
   });
 
 })();
