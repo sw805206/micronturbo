@@ -1,4 +1,4 @@
-v018 | 2026-08-09 | 646 lines
+v019 | 2026-08-09 | 653 lines
 # Style
 
 The design-system decisions for micronturbo.com, in words. STYLE.css is the
@@ -347,6 +347,13 @@ partials files, per SCOPE.md section 3.
   render the same shape despite different glyph widths. It is excluded from the
   nav item rules with `:not(.mt-lang)` so it keeps its own box, which also lets
   it render outside a nav — the stylebook shows it standalone.
+
+  The anchor's `hreflang` attribute is functional, not decorative.
+  `resolveLangToggle()` in `partials.js` reads it to learn which language the
+  toggle offers, and uses it to select that page's matching
+  `<link rel="alternate">`. Remove it from the partials markup and counterpart
+  resolution stops site-wide — every toggle falls back to the language home
+  page, silently and on every page at once. See SCOPE.md section 3.
 - **Burger** — below 768px only. 44px tap target, three bars that cross into an
   X on open. Honors `prefers-reduced-motion`.
 - **Footer** — hairline top border, legal line left, links right, both at
