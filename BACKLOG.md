@@ -1,4 +1,4 @@
-v013 | 2026-08-09 | 60 lines
+v014 | 2026-08-09 | 60 lines
 # Backlog
 
 The backlog for micronturbo.com. Tracks both short-term items (bugs, UI
@@ -47,9 +47,9 @@ Closed-by stays empty on every other status.
 | BL-002 | open | infra | DMARC is set to `p=quarantine` with no SPF record and no MX; mail sent from or to micronturbo.com will bounce or be quarantined if the domain is ever used for email | 2026-08-07 | |
 | BL-003 | open | infra | Decide whether to enable the Cloudflare proxy (orange cloud) on the apex and www records; requires SSL/TLS mode set to Full first, as Flexible causes a redirect loop against GitHub Pages | 2026-08-07 | |
 | BL-004 | open | content | Build 404.html | 2026-08-07 | |
-| BL-005 | open | content | Add favicon, sitemap.xml and robots.txt | 2026-08-07 | |
-| BL-006 | open | feature | Build `int-backlog.html`, the rendered backlog view; until it exists, Part C flush verification is performed in the raw file | 2026-08-07 | |
-| BL-007 | open | style | Export the Power Flame logo (variant 4a) from Claude Design to real SVG files: two-color dark, two-color light, and mono; plus favicon renders at 16/32/48. Blocks partials.html | 2026-08-07 | |
+| BL-005 | open | content | Add sitemap.xml and robots.txt | 2026-08-07 | |
+| BL-006 | closed | feature | Build `int-backlog.html`, the rendered backlog view; until it exists, Part C flush verification is performed in the raw file | 2026-08-07 | verified manually by human 2026-08-09 |
+| BL-007 | open | style | Logo not finalized — export the Power Flame logo (variant 4a) from Claude Design to real SVG files: two-color dark, two-color light, and mono; plus the favicon renders at 16/32/48 | 2026-08-07 | |
 | BL-008 | closed | style | Build STYLE.css and int-stylebook.html together on a branch, per STYLE.md section 7 | 2026-08-07 | PR01 |
 | BL-009 | closed | style | Confirm or replace the placeholder Chinese/English names for `--mt-surface` (舱体蓝 Cabin) and `--mt-surface-high` (仪表蓝 Instrument); both were coined outside the Chinese identity source | 2026-08-07 | names confirmed by human 2026-08-08 |
 | BL-010 | open | feature | Build the Traditional Chinese pages once Simplified is complete; needs a filename convention for a second Chinese script, a third partials file, a three-way language toggle, and a rewrite of the `-zh` suffix rule in SCOPE.md section 3 | 2026-08-07 | |
@@ -57,4 +57,4 @@ Closed-by stays empty on every other status.
 | BL-012 | open | content | Build `products`, `about`, `contact` and `privacy` in both languages; all four are linked from the nav and 404, and the hero's secondary button points at `contact` | 2026-08-07 | |
 | BL-013 | closed | bug | `partials.js` fetched the header with default caching, so a browser could inject a stale nav into a current page — it kept rendering 繁 after the site switched to 简. Fixed by revalidating with `cache: 'no-cache'` | 2026-08-07 | PR04 |
 | BL-014 | open | content | Confirm with the tech team what the 2 kW/kg power-density figure measures — turbine core, engine module, or complete system — and whether it is a platform peak rather than a launch-SKU figure; neither launch SKU reaches it (MT-6K ~600 W/kg, MT-75K ~1,875 W/kg) | 2026-08-08 | |
-| BL-015 | review | content | Replace the three Chinese placeholder pages (`products-zh.html`, `products-6k-zh.html`, `products-75k-zh.html`) with real translated content and remove their `noindex,nofollow` | 2026-08-08 | |
+| BL-015 | closed | content | Replace the three Chinese placeholder pages (`products-zh.html`, `products-6k-zh.html`, `products-75k-zh.html`) with real translated content and remove their `noindex,nofollow` | 2026-08-08 | verified manually by human 2026-08-09 |
