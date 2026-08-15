@@ -97,7 +97,7 @@
 (function () {
   'use strict';
 
-  var ENDPOINT = '';
+  var ENDPOINT = 'https://script.google.com/macros/s/AKfycbzarmi342iTIZiSrd9SryUqnZ7imqAWo6YLut8SIYwsVd2b_vA-fzQqiTtQTxnDbZ5zgw/exec';
 
   var form = document.getElementById('mt-contact-form');
   var statusBox = document.getElementById('mt-form-status');
@@ -197,8 +197,29 @@
       return;
     }
 
+    /* JSON body, sent as text/plain. Two constraints meet here.
+
+       The script reads e.postData.contents and parses it as JSON, so the body
+       has to be JSON — Apps Script does not populate e.parameter from
+       multipart/form-data at all, and a urlencoded body is not what this
+       endpoint parses.
+
+       text/plain rather than application/json because it is CORS-safelisted:
+       application/json triggers a preflight OPTIONS, and an Apps Script web
+       app does not answer OPTIONS, so the request would fail before the POST
+       was ever made. */
     button.disabled = true;
-    fetch(ENDPOINT, { method: 'POST', body: new FormData(form) })
+    fetch(ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify({
+        name: form.elements.name.value.trim(),
+        company: form.elements.company.value.trim(),
+        email: form.elements.email.value.trim(),
+        subject: form.elements.subject.value.trim(),
+        message: form.elements.message.value.trim()
+      })
+    })
       .then(function (response) {
         if (!response.ok) { throw new Error('HTTP ' + response.status); }
         return response.json();
