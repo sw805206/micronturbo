@@ -1,4 +1,4 @@
-v026 | 2026-08-15 | 832 lines
+v027 | 2026-08-15 | 848 lines
 # Style
 
 The design-system decisions for micronturbo.com, in words. STYLE.css is the
@@ -587,7 +587,13 @@ whether a reader can complete them.
   a filled form with no way to check what each value was for.
 
 - **Controls** — `input` and `textarea` on `--mt-surface`, a 1px `--mt-border`
-  hairline, `--mt-radius-sm`. The radius matches `.mt-btn` because the field and
+  hairline, `--mt-radius-sm`, and `display: block`.
+
+  Block rather than the inline-block a form control defaults to. An
+  inline-block control sits on a text baseline, and the descender space beneath
+  that baseline is real layout — it put 8px under every textarea that no input
+  got, so one field in a form was spaced differently from the rest for a reason
+  nothing in the markup showed. The radius matches `.mt-btn` because the field and
   the button sit in the same form and a form built from two different corner
   radii reads as two components that happen to be adjacent.
 
@@ -668,7 +674,7 @@ change waits.
 
 **Every page's `?v=` query matches the current STYLE.css version, and is bumped
 in the same commit that bumps the stamp.** Each page links the stylesheet as
-`href="STYLE.css?v=018"`, where the number is STYLE.css's own `v###`. Changing
+`href="STYLE.css?v=019"`, where the number is STYLE.css's own `v###`. Changing
 the query changes the URL, so a browser holding the old file has nothing to
 match against and must refetch.
 
@@ -685,13 +691,13 @@ a warm cache, which is why it cannot be reproduced with `curl`.
 Verify before pushing any STYLE.css change:
 
 ```
-grep -l 'rel="stylesheet"' *.html | xargs grep -L 'STYLE.css?v=018'
+grep -l 'rel="stylesheet"' *.html | xargs grep -L 'STYLE.css?v=019'
 ```
 
 It lists any page out of step and should return nothing. The scoping matters:
 `partials.html` and `partials-zh.html` are fragments injected into pages that
 already carry the link, so they hold no stylesheet reference of their own. A
-bare `grep -L 'STYLE.css?v=018' *.html` reports both as failures — the check
+bare `grep -L 'STYLE.css?v=019' *.html` reports both as failures — the check
 must ask only pages that link a stylesheet at all.
 
 This is a mitigation, not the fix. It costs a returning visitor a full CSS
@@ -775,12 +781,22 @@ was carried, forgotten, or orphaned.
 | `.mt-form__trap` honeypot | Contact page | v016 §11 |
 
 **Page-local, not promoted:** the contact page bottom-aligns its hero image
-with the message field rather than with the form or the column. It stretches
-the media, takes the image out of flow, and reserves the consent block in
-tokens. It stays page-local because it is an answer to one page's content —
-the height of one form — not a pattern. A second page that wants it is the
-signal to promote it, and at that point the reserved gap has to stop being
-that page's consent row and become something a pattern can name.
+with the message field rather than with the form or the column. The hero is
+two grid rows — fields, then the consent row beneath them — with the form as
+the grid container and the image in row 1 only. Row 1 is exactly the fields
+block, so the bottom edges line up by construction.
+
+The first version reserved the consent block's height as a token sum instead.
+It was exact when written and went stale the same day, when the button label
+was shortened from "Send Message" to "Send" and the consent row lost 4px. That
+is the general lesson and the reason this is recorded rather than just fixed:
+a measurement of one element hard-coded into another has no way to announce
+that it is wrong. It stays right until someone edits the thing it measured,
+and then it is quietly off by however much they changed.
+
+It stays page-local because it is an answer to one page's content, not a
+pattern. But the structural version would survive promotion, where the
+reserved-gap version could not have.
 
 **Retired in v015:** `.mt-line` / `.mt-lines`. The one-liner band was removed
 from all four SKU pages, which left it with no consumer. Its row is deleted
