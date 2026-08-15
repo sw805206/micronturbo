@@ -10,10 +10,13 @@
        directive comes off when all three are filled and the page has been
        reviewed — not before, and not because the page looks finished.
 
-       This page additionally states that submitting the form constitutes
-       separate consent to cross-border transfer under PIPL. The Chinese contact
-       form does not exist yet, so that claim currently describes a flow no
-       reader can complete — a second reason the directive stays. -->
+       PIPL treatment is deliberately deferred until the entity is confirmed.
+       This page states plain consent to cross-border transfer, matching what
+       contact-zh.html actually does — implied consent on submit, no separate
+       checkbox. If mainland readers turn out to be in scope, PIPL wants
+       separate consent for a cross-border transfer, which means a distinct
+       checkbox on the form and a rewrite of 信息存放在哪里 to match. Tracked as
+       BL-017; a second reason this page stays out of the index. -->
   <meta name="robots" content="noindex,nofollow">
   <title>隐私政策 — 安恒燃动</title>
   <link rel="alternate" hreflang="en" href="privacy.html">
@@ -64,17 +67,24 @@
         <h2>信息存放在哪里</h2>
 
         <!-- Intentionally longer than its English counterpart. This section
-             carries the PIPL cross-border transfer language, which has no
-             equivalent obligation on the English side. Do not shorten it to
-             match and do not harmonize the two. -->
+             names the overseas recipient and the limits on what it may do,
+             which the English side does not, so do not shorten it to match and
+             do not harmonize the two.
+
+             It states plain consent on submit, matching what contact-zh.html
+             actually does. It deliberately does NOT claim separate consent
+             under PIPL: that would require a distinct checkbox on the form,
+             which is not built. Do not strengthen this wording without
+             building the checkbox in the same change — a page promising a
+             control the form does not have is the failure this note exists to
+             prevent. See BL-017. -->
 
         <p>联系表单的提交内容存储在 Google Workspace 旗下的 Google 表格中，保存在
         Google 的服务器上。Google 作为我们的服务提供方，代表我们处理这些信息。</p>
 
         <p><strong>这意味着您的个人信息会被传输至境外并在境外存储，包括美国。</strong>
-        在您勾选同意并点击发送之前，我们不会收集或传输任何信息；提交表单即表示您
-        单独同意这一跨境传输。境外接收方为 Google LLC，其处理目的、方式和信息种类
-        均以本页所述为限。如果您不希望信息出境，请不要使用本表单。</p>
+        提交表单即表示您同意这一跨境传输。境外接收方为 Google LLC，其处理目的、方式
+        和信息种类均以本页所述为限。如果您不希望信息出境，请不要使用本表单。</p>
 
         <p>我们不出售、不出租您的信息，也不会为他人的目的与其共享。</p>
 
@@ -125,16 +135,8 @@
 
         <h2>联系我们</h2>
 
-        <!-- REPOINT WHEN contact-zh.html SHIPS. The Chinese nav links
-             contact-zh.html, which does not exist; this href goes to the English
-             contact page so the link resolves rather than 404s. A page in the
-             wrong language is recoverable, a dead link is not. The visible
-             parenthetical 暂时指向 contact.html comes out in the same edit — it
-             is reviewed copy describing this interim state, not page furniture,
-             so it is not removed unilaterally. -->
-
-        <p>有关本页的任何问题，请通过<a href="contact.html">联系表单</a>（暂时指向
-        contact.html）与我们联系。</p>
+        <p>有关本页的任何问题，请通过<a href="contact-zh.html">联系表单</a>与我们
+        联系。</p>
 
       </div>
     </div>
