@@ -1,4 +1,4 @@
-v020 | 2026-08-14 | 783 lines
+v021 | 2026-08-14 | 798 lines
 # Style
 
 The design-system decisions for micronturbo.com, in words. STYLE.css is the
@@ -533,8 +533,9 @@ site that take input rather than present it, and that changes what the rules are
 for: every other pattern here is judged on how it reads, and these are judged on
 whether a reader can complete them.
 
-- **Form container** — `.mt-form`, capped at `38rem`. Narrower than `.mt-lead`'s
-  62ch, and deliberately so. A measure is set by how far the eye travels back to
+- **Form container** — `.mt-form`, capped at `--mt-form-width` (`38rem`, 608px).
+  Narrower than `.mt-lead`'s 62ch, which measures 636px in Space Grotesk at the
+  root size, and deliberately so. A measure is set by how far the eye travels back to
   the start of the next line; a form is set by how far the eye travels from a
   label to the field it names and then down to the next label. Long rows make a
   form look like a wall, and the fields do not need the width — nothing typed
@@ -576,9 +577,21 @@ whether a reader can complete them.
   placeholder is read text even when it is only a hint.
 
 - **Focus** — the border goes `--mt-ignition` and a soft ring is added, built as
-  a `box-shadow` in ignition at low alpha. Visible focus is not optional. The
-  ring rather than a thicker border because a border that changes width reflows
-  the field by a pixel and makes the whole row twitch on tab.
+  a `box-shadow` in ignition at low alpha, `--mt-space-1` wide. Visible focus is
+  not optional. The ring rather than a thicker border because a border that
+  changes width reflows the field by a pixel and makes the whole row twitch on
+  tab.
+
+  The low alpha comes from `--mt-ignition-rgb`, ignition written as bare
+  channels. Same idiom as `--mt-bg-rgb` in section 3 and the same caveat: CSS
+  cannot derive one from the other, so a change to `--mt-ignition` is a change
+  to both.
+
+  `.mt-field--focus` is a forced-state hook sharing this declaration block
+  rather than carrying its own copy. A focused field is invisible at rest, so
+  the stylebook cannot review it any other way — the same problem the nav
+  dropdown has in section 6. One block behind two selectors is what stops the
+  specimen reporting a focus ring the site does not have.
 
   This is the one place ignition is legal on a field edge, and it does not
   contradict the no-border rule for errors: focus is transient and applies to
@@ -727,6 +740,8 @@ was carried, forgotten, or orphaned.
 | `.mt-intro`, `.mt-backlink` | MT-6K, MT-75K | v008 §10 |
 | `:lang(zh)` label reset | Products (zh) | v014 §7 |
 | `--mt-error` semantic token | Contact page | v016 §1 |
+| `--mt-ignition-rgb`, `--mt-form-width` | Contact page | v016 §1 |
+| `.mt-field--focus` forced-state hook | Contact page | v016 §11 |
 | `.mt-form`, `.mt-form__row` form container and row | Contact page | v016 §11 |
 | `.mt-field`, `.mt-field__label`, `.mt-field__error` | Contact page | v016 §11 |
 | `input` / `textarea` control styling and focus ring | Contact page | v016 §11 |
