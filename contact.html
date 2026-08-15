@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="STYLE.css?v=018">
+  <link rel="stylesheet" href="STYLE.css?v=019">
   <style>
     /* Page-local one-off, per STYLE.md section 8, built from tokens and
        recorded in the ratchet record.
@@ -28,25 +28,35 @@
     .mt-contact-hero { align-items: start; }
 
     @media (min-width: 1001px) {
-      .mt-contact-hero { align-items: stretch; }
+      /* Two rows: the fields, then the consent row under them. The image lives
+         in row 1 only, so its height is the fields block's height and the
+         bottom edges line up by construction. An earlier version reserved the
+         consent block's height as a token sum instead, which was exact until
+         the button label changed and the row got shorter — a measurement of
+         one element hard-coded into another is a number that goes stale
+         silently. */
+      .mt-contact-hero {
+        align-items: stretch;
+        row-gap: 0;
+      }
 
-      .mt-contact-hero .mt-hero__media { position: relative; }
+      .mt-contact-hero .mt-hero__media { grid-row: 1; grid-column: 1; position: relative; }
+      .mt-contact-hero__fields { grid-row: 1; grid-column: 2; }
+      .mt-contact-hero__actions { grid-row: 2; grid-column: 2; }
 
       /* Out of flow, so the image takes its height from the row instead of
          setting it. In flow it is circular: the row is as tall as its tallest
          item, and a full-height image is as tall as the row.
 
-         The height is stated rather than left to top/bottom. An absolutely
-         positioned replaced element with height: auto resolves from its own
-         intrinsic ratio and ignores the offsets, which is what a 2:3 source
-         did here — it came out 619px tall inside a 466px column. */
+         inset works here where it did not before, because height is no longer
+         auto. An absolutely positioned replaced element with height: auto
+         resolves from its own intrinsic ratio and ignores the offsets — a 2:3
+         source came out 619px tall inside a 466px column. */
       .mt-contact-hero .mt-shot--hero {
         position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
+        inset: 0;
         aspect-ratio: auto;
-        height: calc(100% - var(--mt-space-8) - var(--mt-space-5));
+        height: 100%;
       }
     }
   </style>
@@ -81,20 +91,21 @@
        1000px so the image can be bottom-aligned with the message field, start
        below it, since the grid's centered default would leave a 3:2 image
        floating in the middle of a column twice its height. -->
-  <div class="mt-hero mt-contact-hero" style="padding-top: var(--mt-space-6);">
+  <form class="mt-hero mt-contact-hero" id="mt-contact-form" novalidate
+        style="padding-top: var(--mt-space-6);">
+
     <div class="mt-hero__media">
       <img class="mt-shot mt-shot--img mt-shot--hero" src="images/hero-contact.jpg"
            width="1600" height="2400" style="object-position: 50% 32%; margin-bottom: 0;"
            alt="A neon sign shaped like a speech bubble glows pink and gold against a rough dark stone wall, spelling the word hello in looping script.">
     </div>
 
-    <div>
+    <div class="mt-form mt-contact-hero__fields">
+
       <!-- The status block is rendered empty and filled by the script. aria-live
            announces the outcome to a screen reader, which otherwise gets no signal
            that anything happened: the submit does not navigate. -->
-      <div class="mt-form" id="mt-form-status" role="status" aria-live="polite"></div>
-
-      <form class="mt-form" id="mt-contact-form" novalidate>
+      <div id="mt-form-status" role="status" aria-live="polite"></div>
 
         <div class="mt-form__row">
           <div class="mt-field">
@@ -115,7 +126,9 @@
                  placeholder="What is this about?">
         </div>
 
-        <div class="mt-field">
+        <!-- No bottom margin: this field's bottom edge is the fields block's
+             bottom edge, and therefore where the image ends. -->
+        <div class="mt-field" style="margin-bottom: 0;">
           <label class="mt-field__label" for="message">Message</label>
           <textarea id="message" name="message" required></textarea>
         </div>
@@ -134,19 +147,24 @@
              still trips. -->
         <input id="elapsed" name="elapsed" type="hidden" value="">
 
-        <!-- The consent sentence names the button, so the two are one edit:
-             renaming the button without renaming it here leaves the page
-             telling the reader to click something that is not on it. -->
-        <div class="mt-form__consent">
-          <p>By clicking Send, you consent to our
-          <a href="privacy.html">Privacy Policy</a>.</p>
-          <button class="mt-btn" type="submit">Send</button>
-        </div>
-
-      </form>
-
     </div>
-  </div>
+
+    <!-- Row 2 of the grid, under the fields and beside nothing. Keeping it out
+         of the fields block is what makes the image alignment structural: the
+         media stretches to row 1, and row 1 is exactly the fields.
+
+         The consent sentence names the button, so the two are one edit:
+         renaming the button without renaming it here leaves the page telling
+         the reader to click something that is not on it. -->
+    <div class="mt-form mt-contact-hero__actions">
+      <div class="mt-form__consent">
+        <p>By clicking Send, you consent to our
+        <a href="privacy.html">Privacy Policy</a>.</p>
+        <button class="mt-btn" type="submit">Send</button>
+      </div>
+    </div>
+
+  </form>
 
 </section>
 
