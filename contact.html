@@ -60,16 +60,16 @@
 <section class="mt-container">
 
   <!-- Eyebrow, headline and intro run across the top, above the two-column
-       row. The lead keeps .mt-lead's 62ch cap rather than taking .mt-lead--full:
-       STYLE.md gives the full-measure modifier to a section lead of a line or
-       two, and this is a paragraph of sustained reading, which is the case the
-       cap is right for. -->
+       row. The lead takes .mt-lead--full, matching the products hub: STYLE.md's
+       rule is that a paragraph in a full-width section runs the full width and
+       a paragraph in a grid column takes its column, and this one moved out of
+       the column when the heading did. -->
   <div style="padding-top: var(--mt-space-9);">
     <p class="mt-label">Contact</p>
     <h1>Get in Touch</h1>
-    <p class="mt-lead">Tell us about your application and we will get back to
-    you. Whether you are specifying power for a walking robot, an industrial
-    drone, or an off-grid site, we would like to hear what you are
+    <p class="mt-lead mt-lead--full">Tell us about your application and we will
+    get back to you. Whether you are specifying power for a walking robot, an
+    industrial drone, or an off-grid site, we would like to hear what you are
     building.</p>
   </div>
 
@@ -103,23 +103,16 @@
                    placeholder="First and last name" required>
           </div>
           <div class="mt-field">
-            <label class="mt-field__label" for="company">Company</label>
-            <input id="company" name="company" type="text" autocomplete="organization"
-                   placeholder="Optional">
-          </div>
-        </div>
-
-        <div class="mt-form__row">
-          <div class="mt-field">
             <label class="mt-field__label" for="email">Email</label>
             <input id="email" name="email" type="email" autocomplete="email"
                    placeholder="name@company.com" required>
           </div>
-          <div class="mt-field">
-            <label class="mt-field__label" for="subject">Subject</label>
-            <input id="subject" name="subject" type="text"
-                   placeholder="What is this about?">
-          </div>
+        </div>
+
+        <div class="mt-field">
+          <label class="mt-field__label" for="subject">Subject</label>
+          <input id="subject" name="subject" type="text"
+                 placeholder="What is this about?">
         </div>
 
         <div class="mt-field">
@@ -141,10 +134,13 @@
              still trips. -->
         <input id="elapsed" name="elapsed" type="hidden" value="">
 
+        <!-- The consent sentence names the button, so the two are one edit:
+             renaming the button without renaming it here leaves the page
+             telling the reader to click something that is not on it. -->
         <div class="mt-form__consent">
-          <p>By clicking Send Message, you consent to our
+          <p>By clicking Send, you consent to our
           <a href="privacy.html">Privacy Policy</a>.</p>
-          <button class="mt-btn" type="submit">Send Message</button>
+          <button class="mt-btn" type="submit">Send</button>
         </div>
 
       </form>
@@ -301,7 +297,6 @@
       headers: { 'Content-Type': 'text/plain;charset=utf-8' },
       body: JSON.stringify({
         name: form.elements.name.value.trim(),
-        company: form.elements.company.value.trim(),
         email: form.elements.email.value.trim(),
         subject: form.elements.subject.value.trim(),
         message: form.elements.message.value.trim(),
