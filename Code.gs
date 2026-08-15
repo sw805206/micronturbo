@@ -14,6 +14,17 @@
  * The body therefore arrives in e.postData.contents, not e.parameter.
  */
 
+/**
+ * Bumped by hand whenever this file changes. doGet reports it, so opening the
+ * /exec URL says which version is actually deployed.
+ *
+ * This exists because saving the editor does not deploy: the /exec URL serves
+ * the version its deployment was published with, and a redeploy that silently
+ * did not take is otherwise indistinguishable from one that did. It cost two
+ * rounds of rows filed under the wrong headings to learn that.
+ */
+var VERSION = '2026-08-15 · 6 columns';
+
 var SHEET_NAME = 'Sheet1';
 var REQUIRED = ['name', 'email', 'subject', 'message'];
 var MAX = { name: 200, email: 320, subject: 300, message: 5000 };
@@ -93,7 +104,7 @@ function doPost(e) {
  * Health check. Visiting the /exec URL in a browser should return ok:true.
  */
 function doGet() {
-  return respond(true, 'micronturbo contact endpoint');
+  return respond(true, 'micronturbo contact endpoint · ' + VERSION);
 }
 
 /**
