@@ -1,4 +1,4 @@
-v024 | 2026-08-15 | 817 lines
+v025 | 2026-08-15 | 826 lines
 # Style
 
 The design-system decisions for micronturbo.com, in words. STYLE.css is the
@@ -758,6 +758,7 @@ was carried, forgotten, or orphaned.
 | `.mt-hero--sku` hero ratio override | MT-6K, MT-75K | v008 §10 |
 | `.mt-intro`, `.mt-backlink` | MT-6K, MT-75K | v008 §10 |
 | `:lang(zh)` label reset | Products (zh) | v014 §7 |
+| Hero image bottom-aligned to a form field | Contact page | page-local |
 | `--mt-error` semantic token | Contact page | v016 §1 |
 | `--mt-ignition-rgb`, `--mt-form-width` | Contact page | v016 §1 |
 | `.mt-field--focus` forced-state hook | Contact page | v016 §11 |
@@ -766,6 +767,14 @@ was carried, forgotten, or orphaned.
 | `input` / `textarea` control styling and focus ring | Contact page | v016 §11 |
 | `.mt-form__consent`, `.mt-form__status` | Contact page | v016 §11 |
 | `.mt-form__trap` honeypot | Contact page | v016 §11 |
+
+**Page-local, not promoted:** the contact page bottom-aligns its hero image
+with the message field rather than with the form or the column. It stretches
+the media, takes the image out of flow, and reserves the consent block in
+tokens. It stays page-local because it is an answer to one page's content —
+the height of one form — not a pattern. A second page that wants it is the
+signal to promote it, and at that point the reserved gap has to stop being
+that page's consent row and become something a pattern can name.
 
 **Retired in v015:** `.mt-line` / `.mt-lines`. The one-liner band was removed
 from all four SKU pages, which left it with no consumer. Its row is deleted
