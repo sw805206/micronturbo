@@ -1,4 +1,4 @@
-v014 | 2026-08-14 | 298 lines
+v015 | 2026-08-15 | 309 lines
 # Scope
 
 ## 1. Project
@@ -199,12 +199,23 @@ The two SKU pages are children of the hub, reachable from the Products dropdown
 and from the hub's own SKU cards. They are the first pages below the top level.
 
 Built: `index.html` and `index-zh.html`, the home page in both languages, plus
-`products.html`, `products-6k.html` and `products-75k.html` in English. The
-`noindex,nofollow` placeholder that stood in during DNS and certificate setup
-has been replaced wholesale on the home page and the directive is gone — home
-and all three product pages are indexable. `about`, `contact` and `privacy` are
-linked from the nav in both languages but do not exist yet, so those links 404
-until they are built.
+`products.html`, `products-6k.html`, `products-75k.html` and `contact.html` in
+English. The `noindex,nofollow` placeholder that stood in during DNS and
+certificate setup has been replaced wholesale on the home page and the
+directive is gone — home, all three product pages and contact are indexable.
+`about` and `privacy` are linked from the nav in both languages but do not
+exist yet, so those links 404 until they are built.
+
+`contact.html` is the first page with no Chinese counterpart, and the first to
+rely on the toggle fallback rather than a reciprocal alternate. It carries no
+`<link rel="alternate">`, so its toggle resolves to the Chinese home page —
+which is the fallback working as specified above, not a defect. `contact-zh.html`
+is not currently planned, so the Chinese nav, the Chinese home hero and the
+Chinese hub CTA all point at a page that 404s.
+
+It is also the first page that takes input rather than presents it. The form
+patterns it uses are in STYLE.css section 11 and STYLE.md section 6; the
+endpoint it posts to is the Apps Script exception recorded above.
 
 `products-zh.html`, `products-6k-zh.html` and `products-75k-zh.html` carry real
 translated content and are indexable. They stood as holding pages under
