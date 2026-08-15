@@ -123,7 +123,7 @@
         <div class="mt-field">
           <label class="mt-field__label" for="subject">Subject</label>
           <input id="subject" name="subject" type="text"
-                 placeholder="What is this about?">
+                 placeholder="What is this about?" required>
         </div>
 
         <!-- No bottom margin: this field's bottom edge is the fields block's
@@ -191,10 +191,18 @@
      loads did not read anything on it. */
   var LOADED_AT = Date.now();
 
-  /* Under this many milliseconds a submission is treated as automated. Two
-     seconds is far below any real reading of a five-field form and far above
-     any plausible human speed, so it costs nobody a message. */
-  var MIN_ELAPSED_MS = 2000;
+  /* Under this many milliseconds a submission is treated as automated. This
+     mirrors MIN_ELAPSED_MS in Code.gs and must not drift below it: the server
+     drops anything under its own threshold and answers ok, so a page that
+     sends between the two values shows a thank-you for a row that was never
+     written. The server is authoritative; this check only saves a pointless
+     round trip. */
+  var MIN_ELAPSED_MS = 3000;
+
+  /* Matches the server's test in Code.gs. type="email" alone accepts a@b, with
+     no dot in the domain, which the server then rejects — and the page would
+     report that as a connection problem, which it is not. */
+  var EMAIL_RE = /^[^@\s]+@[^@\s.]+\.[^@\s]+$/;
 
   var form = document.getElementById('mt-contact-form');
   var statusBox = document.getElementById('mt-form-status');
@@ -208,6 +216,7 @@
       empty: 'Please give us an email address to reply to.',
       invalid: 'That does not look like a complete email address.'
     },
+    subject: 'Please give your message a subject.',
     message: 'Please tell us what you need power for.'
   };
 
@@ -239,15 +248,20 @@
     input.setAttribute('aria-describedby', id);
   }
 
+  /* The same four fields Code.gs lists in REQUIRED. A field the server demands
+     and the page does not is a submission that passes here, fails there, and
+     surfaces as a connection error the reader cannot act on. */
+  var REQUIRED = ['name', 'email', 'subject', 'message'];
+
   function validate() {
     var firstBad = null;
-    ['name', 'email', 'message'].forEach(function (key) {
+    REQUIRED.forEach(function (key) {
       var input = form.elements[key];
       var value = input.value.trim();
       var msg = null;
       if (!value) {
         msg = key === 'email' ? MESSAGES.email.empty : MESSAGES[key];
-      } else if (key === 'email' && !input.checkValidity()) {
+      } else if (key === 'email' && !EMAIL_RE.test(value)) {
         msg = MESSAGES.email.invalid;
       }
       if (msg) {
@@ -314,6 +328,11 @@
       method: 'POST',
       headers: { 'Content-Type': 'text/plain;charset=utf-8' },
       body: JSON.stringify({
+        /* Code.gs writes a lang column and defaults it to en when the field is
+           absent. Sending it from the document means the row records what the
+           page actually was rather than what the default assumed, which is what
+           a Chinese counterpart would need. */
+        lang: document.documentElement.lang || 'en',
         name: form.elements.name.value.trim(),
         email: form.elements.email.value.trim(),
         subject: form.elements.subject.value.trim(),
@@ -346,7 +365,7 @@
 
   /* Clear a field's error as soon as the reader starts fixing it, rather than
      making them submit again to find out. */
-  ['name', 'email', 'message'].forEach(function (key) {
+  REQUIRED.forEach(function (key) {
     form.elements[key].addEventListener('input', function () {
       if (this.getAttribute('aria-invalid')) { clearError(this); }
     });
