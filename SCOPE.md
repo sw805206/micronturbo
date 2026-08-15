@@ -1,4 +1,4 @@
-v015 | 2026-08-15 | 309 lines
+v016 | 2026-08-15 | 328 lines
 # Scope
 
 ## 1. Project
@@ -101,6 +101,25 @@ section covers it.
 
   The endpoint URL is deployment-specific and lives in the page, not here; a
   redeploy of the script changes it. Consumers: `contact.html`.
+
+  **The script's source is versioned here as `Code.gs` at the repo root, and it
+  is the one file in the repo that pushing does not deploy.** Everything else
+  here goes live when it reaches main; `Code.gs` goes live only when its
+  contents are pasted into the Apps Script editor and a new version of the
+  existing deployment is published by hand. Editing it and merging changes
+  nothing that a visitor can reach, which is the opposite of every other file's
+  behavior and the reason it is stated rather than assumed.
+
+  It is kept under version control anyway, because the endpoint is one contract
+  split across two systems and the page has to honor the half that runs in
+  Google. Keeping only the page half is what let the two drift: the script
+  required a subject the form treated as optional, dropped submissions under a
+  timing threshold the page set lower, and rejected email addresses the page
+  accepted — three failures invisible from either half alone, and all three
+  found by reading them side by side.
+
+  `doGet` answers a health check, so opening the `/exec` URL in a browser
+  confirms which version is deployed without writing a row.
 
 - **Dependency note, NOT a CDN exception: vendored icons.** The product pages
   carry six icons and the form patterns add a seventh, vendored inline as SVG
