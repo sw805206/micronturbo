@@ -1,4 +1,4 @@
-v022 | 2026-08-15 | 804 lines
+v023 | 2026-08-15 | 811 lines
 # Style
 
 The design-system decisions for micronturbo.com, in words. STYLE.css is the
@@ -541,8 +541,15 @@ whether a reader can complete them.
   form look like a wall, and the fields do not need the width — nothing typed
   into a name, an email or a company field wants 62 characters.
 
-- **Two-column row** — `.mt-form__row`, holding name and company side by side,
-  collapsing to one column at **560px**.
+- **Two-column row** — `.mt-form__row`, used twice: name beside company, and
+  email beside subject. Both collapse to one column at **560px**.
+
+  The second pair was not in the original spec, which put email full width.
+  That was written when a third field shared the row and the columns would have
+  come out around 160px, which is too narrow for an address. The third field
+  was cut, and at roughly 290px per column both a full email address and a
+  short subject fit comfortably — so pairing them is free, and it saves a
+  scroll on a page whose message field is already tall.
 
   That number is from the content, not from the page. A name field has to show a
   full name without scrolling it: roughly 26 characters at `--mt-text-base`,
