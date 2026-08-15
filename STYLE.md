@@ -1,4 +1,4 @@
-v023 | 2026-08-15 | 811 lines
+v024 | 2026-08-15 | 817 lines
 # Style
 
 The design-system decisions for micronturbo.com, in words. STYLE.css is the
@@ -628,6 +628,12 @@ whether a reader can complete them.
   it. It is the last thing read before the action, which is where a consent
   statement belongs.
 
+  The link inside it takes `white-space: nowrap`. The paragraph shares its row
+  with the button, so it is narrow at every width — including full desktop —
+  and a two-word document name wrapped through the middle, "Privacy" ending one
+  line and "Policy" starting the next. That reads as two links rather than one.
+  The line still wraps; it wraps around the name instead of through it.
+
 - **Status block** — `.mt-form__status`, the thank-you and the form-level error.
   Success reuses `--mt-hydro`; no success token was added, because hydro already
   means the good outcome everywhere else on the site and a second green would be
@@ -656,7 +662,7 @@ change waits.
 
 **Every page's `?v=` query matches the current STYLE.css version, and is bumped
 in the same commit that bumps the stamp.** Each page links the stylesheet as
-`href="STYLE.css?v=017"`, where the number is STYLE.css's own `v###`. Changing
+`href="STYLE.css?v=018"`, where the number is STYLE.css's own `v###`. Changing
 the query changes the URL, so a browser holding the old file has nothing to
 match against and must refetch.
 
@@ -673,13 +679,13 @@ a warm cache, which is why it cannot be reproduced with `curl`.
 Verify before pushing any STYLE.css change:
 
 ```
-grep -l 'rel="stylesheet"' *.html | xargs grep -L 'STYLE.css?v=017'
+grep -l 'rel="stylesheet"' *.html | xargs grep -L 'STYLE.css?v=018'
 ```
 
 It lists any page out of step and should return nothing. The scoping matters:
 `partials.html` and `partials-zh.html` are fragments injected into pages that
 already carry the link, so they hold no stylesheet reference of their own. A
-bare `grep -L 'STYLE.css?v=017' *.html` reports both as failures — the check
+bare `grep -L 'STYLE.css?v=018' *.html` reports both as failures — the check
 must ask only pages that link a stylesheet at all.
 
 This is a mitigation, not the fix. It costs a returning visitor a full CSS
