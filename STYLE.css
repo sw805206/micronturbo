@@ -1,4 +1,4 @@
-/* v020 | 2026-08-15 | 1441 lines
+/* v021 | 2026-08-15 | 1451 lines
    micronturbo.com design tokens and shared patterns.
    The decisions this file implements are recorded in STYLE.md.
    Pages consume tokens, never raw hex or px. See STYLE.md section 8. */
@@ -1405,11 +1405,21 @@ td {
    point: the same count of characters, and smaller type wants a shorter line
    to hold that count.
 
-   The same rule serves the Chinese page. A Han glyph is about twice the width
-   of the Latin "0" that ch measures, so 62ch lands near 39 characters there —
-   inside the comfortable CJK measure rather than outside it. Both language
-   pages take this one rule, which is what lets them stay structurally
-   identical per SCOPE.md section 3. */
+   The same declaration gives each language its own measure, and deliberately
+   NOT the same width. :lang(zh) in section 7 swaps --mt-font-cjk onto .mt-doc
+   itself, so ch resolves against Noto Sans SC on a Chinese page and against
+   Space Grotesk on an English one: 636px and 551px. Measured on privacy.html
+   and privacy-zh.html, not derived.
+
+   That difference is the property worth having, not a defect to correct. ch is
+   a unit of the script actually being set, so one declaration lands near 62
+   Latin characters on one page and near 34 Han characters on the other, each
+   inside its own comfortable measure — which a single pixel value could not do
+   for both. The markup stays identical either way, which is what SCOPE.md
+   section 3 asks for; it is the computed width that differs, as it does for
+   every text element on a Chinese page.
+
+   .mt-lead's 62ch behaves the same way and always has. */
 .mt-doc {
   max-width: 62ch;
 }
