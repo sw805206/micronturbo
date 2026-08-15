@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Contact — Micronturbo</title>
+  <meta name="description" content="Tell us about your application. Microturbine generator systems for walking robots, industrial drones and off-grid sites.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="STYLE.css?v=017">
+</head>
+<body>
+
+<div id="mt-header"></div>
+
+<main id="mt-main">
+
+<section class="mt-container mt-section">
+
+  <p class="mt-label">Contact</p>
+  <h1>Get in Touch</h1>
+  <p class="mt-lead">Tell us about your application and we will get back to you.
+  Whether you are specifying power for a walking robot, an industrial drone, or
+  an off-grid site, we would like to hear what you are building.</p>
+
+  <!-- The status block is rendered empty and filled by the script. aria-live
+       announces the outcome to a screen reader, which otherwise gets no signal
+       that anything happened: the submit does not navigate. -->
+  <div class="mt-form" id="mt-form-status" role="status" aria-live="polite"></div>
+
+  <form class="mt-form" id="mt-contact-form" novalidate>
+
+    <div class="mt-form__row">
+      <div class="mt-field">
+        <label class="mt-field__label" for="name">Name</label>
+        <input id="name" name="name" type="text" autocomplete="name"
+               placeholder="First and last name" required>
+      </div>
+      <div class="mt-field">
+        <label class="mt-field__label" for="company">Company</label>
+        <input id="company" name="company" type="text" autocomplete="organization"
+               placeholder="Optional">
+      </div>
+    </div>
+
+    <div class="mt-form__row">
+      <div class="mt-field">
+        <label class="mt-field__label" for="email">Email</label>
+        <input id="email" name="email" type="email" autocomplete="email"
+               placeholder="name@company.com" required>
+      </div>
+      <div class="mt-field">
+        <label class="mt-field__label" for="subject">Subject</label>
+        <input id="subject" name="subject" type="text"
+               placeholder="What is this about?">
+      </div>
+    </div>
+
+    <div class="mt-field">
+      <label class="mt-field__label" for="message">Message</label>
+      <textarea id="message" name="message" required></textarea>
+    </div>
+
+    <!-- Honeypot. Hidden from the eye by .mt-form__trap and from assistive
+         technology by aria-hidden, so a screen-reader user cannot fill it in
+         and be classified as a bot. See STYLE.md section 6. -->
+    <div class="mt-form__trap">
+      <label class="mt-field__label" for="website">Leave this field empty</label>
+      <input id="website" name="website" type="text" tabindex="-1"
+             autocomplete="off" aria-hidden="true">
+    </div>
+
+    <div class="mt-form__consent">
+      <p>By clicking Send Message, you consent to our
+      <a href="privacy.html">Privacy Policy</a>.</p>
+      <button class="mt-btn" type="submit">Send Message</button>
+    </div>
+
+  </form>
+
+</section>
+
+</main>
+
+<div id="mt-footer"></div>
+
+<script src="partials.js" defer></script>
+<script>
+/* Contact form. Page-specific and about forty lines, so it is inline rather
+   than a second file: partials.js is external because every page shares it,
+   and nothing else on the site posts a form.
+
+   ENDPOINT is the deployed Apps Script web app. The dependency is recorded in
+   SCOPE.md section 3. It is deployment-specific — a redeploy of the script
+   changes it — so it lives here rather than in a governance doc. */
+(function () {
+  'use strict';
+
+  var ENDPOINT = '';
+
+  var form = document.getElementById('mt-contact-form');
+  var statusBox = document.getElementById('mt-form-status');
+  var button = form.querySelector('button[type="submit"]');
+
+  /* Field-level messages. Written here rather than in the markup so an empty
+     and an invalid field can say different things about the same input. */
+  var MESSAGES = {
+    name: 'Please tell us your name.',
+    email: {
+      empty: 'Please give us an email address to reply to.',
+      invalid: 'That does not look like a complete email address.'
+    },
+    message: 'Please tell us what you need power for.'
+  };
+
+  var ALERT_ICON =
+    '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" ' +
+    'stroke="currentColor" stroke-width="1.75" stroke-linecap="round" ' +
+    'stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/>' +
+    '<line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>';
+
+  function clearError(input) {
+    var field = input.closest('.mt-field');
+    var existing = field.querySelector('.mt-field__error');
+    if (existing) { existing.remove(); }
+    input.removeAttribute('aria-invalid');
+    input.removeAttribute('aria-describedby');
+  }
+
+  function showError(input, text) {
+    clearError(input);
+    var field = input.closest('.mt-field');
+    var id = input.id + '-error';
+    var p = document.createElement('p');
+    p.className = 'mt-field__error';
+    p.id = id;
+    p.innerHTML = ALERT_ICON + '<span></span>';
+    p.querySelector('span').textContent = text;
+    field.appendChild(p);
+    input.setAttribute('aria-invalid', 'true');
+    input.setAttribute('aria-describedby', id);
+  }
+
+  function validate() {
+    var firstBad = null;
+    ['name', 'email', 'message'].forEach(function (key) {
+      var input = form.elements[key];
+      var value = input.value.trim();
+      var msg = null;
+      if (!value) {
+        msg = key === 'email' ? MESSAGES.email.empty : MESSAGES[key];
+      } else if (key === 'email' && !input.checkValidity()) {
+        msg = MESSAGES.email.invalid;
+      }
+      if (msg) {
+        showError(input, msg);
+        if (!firstBad) { firstBad = input; }
+      } else {
+        clearError(input);
+      }
+    });
+    if (firstBad) { firstBad.focus(); }
+    return !firstBad;
+  }
+
+  function setStatus(kind, heading, body) {
+    statusBox.innerHTML =
+      '<div class="mt-form__status mt-form__status--' + kind + '">' +
+      '<h3></h3><p></p></div>';
+    statusBox.querySelector('h3').textContent = heading;
+    statusBox.querySelector('p').textContent = body;
+  }
+
+  form.addEventListener('submit', function (event) {
+    event.preventDefault();
+    statusBox.innerHTML = '';
+    if (!validate()) { return; }
+
+    /* The honeypot is checked before the request, not by the script on the
+       other end: a bot that filled it in gets the same thank-you a person
+       gets, and nothing is sent. */
+    if (form.elements.website.value) {
+      setStatus('ok', 'Message sent',
+        'Thanks — we have your message and will be in touch shortly.');
+      form.reset();
+      return;
+    }
+
+    /* No endpoint configured yet. Short-circuit to the failure state rather
+       than POSTing to the page's own URL, which is what an empty string
+       resolves to — that produces a stray request and a console error that
+       look like a bug in the form rather than a missing deployment. */
+    if (!ENDPOINT) {
+      setStatus('error', 'Message not sent',
+        'We could not send your message. Check your connection and try again.');
+      return;
+    }
+
+    button.disabled = true;
+    fetch(ENDPOINT, { method: 'POST', body: new FormData(form) })
+      .then(function (response) {
+        if (!response.ok) { throw new Error('HTTP ' + response.status); }
+        return response.json();
+      })
+      .then(function (result) {
+        if (!result || result.ok !== true) { throw new Error('rejected'); }
+        setStatus('ok', 'Message sent',
+          'Thanks — we have your message and will be in touch shortly.');
+        form.reset();
+      })
+      .catch(function () {
+        /* The failure state is shown on any outcome the script did not confirm.
+           A thank-you that appears when the row was never written is worse than
+           an error, because nobody finds out. */
+        setStatus('error', 'Message not sent',
+          'We could not send your message. Check your connection and try again.');
+      })
+      .then(function () {
+        button.disabled = false;
+        statusBox.scrollIntoView({ block: 'nearest' });
+      });
+  });
+
+  /* Clear a field's error as soon as the reader starts fixing it, rather than
+     making them submit again to find out. */
+  ['name', 'email', 'message'].forEach(function (key) {
+    form.elements[key].addEventListener('input', function () {
+      if (this.getAttribute('aria-invalid')) { clearError(this); }
+    });
+  });
+})();
+</script>
+</body>
+</html>
