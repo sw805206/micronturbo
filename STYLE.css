@@ -1,4 +1,4 @@
-/* v019 | 2026-08-15 | 1389 lines
+/* v020 | 2026-08-15 | 1441 lines
    micronturbo.com design tokens and shared patterns.
    The decisions this file implements are recorded in STYLE.md.
    Pages consume tokens, never raw hex or px. See STYLE.md section 8. */
@@ -1386,4 +1386,56 @@ td {
 @media (prefers-reduced-motion: reduce) {
   .mt-field input,
   .mt-field textarea { transition: none; }
+}
+
+/* ---------------------------------------------------------------
+   12. LONG-FORM DOCUMENT
+   Sustained reading — a page that is prose from top to bottom, rather
+   than a page whose text captions a layout. Defined by the privacy
+   pages. See STYLE.md section 6.
+   --------------------------------------------------------------- */
+
+/* The cap is 62ch, the same NUMBER as .mt-lead and deliberately not the same
+   width. STYLE.md's reason for 62ch was sustained reading, and this is the
+   case it was describing; .mt-lead merely happens to be where the number
+   first landed.
+
+   ch resolves against the element's own font-size, so at --mt-text-base this
+   comes out shorter in pixels than .mt-lead does at --mt-text-lg. That is the
+   point: the same count of characters, and smaller type wants a shorter line
+   to hold that count.
+
+   The same rule serves the Chinese page. A Han glyph is about twice the width
+   of the Latin "0" that ch measures, so 62ch lands near 39 characters there —
+   inside the comfortable CJK measure rather than outside it. Both language
+   pages take this one rule, which is what lets them stay structurally
+   identical per SCOPE.md section 3. */
+.mt-doc {
+  max-width: 62ch;
+}
+
+/* Section rhythm. The base h1–h4 rule carries margin-bottom only, which is
+   enough where headings are separated by whole sections and not enough in a
+   document where two paragraphs separate them.
+
+   The size drop is the same judgement. --mt-text-h2 is 2.125rem against 1rem
+   body, a ratio that reads as a section break on a page carrying three of them
+   and as shouting on a document carrying fifteen. Here the heading is a
+   signpost, not a headline. The element stays an h2 — this changes its size,
+   not its level. */
+.mt-doc h2 {
+  margin-top: var(--mt-space-8);
+  font-size: var(--mt-text-h3);
+}
+
+/* The effective-date line under the title. Muted and set apart, because it is
+   metadata about the document rather than the first thing to read in it. */
+.mt-doc__meta {
+  font-size: var(--mt-text-sm);
+  color: var(--mt-text-3);
+  margin-bottom: var(--mt-space-7);
+}
+
+.mt-doc > *:last-child {
+  margin-bottom: 0;
 }

@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="STYLE.css?v=019">
+  <link rel="stylesheet" href="STYLE.css?v=020">
   <style>
     .sb-swatch { border: 1px solid var(--mt-border); border-radius: var(--mt-radius-sm); overflow: hidden; }
     .sb-swatch__chip { height: 88px; }
@@ -788,6 +788,63 @@
     screen-reader user would find the field, fill it in, and be classified as a
     bot for using assistive technology. The markup half is not optional:
     aria-hidden="true", tabindex="-1" and autocomplete="off" on every instance.
+  </p>
+
+  <div class="mt-rule" style="margin-top: var(--mt-space-9);">
+    <span class="mt-rule__num">13</span><span class="mt-rule__line"></span>
+  </div>
+  <h2>Long-Form Document</h2>
+  <p class="mt-lead">
+    Sustained reading — a page that is prose from top to bottom rather than one
+    whose text captions a layout. STYLE.css section 12; the decisions are in
+    STYLE.md section 6.
+  </p>
+
+  <div class="mt-doc">
+    <h1>Privacy Policy</h1>
+    <p class="mt-doc__meta">Effective August 15, 2026</p>
+    <p>
+      The measure is the whole pattern. This paragraph and the ones below it are
+      capped at 62ch, and the specimen is only useful at a wide viewport — widen
+      the window until the container stops growing and the text does not.
+    </p>
+    <h2>What We Collect</h2>
+    <p>
+      An h2 inside .mt-doc takes space above it and drops to --mt-text-h3. The
+      element is still an h2; only its size changed. Compare it with the section
+      headings above, which are the same element at full --mt-text-h2 size, and
+      the difference is the point — those separate whole sections, this separates
+      two paragraphs.
+    </p>
+    <ul>
+      <li>Base list styling is inherited, not overridden</li>
+      <li>Lists take the measure from the container like everything else</li>
+      <li>Nothing here is specific to lists</li>
+    </ul>
+    <h2>Where It Goes</h2>
+    <p>
+      A second heading, to show the rhythm repeating. A legal page carries
+      roughly fifteen of these, which is the case the size drop answers.
+    </p>
+    <!-- lang on a WRAPPER, per the section 04 specimen: :lang(zh) is what
+         swaps in --mt-font-cjk, and on a real page <html lang="zh-Hans">
+         supplies it. Without this the Han text sets in the Latin stack and the
+         measure below reports a width the Chinese page never has. -->
+    <div lang="zh-Hans">
+      <h2>简体中文</h2>
+      <p>
+        同一条规则同时服务中文页面。汉字宽度约为 ch 所测量的拉丁字符「0」的两倍，
+        因此 62ch 在中文下约合 39 个字，落在舒适的行长区间之内。两种语言的页面
+        因此共用同一条规则，结构保持一致。
+      </p>
+    </div>
+  </div>
+  <p class="sb-warn" style="margin-top: var(--mt-space-4);">
+    The Chinese block above is a MEASURE specimen, not a language specimen. It is
+    here because the cap has to be proven against a Han glyph, which is about
+    twice the width of the Latin "0" that ch measures — the regression it catches
+    is a Chinese line running to the Latin character count. Do not read it as
+    translated copy; it says only what it demonstrates.
   </p>
 
   <p style="font-size: var(--mt-text-xs); color: var(--mt-text-faint);">
