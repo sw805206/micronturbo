@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>About — Micronturbo</title>
+  <meta name="description" content="One program, one team, and its own intellectual property. The people behind Micronturbo's microturbine generator systems, and how far the hardware has actually run.">
+  <!-- No <link rel="alternate">. There is no about-zh.html, and per SCOPE.md
+       section 3 the alternate is the authoritative existence signal for a
+       counterpart — written by hand only where one really exists. Without it
+       resolveLangToggle() sends the toggle to the Chinese home page, which is
+       the specified fallback rather than a defect. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- Noto Sans SC as well as Space Grotesk, unlike the other English pages.
+       The bio cards carry Han names, and the :lang(zh) switch in STYLE.css
+       section 7 puts --mt-font-cjk on them — whose first entry is Noto Sans SC.
+       Without the fetch the switch falls silently to PingFang SC or Microsoft
+       YaHei where the platform has one and to a generic fallback where it does
+       not. Google serves the CJK face as unicode-range subsets, so this page
+       fetches only the eight Han glyphs it actually sets. -->
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="STYLE.css?v=022">
+  <style>
+    /* Page-local one-off, per STYLE.md section 8, built from tokens and
+       recorded in the ratchet record.
+
+       A two-up row for the pair of stat cards in section 03. .mt-grid only
+       carries --3 and --4, and one page needing two columns does not earn a
+       --2 in STYLE.css: promoting on a single use is what the reuse rule
+       exists to stop. It collapses at 560 rather than at the global 768,
+       matching .mt-bios and .mt-form__row — a stat card's figure plus its
+       padding sets the floor around 240px, so two of them stop being two
+       usable cards at about the same width the other two grids do. */
+    .about-pair {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--mt-space-5);
+      margin-bottom: var(--mt-space-8);
+    }
+
+    @media (max-width: 560px) {
+      .about-pair { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="mt-header"></div>
+
+<main id="mt-main">
+
+<section class="mt-container">
+  <div class="mt-hero mt-hero--sku" style="padding-top: var(--mt-space-8);">
+    <div class="mt-intro">
+      <h1>The Engineering Behind the Numbers.</h1>
+      <p class="mt-lead">Every figure on this site — 3,000 hours, −40 °C, eight
+      fuels — comes from one program, built by one team, on its own intellectual
+      property. This page is who that team is and how far the hardware has
+      actually run.</p>
+    </div>
+    <div class="mt-hero__media">
+      <img class="mt-shot mt-shot--img mt-shot--hero" src="images/hero-about.jpg"
+           width="1600" height="2400" style="margin-bottom: 0;"
+           alt="A close-up of a large turbine engine in low light. A bolted casing flange curves across the frame with a braided cable harness clamped along it, and the dark radial vanes of a stator ring fill the right-hand side.">
+    </div>
+  </div>
+</section>
+
+<section class="mt-section" style="padding-top: 0;">
+  <div class="mt-container">
+
+    <div class="mt-callout">
+      <p><strong>Micronturbo was founded out of the turbomachinery program at
+      Beihang University</strong>, under an academician of the Chinese Academy of
+      Engineering. The architecture is forward-engineered rather than adapted
+      from an existing engine, and the intellectual property is wholly the
+      company's own.</p>
+    </div>
+
+    <div class="mt-rule"><span class="mt-rule__num">01</span><span class="mt-rule__line"></span></div>
+    <h2>The Team</h2>
+    <p class="mt-lead mt-lead--full" style="margin-bottom: var(--mt-space-6);">Four
+    people carry the program: the architecture, the aerothermal science, the
+    manufacturing, and the company.</p>
+
+    <!-- Text only. The Han name takes lang="zh-Hans" on its own element so the
+         CJK family switch in STYLE.css section 7 reaches it; the page around it
+         is English and nothing else would. See STYLE.md section 6. -->
+    <div class="mt-bios">
+
+      <div class="mt-bio">
+        <div class="mt-bio__name">Chen Maozhang</div>
+        <div class="mt-bio__han" lang="zh-Hans">陈懋章</div>
+        <div class="mt-bio__role">Chairman</div>
+        <ul>
+          <li>Member, Chinese Academy of Engineering</li>
+          <li>Professor, Beihang University</li>
+          <li>State Science and Technology Progress Award, First Class</li>
+          <li>Hypersonic propulsion, gas turbines, aero engines</li>
+        </ul>
+      </div>
+
+      <div class="mt-bio">
+        <div class="mt-bio__name">Zou Zhengping</div>
+        <div class="mt-bio__han" lang="zh-Hans">邹正平</div>
+        <div class="mt-bio__role">Chief Scientist</div>
+        <ul>
+          <li>Chair Professor, Beihang University</li>
+          <li>Honorary Professor, University of Hong Kong</li>
+          <li>Chief Scientist, HKU low-altitude economy institute</li>
+        </ul>
+      </div>
+
+      <div class="mt-bio">
+        <div class="mt-bio__name">Cong Cong</div>
+        <div class="mt-bio__han" lang="zh-Hans">丛聪</div>
+        <div class="mt-bio__role">Chief Executive</div>
+        <ul>
+          <li>PhD, Management, Beihang University</li>
+          <li>Founding team, AVIC Industry-Finance</li>
+          <li>Former General Manager, Beijing Shangyi Jingcheng</li>
+        </ul>
+      </div>
+
+      <div class="mt-bio">
+        <div class="mt-bio__name">Zhang Yu</div>
+        <div class="mt-bio__han" lang="zh-Hans">张渝</div>
+        <div class="mt-bio__role">Chief Technology Officer</div>
+        <ul>
+          <li>General Manager, Shanghai Commercial Aircraft Engine Manufacturing</li>
+          <li>Chair, Shanghai Additive Manufacturing Association</li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="mt-rule" style="margin-top: var(--mt-space-9);"><span class="mt-rule__num">02</span><span class="mt-rule__line"></span></div>
+    <h2>The Number the Next Industries Run On</h2>
+    <p class="mt-lead mt-lead--full" style="margin-bottom: var(--mt-space-6);">A
+    rescue team, a polar station and an air taxi have one thing that defines
+    their power: watts per kilogram. It took the careers above to raise that
+    number to a new high.</p>
+
+    <div class="mt-uses">
+      <div class="mt-use">
+        <!-- Crop position carried from products-6k.html, where it is per-image
+             data: the head sits in the first quarter of the frame and a centered
+             cover crop removes it. -->
+        <img class="mt-shot mt-shot--img mt-shot--use" src="images/use-6k-robotics.jpg" width="800" height="1000"
+             style="object-position: 50% 0;"
+             alt="A white and black humanoid robot crouches on wet rock against an overcast sky.">
+        <h4>The compute ceiling</h4>
+        <p>A walking robot's onboard AI asks for more power than a pack its own
+        size can give it. Power density is what decides whether the machine works
+        a shift or runs an errand.</p>
+      </div>
+      <div class="mt-use">
+        <img class="mt-shot mt-shot--img mt-shot--use" src="images/use-75k-evtol.jpg" width="800" height="533"
+             alt="An unmanned single-rotor helicopter hovers above a river in front of a large baroque palace facade on a gray winter day.">
+        <h4>Endurance anxiety</h4>
+        <p>An aircraft that has to land and charge is an aircraft with routes it
+        cannot fly. Range and flight time are set by the weight of the energy on
+        board, not by the airframe.</p>
+      </div>
+      <div class="mt-use">
+        <img class="mt-shot mt-shot--img mt-shot--use" src="images/use-6k-emergency.jpg" width="800" height="556"
+             alt="Two excavators pull down a partly demolished multi-story building while onlookers stand at the edge of the rubble in a narrow city street.">
+        <h4>Effective payload</h4>
+        <p>Every kilogram of generator carried into a disaster site is a kilogram
+        of rescue equipment that stayed behind. What the crew can bring is what
+        the power source leaves them.</p>
+      </div>
+    </div>
+
+    <div class="mt-rule" style="margin-top: var(--mt-space-9);"><span class="mt-rule__num">03</span><span class="mt-rule__line"></span></div>
+    <h2>Where the Engineering Stands</h2>
+    <p class="mt-lead mt-lead--full" style="margin-bottom: var(--mt-space-6);">Prototypes
+    are built and running. Neither system is in commercial production yet, and
+    this is how far each has been taken.</p>
+
+    <div class="about-pair">
+      <div class="mt-stat">
+        <div class="mt-stat__label">MT-6K</div>
+        <div class="mt-stat__figure">0&ndash;160,000 rpm</div>
+        <div class="mt-stat__note">Full speed range and 6 kW at full load,
+        demonstrated. Ten prototypes built and run. Engineering for production is
+        underway.</div>
+      </div>
+      <div class="mt-stat mt-stat--steel">
+        <div class="mt-stat__label">MT-75K</div>
+        <div class="mt-stat__figure">81,000 rpm</div>
+        <div class="mt-stat__note">Design and parts complete, assembled and
+        ignited, first test series run. It follows the MT-6K into
+        production.</div>
+      </div>
+    </div>
+
+    <div class="mt-grid mt-grid--4">
+      <div class="mt-datum">
+        <div class="mt-datum__figure">10</div>
+        <div class="mt-datum__label">Prototype units built</div>
+      </div>
+      <div class="mt-datum mt-datum--amber">
+        <div class="mt-datum__figure">400+</div>
+        <div class="mt-datum__label">Hours run, cumulative</div>
+      </div>
+      <div class="mt-datum mt-datum--amber">
+        <div class="mt-datum__figure">500+</div>
+        <div class="mt-datum__label">Start-stop cycles</div>
+      </div>
+      <div class="mt-datum mt-datum--steel">
+        <div class="mt-datum__figure">20+</div>
+        <div class="mt-datum__label">Patents filed, 10+ granted</div>
+      </div>
+    </div>
+
+    <div class="mt-rule" style="margin-top: var(--mt-space-9);"><span class="mt-rule__num">04</span><span class="mt-rule__line"></span></div>
+    <h2>What Follows</h2>
+    <p class="mt-lead mt-lead--full" style="margin-bottom: var(--mt-space-6);">Three
+    more systems follow the launch pair, each opening a segment the first two do
+    not reach.</p>
+
+    <div class="mt-grid mt-grid--3" style="margin-bottom: var(--mt-space-8);">
+      <div class="mt-datum mt-datum--steel">
+        <div class="mt-datum__figure">3 kW</div>
+        <div class="mt-datum__label">Below the MT-6K</div>
+      </div>
+      <div class="mt-datum mt-datum--steel">
+        <div class="mt-datum__figure">20 kW</div>
+        <div class="mt-datum__label">Between the two</div>
+      </div>
+      <div class="mt-datum mt-datum--steel">
+        <div class="mt-datum__figure">200 kW</div>
+        <div class="mt-datum__label">Above the MT-75K</div>
+      </div>
+    </div>
+
+    <div class="mt-hero__actions">
+      <a class="mt-btn" href="contact.html">Contact</a>
+      <a class="mt-btn mt-btn--secondary" href="products.html">Products</a>
+    </div>
+
+  </div>
+</section>
+
+</main>
+
+<div id="mt-footer"></div>
+
+<script src="partials.js" defer></script>
+</body>
+</html>
