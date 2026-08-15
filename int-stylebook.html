@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="STYLE.css?v=015">
+  <link rel="stylesheet" href="STYLE.css?v=016">
   <style>
     .sb-swatch { border: 1px solid var(--mt-border); border-radius: var(--mt-radius-sm); overflow: hidden; }
     .sb-swatch__chip { height: 88px; }
@@ -647,6 +647,148 @@
 
   <h3>Backlink</h3>
   <p class="mt-backlink"><a href="#">← All products</a></p>
+
+  <div class="mt-rule" style="margin-top: var(--mt-space-9);">
+    <span class="mt-rule__num">12</span><span class="mt-rule__line"></span>
+  </div>
+  <h2>Form Patterns</h2>
+  <p class="mt-lead">
+    The first components here that take input rather than present it. Every
+    state is rendered: resting, focused, error, and both outcomes of the status
+    block. STYLE.css section 11; the decisions are in STYLE.md section 6.
+  </p>
+
+  <h3>Semantic color</h3>
+  <div class="mt-grid mt-grid--4">
+    <div class="sb-swatch">
+      <div class="sb-swatch__chip" style="background: #FF4F79;"></div>
+      <div class="sb-swatch__meta">
+        <div class="sb-swatch__name">Error</div>
+        <div class="sb-swatch__val">--mt-error · #FF4F79</div>
+        <div class="sb-swatch__role">~5.5:1 · message text and icon only</div>
+      </div>
+    </div>
+  </div>
+  <p class="sb-warn" style="margin-top: var(--mt-space-4);">
+    Semantic, not categorical. It takes no slot in the c1–c6 order and nothing
+    counted may reference it. It is never a field border, outline or fill — the
+    submit button is the only ignition-bordered box on a page, and an outlined
+    error field would compete with it for exactly the attention the button needs.
+    There is deliberately no --mt-inv-error: no light-ground page exists, and
+    inverted variants are not written speculatively.
+  </p>
+
+  <h3 style="margin-top: var(--mt-space-7);">Resting</h3>
+  <form class="mt-form" onsubmit="return false;">
+    <div class="mt-form__row">
+      <div class="mt-field">
+        <label class="mt-field__label" for="sb-name">Name</label>
+        <input id="sb-name" type="text" placeholder="Your name">
+      </div>
+      <div class="mt-field">
+        <label class="mt-field__label" for="sb-company">Company</label>
+        <input id="sb-company" type="text" placeholder="Optional">
+      </div>
+    </div>
+    <div class="mt-field">
+      <label class="mt-field__label" for="sb-message">Message</label>
+      <textarea id="sb-message" placeholder="What do you need power for?"></textarea>
+    </div>
+  </form>
+  <p style="font-size: var(--mt-text-sm); color: var(--mt-text-3); max-width: 62ch;">
+    .mt-form caps at --mt-form-width. .mt-form__row is two columns collapsing at
+    560px — read off the content, not the page gutter: a name field needs about
+    264px to show a full name, and two of those with a --mt-space-5 gap is 552px.
+    Narrow the window past 560 and the row above should become one column.
+  </p>
+
+  <h3 style="margin-top: var(--mt-space-7);">Focused</h3>
+  <div class="mt-form">
+    <div class="mt-field mt-field--focus">
+      <label class="mt-field__label" for="sb-focus">Email</label>
+      <input id="sb-focus" type="email" placeholder="you@example.com">
+    </div>
+  </div>
+  <p style="font-size: var(--mt-text-sm); color: var(--mt-text-3); max-width: 62ch;">
+    Ignition border plus a soft ring at --mt-space-1, built from
+    --mt-ignition-rgb at 0.28 alpha. A ring rather than a thicker border: a
+    border that changes width reflows the field by a pixel and the row twitches
+    on tab. Shown here through .mt-field--focus, a forced-state hook that shares
+    the real :focus-visible declaration block rather than copying it — tab into
+    any field above to confirm the live state matches. Transition honors
+    prefers-reduced-motion.
+  </p>
+
+  <h3 style="margin-top: var(--mt-space-7);">Error</h3>
+  <div class="mt-form">
+    <div class="mt-field">
+      <label class="mt-field__label" for="sb-error">Email</label>
+      <input id="sb-error" type="email" value="swai@" aria-describedby="sb-error-msg" aria-invalid="true">
+      <p class="mt-field__error" id="sb-error-msg">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>
+        <span>That does not look like a complete email address.</span>
+      </p>
+    </div>
+  </div>
+  <p style="font-size: var(--mt-text-sm); color: var(--mt-text-3); max-width: 62ch;">
+    The field border is UNCHANGED — this is the point of the pattern. The
+    message carries --mt-error and the vendored circle-alert icon takes
+    currentColor from it, so color is never the only channel: the icon and the
+    words say the same thing. Icon is Lucide, ISC, recorded in SCOPE.md.
+    aria-invalid and aria-describedby are markup, not styling, and belong on
+    every real instance.
+  </p>
+
+  <h3 style="margin-top: var(--mt-space-7);">Consent line</h3>
+  <div class="mt-form">
+    <div class="mt-form__consent">
+      <p>We use what you send here to reply to you, and for nothing else.</p>
+      <a class="mt-btn" href="#" onclick="return false;">Send</a>
+    </div>
+  </div>
+  <p style="font-size: var(--mt-text-sm); color: var(--mt-text-3); max-width: 62ch;">
+    Beside the submit rather than above it. The consent line is the last thing
+    read before the action, which is where a consent statement belongs. It wraps
+    below the button on a narrow column rather than compressing it.
+  </p>
+
+  <h3 style="margin-top: var(--mt-space-7);">Status block</h3>
+  <div class="mt-form">
+    <div class="mt-form__status mt-form__status--ok">
+      <h3>Thank you.</h3>
+      <p>Your message is with us. Somebody will reply within two working days.</p>
+    </div>
+    <div class="mt-form__status mt-form__status--error">
+      <h3>That did not send.</h3>
+      <p>Something went wrong on our end. Try again, or write to us directly.</p>
+    </div>
+  </div>
+  <p style="font-size: var(--mt-text-sm); color: var(--mt-text-3); max-width: 62ch;">
+    Success reuses --mt-hydro. No success token was added: hydro already means
+    the good outcome everywhere else on the site, and a second green would be a
+    distinction nobody could name. Single-sided border and therefore no radius,
+    following the data-column idiom in section 06.
+  </p>
+
+  <h3 style="margin-top: var(--mt-space-7);">Honeypot</h3>
+  <div class="mt-form">
+    <div class="mt-form__trap">
+      <label class="mt-field__label" for="sb-trap">Leave this field empty</label>
+      <input id="sb-trap" type="text" tabindex="-1" autocomplete="off" aria-hidden="true">
+    </div>
+    <p style="font-size: var(--mt-text-sm); color: var(--mt-text-3); margin: 0;">
+      A .mt-form__trap field is rendered directly above this line and should be
+      invisible. If you can see an input here, the rule is not loading.
+    </p>
+  </div>
+  <p class="sb-warn" style="margin-top: var(--mt-space-4);">
+    NOT .mt-visually-hidden, which is the reuse section 8 would lead you to
+    expect. That utility hides something from the eye while keeping it in the
+    accessibility tree — the opposite of what a honeypot needs, since a
+    screen-reader user would find the field, fill it in, and be classified as a
+    bot for using assistive technology. The markup half is not optional:
+    aria-hidden="true", tabindex="-1" and autocomplete="off" on every instance.
+  </p>
 
   <p style="font-size: var(--mt-text-xs); color: var(--mt-text-faint);">
     Internal reference. Published so it stays bookmarkable; linked from nowhere;
