@@ -1,4 +1,4 @@
-v010 | 2026-08-08 | 216 lines
+v012 | 2026-08-14 | 224 lines
 
 # Working Rules
 
@@ -94,9 +94,12 @@ degrades a doc or an internal view, never the public site. Push is the finish
 line: an edit left uncommitted or unpushed is the failure this rule exists to
 prevent.
 
-**STYLE.css is the exception.** It is publicly served across every page, so
-committing it to main changes the live site with no review. It keeps branch
-and PR discipline.
+**Publicly-served governance files are the exception.** Where SCOPE.md declares
+a governance file publicly served, an authored change to it keeps branch and PR
+discipline: committing straight to main would change the live site with no
+review. A byte-identical copy of content already reviewed in the repo where it
+was authored is not an authored change, and goes direct to main like any other
+governance doc.
 
 **Governance docs carry a version stamp.** Line 1 of every `.md` governance doc
 is exactly `v### | yyyy-mm-dd | #### lines` — nothing above it, no title, no
@@ -159,11 +162,16 @@ to main, then copy the file back to the disk master. The change is not finished
 until both have happened: an uncommitted edit is invisible to other projects,
 and a stale disk master is a file every other project will sync backwards from.
 
-**Picking up a change (project B).** At the start of a task, compare project B's
-copy against the disk master by line 1. If the disk master is the higher
-version, copy it into project B's working tree, commit, and push. Files move
-disk → working tree → commit → push, in that order — a file cannot enter git any
-other way.
+**Reconciling a copy (any project).** At the start of a task, compare the
+project's copy against the disk master by line 1, and where they differ, **sync
+to the later version automatically** — Claude performs the sync and reports it,
+rather than flagging the gap and waiting to be told. The comparison is
+two-sided, so it has two outcomes. **Disk master later:** copy it into the
+working tree, commit, and push — files move disk → working tree → commit → push,
+in that order, since a file cannot enter git any other way. **Repo copy later:**
+copy it out to the disk master, which is the publishing step above run on its
+own. Either way both copies end the task on the same version, and a gap is never
+carried forward across tasks.
 
 **Human steps after any change.** Re-paste Part A into Claude's global settings,
 and upload the current file to each Claude project folder.
