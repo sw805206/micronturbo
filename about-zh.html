@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>关于我们 — 安恒燃动</title>
+  <meta name="description" content="同一个项目、同一支团队、完全自主的知识产权。安恒燃动微型燃气涡轮发电系统背后的团队，以及工程进展到哪一步。">
+  <link rel="alternate" hreflang="en" href="about.html">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="STYLE.css?v=022">
+  <style>
+    /* Page-local one-off, per STYLE.md section 8, recorded in the ratchet
+       record. Carried verbatim from about.html: SCOPE.md section 3 asks a
+       translated page to keep the same classes and the same inline styles, so
+       the pair stays diffable.
+
+       A two-up row for the pair of stat cards in section 03. .mt-grid only
+       carries --3 and --4, and one page needing two columns does not earn a
+       --2 in STYLE.css: promoting on a single use is what the reuse rule
+       exists to stop. It collapses at 560 rather than at the global 768,
+       matching .mt-bios and .mt-form__row — a stat card's figure plus its
+       padding sets the floor around 240px, so two of them stop being two
+       usable cards at about the same width the other two grids do. */
+    .about-pair {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--mt-space-5);
+      margin-bottom: var(--mt-space-8);
+    }
+
+    @media (max-width: 560px) {
+      .about-pair { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="mt-header"></div>
+
+<main id="mt-main">
+
+<section class="mt-container">
+  <div class="mt-hero mt-hero--sku" style="padding-top: var(--mt-space-8);">
+    <div class="mt-intro">
+      <h1>数字背后的工程</h1>
+      <p class="mt-lead">本站的每一个数字——3,000 小时、零下 40 °C、8 种燃料——都出自同一个项目、同一支团队，以及完全自主的知识产权。让我们来认识他们和他们的工作。</p>
+    </div>
+    <div class="mt-hero__media">
+      <img class="mt-shot mt-shot--img mt-shot--hero" src="images/hero-about.jpg"
+           width="1600" height="2400" style="margin-bottom: 0;"
+           alt="低光环境下的大型涡轮发动机特写：带螺栓的机匣法兰横贯画面，编织线束沿法兰固定，右侧是静子叶栅深色的辐射状叶片。">
+    </div>
+  </div>
+</section>
+
+<section class="mt-section" style="padding-top: 0;">
+  <div class="mt-container">
+
+    <div class="mt-callout">
+      <p><strong>安恒燃动的历史，源于北京航空航天大学的叶轮机械研究团队</strong>，由中国工程院院士领衔，凝聚团队多年不懈的努力，100% 正向创新研发、100% 自主知识产权。十年磨一剑，现在正式启动产品的工程化、市场化、全球化进程。</p>
+    </div>
+
+    <div class="mt-rule"><span class="mt-rule__num">01</span><span class="mt-rule__line"></span></div>
+    <h2>核心团队</h2>
+
+    <!-- 01 是全页唯一没有导语的一节，与英文页一致，属有意为之：四张卡片本身
+         就是这一节，一句引言只会用散文重说一遍这一行卡片一眼就说清的事。 -->
+
+    <!-- 中文页与英文页互为镜像：.mt-bio__name 放中文姓名，.mt-bio__han 放罗马
+         字母拼写并带 lang="en"。两页因此保持同一套标记，可以直接对比。 -->
+    <div class="mt-bios">
+
+      <div class="mt-bio">
+        <div class="mt-bio__name">陈懋章</div>
+        <div class="mt-bio__han" lang="en">Chen Maozhang</div>
+        <div class="mt-bio__role">董事长 · 总顾问</div>
+        <ul>
+          <li>中国工程院院士</li>
+          <li>北京航空航天大学教授</li>
+          <li>国家科技进步一等奖</li>
+          <li>长期从事高超声速新型航空发动机、燃气轮机、传统航空发动机等领域研究</li>
+        </ul>
+      </div>
+
+      <div class="mt-bio">
+        <div class="mt-bio__name">邹正平</div>
+        <div class="mt-bio__han" lang="en">Zou Zhengping</div>
+        <div class="mt-bio__role">首席科学家</div>
+        <ul>
+          <li>北京航空航天大学长聘教授</li>
+          <li>香港大学名誉教授</li>
+          <li>香港大学低空经济研究院首席科学家</li>
+        </ul>
+      </div>
+
+      <div class="mt-bio">
+        <div class="mt-bio__name">丛聪</div>
+        <div class="mt-bio__han" lang="en">Cong Cong</div>
+        <div class="mt-bio__role">首席执行官</div>
+        <ul>
+          <li>北京航空航天大学管理学博士</li>
+          <li>中航产融创始团队成员</li>
+          <li>曾任北京尚医精诚科技有限公司总经理</li>
+        </ul>
+      </div>
+
+      <div class="mt-bio">
+        <div class="mt-bio__name">张渝</div>
+        <div class="mt-bio__han" lang="en">Zhang Yu</div>
+        <div class="mt-bio__role">总工程师</div>
+        <ul>
+          <li>上海商发制造总经理</li>
+          <li>上海增材协会会长</li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="mt-rule" style="margin-top: var(--mt-space-9);"><span class="mt-rule__num">02</span><span class="mt-rule__line"></span></div>
+    <h2>每一个在移动中的产业，都依赖同一个数字</h2>
+    <p class="mt-lead mt-lead--full" style="margin-bottom: var(--mt-space-6);">一支救援队、一座极地考察站、一架空中出租车，它们动力上限都取决于一个指标：功率密度。正是这个团队，用他们整个职业生涯，将这个数字推到新的高度。</p>
+
+    <div class="mt-uses">
+      <div class="mt-use">
+        <!-- 裁切位置沿用 products-6k.html，属逐图数据：头部位于画面上四分之一，
+             居中裁切会把它切掉。 -->
+        <img class="mt-shot mt-shot--img mt-shot--use" src="images/use-6k-robotics.jpg" width="800" height="1000"
+             style="object-position: 50% 0;"
+             alt="一台黑白配色的人形机器人蹲在湿漉的岩石上，背景是阴云密布的天空。">
+        <h4>提升算力天花板</h4>
+        <p>足式机器人的计算芯片需要的电能，与行动需要的电能相当。功率密度决定的，不但是机器人多有力气，更决定它有多聪明。</p>
+      </div>
+      <div class="mt-use">
+        <img class="mt-shot mt-shot--img mt-shot--use" src="images/use-75k-evtol.jpg" width="800" height="533"
+             alt="一架无人驾驶单旋翼直升机悬停在河面上方，背后是一座大型巴洛克式宫殿的立面，天色是灰白的冬日。">
+        <h4>解决续航焦虑</h4>
+        <p>要常常落地充电的飞行器，就是有航线却飞不远的飞行器。飞行器上轻小有力的电源，把每一公斤都让给更多的载重、更远的距离。</p>
+      </div>
+      <div class="mt-use">
+        <img class="mt-shot mt-shot--img mt-shot--use" src="images/use-6k-emergency.jpg" width="800" height="556"
+             alt="两台挖掘机正在拆除一栋已部分倒塌的多层建筑，狭窄的街道边有人站在瓦砾堆旁观望。">
+        <h4>增加有效负荷</h4>
+        <p>背进灾区和带入极地考察站的每一公斤都要让给需要的人，而不要让位给发电机。发电电源的重量和体积越小，他们留给人类的希望越大。</p>
+      </div>
+    </div>
+
+    <div class="mt-rule" style="margin-top: var(--mt-space-9);"><span class="mt-rule__num">03</span><span class="mt-rule__line"></span></div>
+    <h2>工程进展到哪一步</h2>
+    <p class="mt-lead mt-lead--full" style="margin-bottom: var(--mt-space-6);">样机已经完成，试跑正在进行。首先上市的系统即将进入商业化投量。更多的新品已经在依次准备中。</p>
+
+    <div class="about-pair">
+      <div class="mt-stat">
+        <div class="mt-stat__label">MT-6K</div>
+        <div class="mt-stat__figure">0&ndash;160,000 rpm</div>
+        <div class="mt-stat__note">全转速范围与 6 kW 满负荷输出均已实测。10 台样机已制造并运行，产品化工程正在进行。</div>
+      </div>
+      <div class="mt-stat mt-stat--steel">
+        <div class="mt-stat__label">MT-75K</div>
+        <div class="mt-stat__figure">81,000 rpm</div>
+        <div class="mt-stat__note">设计与零部件全部完成，整机已装配、点火，首轮测试完成。将随 MT-6K 之后进入量产。</div>
+      </div>
+    </div>
+
+    <!-- 量词放在标签里，不放在数字里：.mt-datum__figure 是按显示级字号的
+         数字排版的，混入汉字会破坏它的等宽数字对齐。 -->
+    <div class="mt-grid mt-grid--4">
+      <div class="mt-datum">
+        <div class="mt-datum__figure">10</div>
+        <div class="mt-datum__label">已制造样机（台）</div>
+      </div>
+      <div class="mt-datum mt-datum--amber">
+        <div class="mt-datum__figure">400+</div>
+        <div class="mt-datum__label">累计运行（小时）</div>
+      </div>
+      <div class="mt-datum mt-datum--amber">
+        <div class="mt-datum__figure">500+</div>
+        <div class="mt-datum__label">累计起停（次）</div>
+      </div>
+      <div class="mt-datum mt-datum--steel">
+        <div class="mt-datum__figure">20+</div>
+        <div class="mt-datum__label">已申请专利，10+ 项已授权</div>
+      </div>
+    </div>
+
+    <div class="mt-rule" style="margin-top: var(--mt-space-9);"><span class="mt-rule__num">04</span><span class="mt-rule__line"></span></div>
+    <h2>后续产品</h2>
+    <p class="mt-lead mt-lead--full" style="margin-bottom: var(--mt-space-6);">首发两款之后还有三款，各自打开前两款覆盖不到的区间。</p>
+
+    <div class="mt-grid mt-grid--3" style="margin-bottom: var(--mt-space-8);">
+      <div class="mt-datum mt-datum--steel">
+        <div class="mt-datum__figure">3 kW</div>
+        <div class="mt-datum__label">低于 MT-6K</div>
+      </div>
+      <div class="mt-datum mt-datum--steel">
+        <div class="mt-datum__figure">20 kW</div>
+        <div class="mt-datum__label">介于两者之间</div>
+      </div>
+      <div class="mt-datum mt-datum--steel">
+        <div class="mt-datum__figure">200 kW</div>
+        <div class="mt-datum__label">高于 MT-75K</div>
+      </div>
+    </div>
+
+    <div class="mt-hero__actions">
+      <a class="mt-btn" href="contact-zh.html">联系我们</a>
+      <a class="mt-btn mt-btn--secondary" href="products-zh.html">查看产品</a>
+    </div>
+
+  </div>
+</section>
+
+</main>
+
+<div id="mt-footer"></div>
+
+<script src="partials.js" defer></script>
+</body>
+</html>

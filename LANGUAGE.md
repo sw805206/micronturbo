@@ -1,4 +1,4 @@
-v005 | 2026-08-09 | 212 lines
+v006 | 2026-08-15 | 218 lines
 # Language
 
 The canonical termbase for micronturbo.com, in ENGLISH. English is the source
@@ -176,6 +176,9 @@ carries no surrounding spaces. Chinese uses `、` only between list items and
 | hydrogen | One of the two low-carbon fuels the system supports. Named explicitly because it is the fuel that makes the sustainability claim structural rather than incremental. |
 | methanol | The other low-carbon fuel. Appears paired with hydrogen: on its own it is not enough to carry the low-carbon claim, and the pairing is what distinguishes the claim from a fossil-fuel engine that happens to tolerate a blend. |
 | AC + DC | Dual electrical output from one unit. The contrast is the AC-only piston set, and that contrast is the reason the term appears at all — DC alone would read as a limitation rather than an addition. |
+| turbomachinery | The engineering field the company came out of: rotating machinery that transfers energy to or from a fluid, which is the class containing both the turbine and the compressor. Used for the research group at Beihang and never as a description of the product — the product is a `microturbine generator system`. |
+| forward-engineered | Designed from requirements rather than derived from an existing engine. The claim is about origin, and it is what the wholly-own-intellectual-property line rests on: a reverse-engineered architecture could not carry it. Not a synonym for "new" or "clean-sheet", both of which describe the result instead of where the design came from. |
+| commercial production | Manufacture for sale at volume, as distinct from a prototype build. The site states where each system stands relative to it and never claims one has arrived. Shortening it to "production" is what would blur a ten-unit prototype run into a shipping product. |
 
 ### Competing technologies
 
@@ -210,3 +213,6 @@ what it excludes as much as for what it says.
 | off-grid | A site with no mains supply available, as a property of the place rather than a description of a fault. Distinct from a grid outage, which is what standby power answers. |
 | standby power | Power held ready against the loss of a supply that normally exists. The opposite case to off-grid, and the two are not interchangeable: one replaces a grid that failed, the other serves a place that never had one. |
 | home backup | Standby power at consumer scale, in a dwelling. A scenario rather than a product class, and the one place on the site where the reader is not a professional operator. |
+| air taxi | A passenger-carrying eVTOL service, named as a use rather than as an aircraft class. Distinct from `eVTOL`, which is the vehicle category: this is what the vehicle is for. It sits beside a rescue team and a polar station to show the power-density argument reaching civil aviation and not only industrial equipment. |
+| polar station | A permanently staffed research station in a polar region. The scenario is sustained operation where resupply is measured in months, which is what makes every kilogram of generator a kilogram of something else left behind. Not a synonym for `off-grid`, which is a property of a place rather than a place. |
+| compute ceiling | The limit a walking robot meets when its power source cannot feed both movement and onboard computation. The claim is that power density sets how capable the machine can be and not only how strong. Stated as a ceiling being raised, never as a bottleneck being removed — see the note on 算力天花板 in LANGUAGE-zh.md, which records the same choice against the company deck's own phrasing. |
