@@ -9,6 +9,47 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="STYLE.css?v=018">
+  <style>
+    /* Page-local one-off, per STYLE.md section 8, built from tokens and
+       recorded in the ratchet record.
+
+       The hero image is bottom-aligned with the message field rather than with
+       the form. Stretching the media gives it the full column, which would
+       carry it past the message and down to the consent row; the padding
+       reserves exactly that block — the message field's own bottom margin
+       (--mt-space-5) plus the consent row and its gap (--mt-space-8) — so the
+       image ends where the message field ends.
+
+       Desktop only. Below 1000px .mt-hero stacks and the image sits above the
+       form, where there is no column to align to and a tall image would push
+       the first field off the screen. */
+    /* Not the grid's centered default: a 3:2 image in a column twice its
+       height would float in the middle of it. */
+    .mt-contact-hero { align-items: start; }
+
+    @media (min-width: 1001px) {
+      .mt-contact-hero { align-items: stretch; }
+
+      .mt-contact-hero .mt-hero__media { position: relative; }
+
+      /* Out of flow, so the image takes its height from the row instead of
+         setting it. In flow it is circular: the row is as tall as its tallest
+         item, and a full-height image is as tall as the row.
+
+         The height is stated rather than left to top/bottom. An absolutely
+         positioned replaced element with height: auto resolves from its own
+         intrinsic ratio and ignores the offsets, which is what a 2:3 source
+         did here — it came out 619px tall inside a 466px column. */
+      .mt-contact-hero .mt-shot--hero {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        aspect-ratio: auto;
+        height: calc(100% - var(--mt-space-8) - var(--mt-space-5));
+      }
+    }
+  </style>
 </head>
 <body>
 
@@ -36,10 +77,11 @@
        track to the form, which needs it, and the media sits first in the DOM
        so it takes the left column. Below 1000px the grid stacks and
        .mt-hero__media keeps order: -1, so the image stays above the form.
-       align-items: start rather than the grid's centered default — the form is
-       twice the height of a 3:2 image, and centering would leave the image
-       floating in the middle of its column. -->
-  <div class="mt-hero" style="padding-top: var(--mt-space-6); align-items: start;">
+       align-items comes from .mt-contact-hero in the head: stretch above
+       1000px so the image can be bottom-aligned with the message field, start
+       below it, since the grid's centered default would leave a 3:2 image
+       floating in the middle of a column twice its height. -->
+  <div class="mt-hero mt-contact-hero" style="padding-top: var(--mt-space-6);">
     <div class="mt-hero__media">
       <img class="mt-shot mt-shot--img mt-shot--hero" src="images/hero-contact.jpg"
            width="1600" height="2400" style="object-position: 50% 32%; margin-bottom: 0;"
