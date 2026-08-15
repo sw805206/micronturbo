@@ -1,4 +1,4 @@
-/* v015 | 2026-08-09 | 1172 lines
+/* v016 | 2026-08-14 | 1369 lines
    micronturbo.com design tokens and shared patterns.
    The decisions this file implements are recorded in STYLE.md.
    Pages consume tokens, never raw hex or px. See STYLE.md section 8. */
@@ -43,6 +43,16 @@
   --mt-inv-magnet: #7B5EC1;
   --mt-inv-vortex: #B7467A;
 
+  /* Semantic, not categorical. ~5.5:1 on --mt-bg, so it is legal as text there,
+     which is the only place it is used: the error message and its icon. It is
+     never a field border, outline or fill — see STYLE.md section 3 for why the
+     submit button is what that rule protects. It takes no slot in the c1-c6
+     order above and nothing counted may reference it.
+
+     There is deliberately no --mt-inv-error. No light-ground page exists, and
+     section 3's rule is that inverted variants are not written speculatively. */
+  --mt-error: #FF4F79;
+
   /* Type families. */
   --mt-font: 'Space Grotesk', system-ui, -apple-system, sans-serif;
   /* Simplified Chinese. Applied by the :lang(zh) rule in section 7. Loaded only
@@ -84,12 +94,21 @@
   /* Layout */
   --mt-container: 1180px;
   --mt-gutter: 40px;
+  /* Form measure. Not --mt-lead's 62ch: a measure is set by the eye's return to
+     the next line, a form by the trip from a label to its field. See STYLE.md
+     section 6. */
+  --mt-form-width: 38rem;
 
   /* --mt-bg as channels, so a translucent layer can be built from the ground
      color with rgba() instead of a hex-derived literal. The feature-row scrim
      is the only consumer; it needs two alphas of the same color. Keep this in
      step with --mt-bg above — CSS cannot derive one from the other. */
   --mt-bg-rgb: 12, 26, 43;
+
+  /* --mt-ignition as channels, same idiom and same caveat as --mt-bg-rgb above.
+     Its only consumer is the focus ring in section 11, which needs ignition at
+     low alpha. Keep in step with --mt-ignition by hand. */
+  --mt-ignition-rgb: 245, 91, 37;
 }
 
 @media (max-width: 768px) {
@@ -1170,3 +1189,181 @@ td {
 .mt-intro p { font-size: var(--mt-text-lg); color: var(--mt-text-2); }
 
 .mt-backlink { margin-bottom: var(--mt-space-6); font-size: var(--mt-text-sm); }
+
+/* ---------------------------------------------------------------
+   11. FORM PATTERNS
+   Promoted from the contact page. These are the first components on
+   the site that take input rather than present it, which changes what
+   they are judged on: every other pattern is judged on how it reads,
+   and these on whether a reader can finish them.
+   The row breakpoint is content-shaped like section 10's, not the
+   global 768. See STYLE.md section 6.
+   --------------------------------------------------------------- */
+
+.mt-form { max-width: var(--mt-form-width); }
+
+/* Name + company side by side. 560px is read off the content: a name field has
+   to show a full name, roughly 26 characters at --mt-text-base — about 230px of
+   text, plus --mt-space-4 of padding each side and the hairline, so about 264px
+   of field. Two of those with a --mt-space-5 gap is 552px. Below that the pair
+   stops being two usable fields and becomes two cramped ones. */
+.mt-form__row {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--mt-space-5);
+}
+
+@media (max-width: 560px) {
+  .mt-form__row { grid-template-columns: 1fr; }
+}
+
+/* Label + control + message. The unit exists so the message has somewhere to
+   live that is bound to its own field — an error line that is a sibling of the
+   form rather than of the field drifts the moment a row reflows. */
+.mt-field { margin-bottom: var(--mt-space-5); }
+
+/* Visible, and above the control. Never a placeholder standing in for a label:
+   a placeholder disappears on focus, which removes the question exactly as the
+   reader starts answering it, and leaves a filled form with no way to check
+   what each value was for. */
+.mt-field__label {
+  display: block;
+  margin-bottom: var(--mt-space-2);
+  font-size: var(--mt-text-sm);
+  font-weight: 500;
+  color: var(--mt-text-2);
+}
+
+.mt-field input,
+.mt-field textarea {
+  width: 100%;
+  font-family: inherit;
+  font-size: var(--mt-text-base);
+  line-height: var(--mt-leading-body);
+  color: var(--mt-text);
+  background: var(--mt-surface);
+  border: 1px solid var(--mt-border);
+  /* Matches .mt-btn. The field and the button sit in the same form, and a form
+     built from two corner radii reads as two components that merely happen to
+     be adjacent. */
+  border-radius: var(--mt-radius-sm);
+  padding: var(--mt-space-3) var(--mt-space-4);
+  transition: border-color 140ms ease, box-shadow 140ms ease;
+}
+
+.mt-field textarea {
+  min-height: var(--mt-space-10);
+  resize: vertical;
+}
+
+/* --mt-text-3, NOT --mt-text-faint. Faint is decorative-only and fails AA at
+   every size; a placeholder is read text even when it is only a hint.
+   opacity: 1 because Firefox dims placeholders by default. */
+.mt-field input::placeholder,
+.mt-field textarea::placeholder {
+  color: var(--mt-text-3);
+  opacity: 1;
+}
+
+/* Ignition border plus a soft ring, rather than a thicker border: a border that
+   changes width reflows the field by a pixel and makes the row twitch on tab.
+
+   This is the one place ignition is legal on a field edge, and it does not
+   contradict the error rule below. Focus is transient and lands on exactly one
+   field at a time, so it never competes with the submit button the way a set of
+   persistent error outlines would.
+
+   .mt-field--focus is a forced-state hook, and it shares this block rather than
+   copying it. A focused field is invisible at rest, so the stylebook cannot
+   review it any other way — the same problem the nav dropdown has in section 8.
+   One declaration block behind two selectors is what keeps the specimen from
+   drifting away from the real state; a stylebook rule with its own copy of these
+   values would report a focus ring the site does not have. */
+.mt-field input:focus-visible,
+.mt-field textarea:focus-visible,
+.mt-field--focus input,
+.mt-field--focus textarea {
+  outline: none;
+  border-color: var(--mt-ignition);
+  box-shadow: 0 0 0 var(--mt-space-1) rgba(var(--mt-ignition-rgb), 0.28);
+}
+
+/* The error message, below the control. The field border does NOT change — see
+   STYLE.md section 3. Color is not the only channel: the icon and the words
+   carry the same message, so the state survives a reader who cannot separate
+   the hue from the body copy around it. */
+.mt-field__error {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--mt-space-2);
+  margin-top: var(--mt-space-2);
+  font-size: var(--mt-text-sm);
+  line-height: 1.5;
+  color: var(--mt-error);
+}
+
+/* currentColor, so the icon inherits --mt-error from the line it sits in and
+   carries no color of its own. flex-shrink guards it against a long message. */
+.mt-field__error svg {
+  flex: 0 0 auto;
+  margin-top: 0.15em;
+}
+
+/* Beside the submit rather than above it: the consent line is the last thing
+   read before the action, which is where a consent statement belongs. */
+.mt-form__consent {
+  display: flex;
+  align-items: center;
+  gap: var(--mt-space-4);
+  flex-wrap: wrap;
+  margin-top: var(--mt-space-6);
+}
+
+.mt-form__consent p {
+  margin: 0;
+  flex: 1 1 16rem;
+  font-size: var(--mt-text-sm);
+  color: var(--mt-text-3);
+}
+
+/* Form-level outcome. Success reuses --mt-hydro rather than adding a success
+   token: hydro already means the good outcome everywhere else on the site, and
+   a second green would be a distinction nobody could name. Single-sided border
+   and therefore no radius, following the data-column idiom in section 5. */
+.mt-form__status {
+  border-left: 2px solid var(--mt-border);
+  padding: var(--mt-space-4) var(--mt-space-5);
+  background: var(--mt-surface);
+  margin-bottom: var(--mt-space-6);
+}
+
+.mt-form__status p { margin: 0; color: var(--mt-text-2); }
+.mt-form__status h3 { margin: 0 0 var(--mt-space-2); font-size: var(--mt-text-h3); }
+
+.mt-form__status--ok { border-left-color: var(--mt-hydro); }
+.mt-form__status--ok h3 { color: var(--mt-hydro); }
+
+.mt-form__status--error { border-left-color: var(--mt-error); }
+.mt-form__status--error h3 { color: var(--mt-error); }
+
+/* Honeypot. NOT .mt-visually-hidden, which is the reuse section 8 would lead a
+   reader to expect. That utility hides something from the eye while keeping it
+   in the accessibility tree, which is the opposite of what a honeypot needs: a
+   screen-reader user would find the field, fill it in, and be classified as a
+   bot for using assistive technology.
+
+   The markup half is not optional. The field must also carry aria-hidden="true",
+   tabindex="-1" and autocomplete="off", or this rule hides it from the eye and
+   from nothing else. */
+.mt-form__trap {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mt-field input,
+  .mt-field textarea { transition: none; }
+}
