@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Contact — Micronturbo</title>
+  <meta name="description" content="Tell us about your application. Microturbine generator systems for walking robots, industrial drones and off-grid sites.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="STYLE.css?v=019">
+  <style>
+    /* Page-local one-off, per STYLE.md section 8, built from tokens and
+       recorded in the ratchet record.
+
+       The hero image is bottom-aligned with the message field rather than with
+       the form. Stretching the media gives it the full column, which would
+       carry it past the message and down to the consent row; the padding
+       reserves exactly that block — the message field's own bottom margin
+       (--mt-space-5) plus the consent row and its gap (--mt-space-8) — so the
+       image ends where the message field ends.
+
+       Desktop only. Below 1000px .mt-hero stacks and the image sits above the
+       form, where there is no column to align to and a tall image would push
+       the first field off the screen. */
+    /* Not the grid's centered default: a 3:2 image in a column twice its
+       height would float in the middle of it. */
+    .mt-contact-hero { align-items: start; }
+
+    @media (min-width: 1001px) {
+      /* Two rows: the fields, then the consent row under them. The image lives
+         in row 1 only, so its height is the fields block's height and the
+         bottom edges line up by construction. An earlier version reserved the
+         consent block's height as a token sum instead, which was exact until
+         the button label changed and the row got shorter — a measurement of
+         one element hard-coded into another is a number that goes stale
+         silently. */
+      .mt-contact-hero {
+        align-items: stretch;
+        row-gap: 0;
+      }
+
+      .mt-contact-hero .mt-hero__media { grid-row: 1; grid-column: 1; position: relative; }
+      .mt-contact-hero__fields { grid-row: 1; grid-column: 2; }
+      .mt-contact-hero__actions { grid-row: 2; grid-column: 2; }
+
+      /* Out of flow, so the image takes its height from the row instead of
+         setting it. In flow it is circular: the row is as tall as its tallest
+         item, and a full-height image is as tall as the row.
+
+         inset works here where it did not before, because height is no longer
+         auto. An absolutely positioned replaced element with height: auto
+         resolves from its own intrinsic ratio and ignores the offsets — a 2:3
+         source came out 619px tall inside a 466px column. */
+      .mt-contact-hero .mt-shot--hero {
+        position: absolute;
+        inset: 0;
+        aspect-ratio: auto;
+        height: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div id="mt-header"></div>
+
+<main id="mt-main">
+
+<section class="mt-container">
+
+  <!-- Eyebrow, headline and intro run across the top, above the two-column
+       row. The lead takes .mt-lead--full, matching the products hub: STYLE.md's
+       rule is that a paragraph in a full-width section runs the full width and
+       a paragraph in a grid column takes its column, and this one moved out of
+       the column when the heading did. -->
+  <div style="padding-top: var(--mt-space-9);">
+    <p class="mt-label">Contact</p>
+    <h1>Get in Touch</h1>
+    <p class="mt-lead mt-lead--full">Tell us about your application and we will
+    get back to you. Whether you are specifying power for a walking robot, an
+    industrial drone, or an off-grid site, we would like to hear what you are
+    building.</p>
+  </div>
+
+  <!-- The base .mt-hero grid, not .mt-hero--sku. 1fr 1.55fr gives the wide
+       track to the form, which needs it, and the media sits first in the DOM
+       so it takes the left column. Below 1000px the grid stacks and
+       .mt-hero__media keeps order: -1, so the image stays above the form.
+       align-items comes from .mt-contact-hero in the head: stretch above
+       1000px so the image can be bottom-aligned with the message field, start
+       below it, since the grid's centered default would leave a 3:2 image
+       floating in the middle of a column twice its height. -->
+  <form class="mt-hero mt-contact-hero" id="mt-contact-form" novalidate
+        style="padding-top: var(--mt-space-6);">
+
+    <div class="mt-hero__media">
+      <img class="mt-shot mt-shot--img mt-shot--hero" src="images/hero-contact.jpg"
+           width="1600" height="2400" style="object-position: 50% 32%; margin-bottom: 0;"
+           alt="A neon sign shaped like a speech bubble glows pink and gold against a rough dark stone wall, spelling the word hello in looping script.">
+    </div>
+
+    <div class="mt-form mt-contact-hero__fields">
+
+      <!-- The status block is rendered empty and filled by the script. aria-live
+           announces the outcome to a screen reader, which otherwise gets no signal
+           that anything happened: the submit does not navigate. -->
+      <div id="mt-form-status" role="status" aria-live="polite"></div>
+
+        <div class="mt-form__row">
+          <div class="mt-field">
+            <label class="mt-field__label" for="name">Name</label>
+            <input id="name" name="name" type="text" autocomplete="name"
+                   placeholder="First and last name" required>
+          </div>
+          <div class="mt-field">
+            <label class="mt-field__label" for="email">Email</label>
+            <input id="email" name="email" type="email" autocomplete="email"
+                   placeholder="name@company.com" required>
+          </div>
+        </div>
+
+        <div class="mt-field">
+          <label class="mt-field__label" for="subject">Subject</label>
+          <input id="subject" name="subject" type="text"
+                 placeholder="What is this about?">
+        </div>
+
+        <!-- No bottom margin: this field's bottom edge is the fields block's
+             bottom edge, and therefore where the image ends. -->
+        <div class="mt-field" style="margin-bottom: 0;">
+          <label class="mt-field__label" for="message">Message</label>
+          <textarea id="message" name="message" required></textarea>
+        </div>
+
+        <!-- Honeypot. Hidden from the eye by .mt-form__trap and from assistive
+             technology by aria-hidden, so a screen-reader user cannot fill it in
+             and be classified as a bot. See STYLE.md section 6. -->
+        <div class="mt-form__trap">
+          <label class="mt-field__label" for="website">Leave this field empty</label>
+          <input id="website" name="website" type="text" tabindex="-1"
+                 autocomplete="off" aria-hidden="true">
+        </div>
+
+        <!-- Milliseconds between page load and submit, filled by the script. The
+             second bot signal, and the one a bot that knows to skip honeypots
+             still trips. -->
+        <input id="elapsed" name="elapsed" type="hidden" value="">
+
+    </div>
+
+    <!-- Row 2 of the grid, under the fields and beside nothing. Keeping it out
+         of the fields block is what makes the image alignment structural: the
+         media stretches to row 1, and row 1 is exactly the fields.
+
+         The consent sentence names the button, so the two are one edit:
+         renaming the button without renaming it here leaves the page telling
+         the reader to click something that is not on it. -->
+    <div class="mt-form mt-contact-hero__actions">
+      <div class="mt-form__consent">
+        <p>By clicking Send, you consent to our
+        <a href="privacy.html">Privacy Policy</a>.</p>
+        <button class="mt-btn" type="submit">Send</button>
+      </div>
+    </div>
+
+  </form>
+
+</section>
+
+</main>
+
+<div id="mt-footer"></div>
+
+<script src="partials.js" defer></script>
+<script>
+/* Contact form. Page-specific and about forty lines, so it is inline rather
+   than a second file: partials.js is external because every page shares it,
+   and nothing else on the site posts a form.
+
+   ENDPOINT is the deployed Apps Script web app. The dependency is recorded in
+   SCOPE.md section 3. It is deployment-specific — a redeploy of the script
+   changes it — so it lives here rather than in a governance doc. */
+(function () {
+  'use strict';
+
+  const ENDPOINT = 'https://script.google.com/macros/s/AKfycbzarmi342iTIZiSrd9SryUqnZ7imqAWo6YLut8SIYwsVd2b_vA-fzQqiTtQTxnDbZ5zgw/exec';  // Apps Script /exec URL — see Code.gs
+
+  /* When the page finished parsing. The gap between this and the submit is the
+     elapsed-time signal below: a script that posts the form the instant it
+     loads did not read anything on it. */
+  var LOADED_AT = Date.now();
+
+  /* Under this many milliseconds a submission is treated as automated. Two
+     seconds is far below any real reading of a five-field form and far above
+     any plausible human speed, so it costs nobody a message. */
+  var MIN_ELAPSED_MS = 2000;
+
+  var form = document.getElementById('mt-contact-form');
+  var statusBox = document.getElementById('mt-form-status');
+  var button = form.querySelector('button[type="submit"]');
+
+  /* Field-level messages. Written here rather than in the markup so an empty
+     and an invalid field can say different things about the same input. */
+  var MESSAGES = {
+    name: 'Please tell us your name.',
+    email: {
+      empty: 'Please give us an email address to reply to.',
+      invalid: 'That does not look like a complete email address.'
+    },
+    message: 'Please tell us what you need power for.'
+  };
+
+  var ALERT_ICON =
+    '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" ' +
+    'stroke="currentColor" stroke-width="1.75" stroke-linecap="round" ' +
+    'stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/>' +
+    '<line x1="12" x2="12" y1="8" y2="12"/><line x1="12" x2="12.01" y1="16" y2="16"/></svg>';
+
+  function clearError(input) {
+    var field = input.closest('.mt-field');
+    var existing = field.querySelector('.mt-field__error');
+    if (existing) { existing.remove(); }
+    input.removeAttribute('aria-invalid');
+    input.removeAttribute('aria-describedby');
+  }
+
+  function showError(input, text) {
+    clearError(input);
+    var field = input.closest('.mt-field');
+    var id = input.id + '-error';
+    var p = document.createElement('p');
+    p.className = 'mt-field__error';
+    p.id = id;
+    p.innerHTML = ALERT_ICON + '<span></span>';
+    p.querySelector('span').textContent = text;
+    field.appendChild(p);
+    input.setAttribute('aria-invalid', 'true');
+    input.setAttribute('aria-describedby', id);
+  }
+
+  function validate() {
+    var firstBad = null;
+    ['name', 'email', 'message'].forEach(function (key) {
+      var input = form.elements[key];
+      var value = input.value.trim();
+      var msg = null;
+      if (!value) {
+        msg = key === 'email' ? MESSAGES.email.empty : MESSAGES[key];
+      } else if (key === 'email' && !input.checkValidity()) {
+        msg = MESSAGES.email.invalid;
+      }
+      if (msg) {
+        showError(input, msg);
+        if (!firstBad) { firstBad = input; }
+      } else {
+        clearError(input);
+      }
+    });
+    if (firstBad) { firstBad.focus(); }
+    return !firstBad;
+  }
+
+  function setStatus(kind, heading, body) {
+    statusBox.innerHTML =
+      '<div class="mt-form__status mt-form__status--' + kind + '">' +
+      '<h3></h3><p></p></div>';
+    statusBox.querySelector('h3').textContent = heading;
+    statusBox.querySelector('p').textContent = body;
+  }
+
+  form.addEventListener('submit', function (event) {
+    event.preventDefault();
+    statusBox.innerHTML = '';
+    if (!validate()) { return; }
+
+    var elapsed = Date.now() - LOADED_AT;
+    form.elements.elapsed.value = String(elapsed);
+
+    /* Both bot signals are checked before the request, not by the script on the
+       other end: whichever one trips, the sender gets the same thank-you a
+       person gets and nothing is sent. Telling a bot which check caught it is
+       how the next attempt gets past both. */
+    if (form.elements.website.value || elapsed < MIN_ELAPSED_MS) {
+      setStatus('ok', 'Message sent',
+        'Thanks — we have your message and will be in touch shortly.');
+      form.reset();
+      return;
+    }
+
+    /* No endpoint configured yet. Short-circuit to the failure state rather
+       than POSTing to the page's own URL, which is what an empty string
+       resolves to — that produces a stray request and a console error that
+       look like a bug in the form rather than a missing deployment. */
+    if (!ENDPOINT) {
+      setStatus('error', 'Message not sent',
+        'We could not send your message. Check your connection and try again.');
+      return;
+    }
+
+    /* JSON body, sent as text/plain. Two constraints meet here.
+
+       The script reads e.postData.contents and parses it as JSON, so the body
+       has to be JSON — Apps Script does not populate e.parameter from
+       multipart/form-data at all, and a urlencoded body is not what this
+       endpoint parses.
+
+       text/plain rather than application/json because it is CORS-safelisted:
+       application/json triggers a preflight OPTIONS, and an Apps Script web
+       app does not answer OPTIONS, so the request would fail before the POST
+       was ever made. */
+    button.disabled = true;
+    fetch(ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify({
+        name: form.elements.name.value.trim(),
+        email: form.elements.email.value.trim(),
+        subject: form.elements.subject.value.trim(),
+        message: form.elements.message.value.trim(),
+        elapsed: elapsed
+      })
+    })
+      .then(function (response) {
+        if (!response.ok) { throw new Error('HTTP ' + response.status); }
+        return response.json();
+      })
+      .then(function (result) {
+        if (!result || result.ok !== true) { throw new Error('rejected'); }
+        setStatus('ok', 'Message sent',
+          'Thanks — we have your message and will be in touch shortly.');
+        form.reset();
+      })
+      .catch(function () {
+        /* The failure state is shown on any outcome the script did not confirm.
+           A thank-you that appears when the row was never written is worse than
+           an error, because nobody finds out. */
+        setStatus('error', 'Message not sent',
+          'We could not send your message. Check your connection and try again.');
+      })
+      .then(function () {
+        button.disabled = false;
+        statusBox.scrollIntoView({ block: 'nearest' });
+      });
+  });
+
+  /* Clear a field's error as soon as the reader starts fixing it, rather than
+     making them submit again to find out. */
+  ['name', 'email', 'message'].forEach(function (key) {
+    form.elements[key].addEventListener('input', function () {
+      if (this.getAttribute('aria-invalid')) { clearError(this); }
+    });
+  });
+})();
+</script>
+</body>
+</html>
