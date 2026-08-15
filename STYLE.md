@@ -1,4 +1,4 @@
-v025 | 2026-08-15 | 826 lines
+v026 | 2026-08-15 | 832 lines
 # Style
 
 The design-system decisions for micronturbo.com, in words. STYLE.css is the
@@ -541,15 +541,21 @@ whether a reader can complete them.
   form look like a wall, and the fields do not need the width — nothing typed
   into a name, an email or a company field wants 62 characters.
 
-- **Two-column row** — `.mt-form__row`, used twice: name beside company, and
-  email beside subject. Both collapse to one column at **560px**.
+- **Two-column row** — `.mt-form__row`, holding name beside email, collapsing
+  to one column at **560px**.
 
-  The second pair was not in the original spec, which put email full width.
-  That was written when a third field shared the row and the columns would have
-  come out around 160px, which is too narrow for an address. The third field
-  was cut, and at roughly 290px per column both a full email address and a
-  short subject fit comfortably — so pairing them is free, and it saves a
-  scroll on a page whose message field is already tall.
+  What pairs is what is short and always filled. Name and email are both, and
+  at roughly 290px per column a full address fits. Subject takes its own full
+  width row instead of pairing: it is optional, it is the one field whose
+  length is unpredictable, and a half-width box invites a half-thought.
+
+  This entry has been wrong twice, in both directions — first recording a
+  full-width email when the built page paired it with subject, then recording
+  that pair after company was cut and the pairing changed again. Worth stating
+  why: the row is a layout primitive and the pairing is a per-form content
+  decision, so every change to a form's fields is a change to this entry. The
+  primitive is what belongs here; which two fields sit in it belongs to the
+  page, and this entry documents the contact page's answer rather than a rule.
 
   That number is from the content, not from the page. A name field has to show a
   full name without scrolling it: roughly 26 characters at `--mt-text-base`,
