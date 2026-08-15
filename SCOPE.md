@@ -1,4 +1,4 @@
-v012 | 2026-08-14 | 274 lines
+v013 | 2026-08-14 | 276 lines
 # Scope
 
 ## 1. Project
@@ -92,14 +92,16 @@ section covers it.
   | Clock, fuel, leaf, snowflake, zap | Lucide | ISC |
   | Circle-alert | Lucide | ISC |
 
-  Circle-alert is the leading icon on `.mt-field__error`. It takes
-  `currentColor` like the rest, which is what lets it inherit `--mt-error` from
-  the message rather than carrying a color of its own.
-
   Both licenses permit use and modification with attribution retained. Inline
-  rather than a sprite or an icon font because six icons on three pages do not
-  justify either, and inline SVG takes `currentColor`, which is what lets the
+  rather than a sprite or an icon font because seven icons do not justify
+  either, and inline SVG takes `currentColor`, which is what lets the
   categorical hues come from tokens.
+
+  Circle-alert is the seventh, and it is the leading icon on
+  `.mt-field__error`. `currentColor` is doing the same job there as it does for
+  the six above, but for a semantic token rather than a categorical one: the
+  icon inherits `--mt-error` from the message it sits in and carries no color of
+  its own.
 
 - All internal links are RELATIVE paths, for portability.
 
