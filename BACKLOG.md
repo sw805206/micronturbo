@@ -1,4 +1,4 @@
-v015 | 2026-08-15 | 63 lines
+v016 | 2026-08-15 | 64 lines
 # Backlog
 
 The backlog for micronturbo.com. Tracks both short-term items (bugs, UI
@@ -59,5 +59,6 @@ Closed-by stays empty on every other status.
 | BL-014 | open | content | Confirm with the tech team what the 2 kW/kg power-density figure measures — turbine core, engine module, or complete system — and whether it is a platform peak rather than a launch-SKU figure; neither launch SKU reaches it (MT-6K ~600 W/kg, MT-75K ~1,875 W/kg) | 2026-08-08 | |
 | BL-015 | closed | content | Replace the three Chinese placeholder pages (`products-zh.html`, `products-6k-zh.html`, `products-75k-zh.html`) with real translated content and remove their `noindex,nofollow` | 2026-08-08 | verified manually by human 2026-08-09 |
 | BL-016 | open | content | Privacy pages carry `[LEGAL ENTITY NAME]`, `[REGISTERED ADDRESS]` and `[JURISDICTION]` placeholders and are `noindex,nofollow` until filled and reviewed | 2026-08-15 | |
-| BL-017 | open | content | PIPL separate consent: `privacy-zh.html` states that submitting the form constitutes separate consent to cross-border transfer. Under PIPL that implies a distinct checkbox rather than the implied consent the English contact form uses. `contact-zh.html` must resolve this, and if it uses the English pattern the 信息存放在哪里 wording needs revising | 2026-08-15 | |
-| BL-018 | open | feature | Build `contact-zh.html` — nav in `partials-zh.html` links it and it 404s. Blocked on audience: mainland readers cannot reach script.google.com, so the form needs a second endpoint or a graceful failure with an alternative contact route | 2026-08-15 | |
+| BL-017 | open | content | Chinese pages ship without PIPL treatment, deferred until the entity is confirmed. If mainland readers are in scope, cross-border transfer needs separate consent — a distinct checkbox on `contact-zh.html`, not the implied consent it currently uses — and `privacy-zh.html`'s 信息存放在哪里 section needs rewriting to match | 2026-08-15 | |
+| BL-018 | review | feature | Build `contact-zh.html` — nav in `partials-zh.html` links it and it 404s. Blocked on audience: mainland readers cannot reach script.google.com, so the form needs a second endpoint or a graceful failure with an alternative contact route | 2026-08-15 | |
+| BL-019 | open | feature | Readers who cannot reach script.google.com get the failure state on `contact-zh.html` with no alternative contact route offered. Revisit once the audience is settled | 2026-08-15 | |
