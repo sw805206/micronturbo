@@ -1,4 +1,4 @@
-/* v017 | 2026-08-15 | 1376 lines
+/* v018 | 2026-08-15 | 1383 lines
    micronturbo.com design tokens and shared patterns.
    The decisions this file implements are recorded in STYLE.md.
    Pages consume tokens, never raw hex or px. See STYLE.md section 8. */
@@ -1332,6 +1332,13 @@ td {
   font-size: var(--mt-text-sm);
   color: var(--mt-text-3);
 }
+
+/* The consent line names a document, and a document's name is one thing. The
+   paragraph shares its row with the button, so it is narrow enough to wrap
+   mid-name at full desktop width — "Privacy" ending one line and "Policy"
+   starting the next reads as two links rather than one. The line still wraps;
+   it just wraps around the name instead of through it. */
+.mt-form__consent a { white-space: nowrap; }
 
 /* Form-level outcome. Success reuses --mt-hydro rather than adding a success
    token: hydro already means the good outcome everywhere else on the site, and
