@@ -1,4 +1,4 @@
-/* v018 | 2026-08-15 | 1383 lines
+/* v019 | 2026-08-15 | 1389 lines
    micronturbo.com design tokens and shared patterns.
    The decisions this file implements are recorded in STYLE.md.
    Pages consume tokens, never raw hex or px. See STYLE.md section 8. */
@@ -1241,8 +1241,14 @@ td {
   color: var(--mt-text-2);
 }
 
+/* display: block, not the inline-block a form control defaults to. An
+   inline-block control sits on a text baseline, and the descender space under
+   that baseline is real layout — it puts an 8px gap under every textarea that
+   no input gets, so one field in a form is spaced differently from the rest
+   for no reason anybody can see in the markup. */
 .mt-field input,
 .mt-field textarea {
+  display: block;
   width: 100%;
   font-family: inherit;
   font-size: var(--mt-text-base);
