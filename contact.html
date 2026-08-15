@@ -14,15 +14,13 @@
        recorded in the ratchet record.
 
        The hero image is bottom-aligned with the message field rather than with
-       the form. Stretching the media gives it the full column, which would
-       carry it past the message and down to the consent row; the padding
-       reserves exactly that block — the message field's own bottom margin
-       (--mt-space-5) plus the consent row and its gap (--mt-space-8) — so the
-       image ends where the message field ends.
+       the form or the column, and it is done structurally — see the grid rows
+       below.
 
        Desktop only. Below 1000px .mt-hero stacks and the image sits above the
        form, where there is no column to align to and a tall image would push
        the first field off the screen. */
+
     /* Not the grid's centered default: a 3:2 image in a column twice its
        height would float in the middle of it. */
     .mt-contact-hero { align-items: start; }
@@ -57,6 +55,16 @@
         inset: 0;
         aspect-ratio: auto;
         height: 100%;
+      }
+
+      /* Once the form has been sent the fields column is just the thank-you,
+         and an image stretched to match it would be a sliver. It goes back to
+         its own ratio, so what is left on the page is a picture and a message
+         rather than a picture squashed to the height of a message. */
+      .mt-contact-hero--done .mt-shot--hero {
+        position: static;
+        aspect-ratio: 3 / 2;
+        height: auto;
       }
     }
   </style>
@@ -107,6 +115,10 @@
            that anything happened: the submit does not navigate. -->
       <div id="mt-form-status" role="status" aria-live="polite"></div>
 
+      <!-- Everything the reader fills in, wrapped so a successful send can take
+           the whole lot away at once and leave the thank-you standing alone. -->
+      <div id="mt-form-fields">
+
         <div class="mt-form__row">
           <div class="mt-field">
             <label class="mt-field__label" for="name">Name</label>
@@ -146,6 +158,8 @@
              second bot signal, and the one a bot that knows to skip honeypots
              still trips. -->
         <input id="elapsed" name="elapsed" type="hidden" value="">
+
+      </div>
 
     </div>
 
@@ -206,6 +220,8 @@
 
   var form = document.getElementById('mt-contact-form');
   var statusBox = document.getElementById('mt-form-status');
+  var fields = document.getElementById('mt-form-fields');
+  var actions = form.querySelector('.mt-contact-hero__actions');
   var button = form.querySelector('button[type="submit"]');
 
   /* Field-level messages. Written here rather than in the markup so an empty
@@ -283,6 +299,17 @@
     statusBox.querySelector('p').textContent = body;
   }
 
+  /* A sent message leaves nothing to do, so the fields and the submit row come
+     away and the thank-you stands on its own. Only on success: the failure
+     copy tells the reader to try again, and a form that has removed itself
+     makes that impossible without a reload. */
+  function retireForm() {
+    form.reset();
+    fields.hidden = true;
+    actions.hidden = true;
+    form.classList.add('mt-contact-hero--done');
+  }
+
   form.addEventListener('submit', function (event) {
     event.preventDefault();
     statusBox.innerHTML = '';
@@ -298,7 +325,7 @@
     if (form.elements.website.value || elapsed < MIN_ELAPSED_MS) {
       setStatus('ok', 'Message sent',
         'Thanks — we have your message and will be in touch shortly.');
-      form.reset();
+      retireForm();
       return;
     }
 
@@ -348,7 +375,7 @@
         if (!result || result.ok !== true) { throw new Error('rejected'); }
         setStatus('ok', 'Message sent',
           'Thanks — we have your message and will be in touch shortly.');
-        form.reset();
+        retireForm();
       })
       .catch(function () {
         /* The failure state is shown on any outcome the script did not confirm.
