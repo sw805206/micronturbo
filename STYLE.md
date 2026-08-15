@@ -1,4 +1,4 @@
-v027 | 2026-08-15 | 848 lines
+v028 | 2026-08-15 | 888 lines
 # Style
 
 The design-system decisions for micronturbo.com, in words. STYLE.css is the
@@ -661,6 +661,45 @@ whether a reader can complete them.
   rule with `aria-hidden="true"`, `tabindex="-1"` and `autocomplete="off"` in
   the markup, and the markup half is not optional.
 
+### Defined by the privacy pages
+
+One pattern, in STYLE.css section 12. It is the first pattern on the site for a
+page that is prose from top to bottom rather than one whose text captions a
+layout.
+
+- **Long-form document** — `.mt-doc`, capped at **62ch: the same number as
+  `.mt-lead`, and deliberately not the same width.**
+
+  The number is not new. The reason given for `.mt-lead`'s 62ch was sustained
+  reading, and this is the case that reason was describing — `.mt-lead` is
+  simply where it first landed. What differs is the type it caps: `ch` resolves
+  against the element's own font-size, so at `--mt-text-base` this comes out
+  shorter in pixels than `.mt-lead` does at `--mt-text-lg`. The same count of
+  characters, and smaller type wants a shorter line to hold that count.
+
+  Before this, nothing measured running body text. `.mt-lead` welds its cap to
+  lead-sized type, `.mt-form`'s 38rem measures label-to-field travel rather than
+  reading, and base `p` carries no cap — so a prose page ran the full 1180px
+  container, near 130 characters a line. The full-width rule under
+  `.mt-lead--full` above does not reach this case: it was written for a section
+  lead of a line or two, and the sentence introducing it says the 62ch cap is
+  right for sustained reading.
+
+  **One rule serves both languages.** The cap is computed on `.mt-doc` in the
+  Latin stack, so it is a single value whatever sits inside it: 636px, which is
+  39 Han characters a line, inside the comfortable CJK measure. Measured in the
+  browser, not derived. That is what lets the two privacy pages stay
+  structurally identical per SCOPE.md section 3 rather than needing a
+  per-language override.
+
+  `.mt-doc h2` takes space above it and drops to `--mt-text-h3`. `--mt-text-h2`
+  against 1rem body reads as a section break on a page carrying three of them
+  and as shouting on a document carrying fifteen; here the heading is a
+  signpost, not a headline. **The element stays an `h2` — this sets its size,
+  not its level.** `.mt-doc__meta` is the effective-date line under the title,
+  muted because it is metadata about the document rather than the first thing to
+  read in it.
+
 ## 7. The stylebook
 
 `int-stylebook.html` renders every token and pattern in this file live. It is an
@@ -674,7 +713,7 @@ change waits.
 
 **Every page's `?v=` query matches the current STYLE.css version, and is bumped
 in the same commit that bumps the stamp.** Each page links the stylesheet as
-`href="STYLE.css?v=019"`, where the number is STYLE.css's own `v###`. Changing
+`href="STYLE.css?v=020"`, where the number is STYLE.css's own `v###`. Changing
 the query changes the URL, so a browser holding the old file has nothing to
 match against and must refetch.
 
@@ -691,13 +730,13 @@ a warm cache, which is why it cannot be reproduced with `curl`.
 Verify before pushing any STYLE.css change:
 
 ```
-grep -l 'rel="stylesheet"' *.html | xargs grep -L 'STYLE.css?v=019'
+grep -l 'rel="stylesheet"' *.html | xargs grep -L 'STYLE.css?v=020'
 ```
 
 It lists any page out of step and should return nothing. The scoping matters:
 `partials.html` and `partials-zh.html` are fragments injected into pages that
 already carry the link, so they hold no stylesheet reference of their own. A
-bare `grep -L 'STYLE.css?v=019' *.html` reports both as failures — the check
+bare `grep -L 'STYLE.css?v=020' *.html` reports both as failures — the check
 must ask only pages that link a stylesheet at all.
 
 This is a mitigation, not the fix. It costs a returning visitor a full CSS
@@ -779,6 +818,7 @@ was carried, forgotten, or orphaned.
 | `input` / `textarea` control styling and focus ring | Contact page | v016 §11 |
 | `.mt-form__consent`, `.mt-form__status` | Contact page | v016 §11 |
 | `.mt-form__trap` honeypot | Contact page | v016 §11 |
+| `.mt-doc`, `.mt-doc__meta` long-form document measure | Privacy pages | v020 §12 |
 
 **Page-local, not promoted:** the contact page bottom-aligns its hero image
 with the message field rather than with the form or the column. The hero is
