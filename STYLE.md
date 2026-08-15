@@ -1,4 +1,4 @@
-v028 | 2026-08-15 | 888 lines
+v029 | 2026-08-15 | 903 lines
 # Style
 
 The design-system decisions for micronturbo.com, in words. STYLE.css is the
@@ -685,12 +685,27 @@ layout.
   lead of a line or two, and the sentence introducing it says the 62ch cap is
   right for sustained reading.
 
-  **One rule serves both languages.** The cap is computed on `.mt-doc` in the
-  Latin stack, so it is a single value whatever sits inside it: 636px, which is
-  39 Han characters a line, inside the comfortable CJK measure. Measured in the
-  browser, not derived. That is what lets the two privacy pages stay
-  structurally identical per SCOPE.md section 3 rather than needing a
-  per-language override.
+  **One declaration, two measures — deliberately not one width.** `:lang(zh)`
+  swaps `--mt-font-cjk` onto `.mt-doc` itself, so `ch` resolves against Noto
+  Sans SC on a Chinese page and against Space Grotesk on an English one: 636px
+  and 551px, or near 62 Latin characters and near 34 Han characters. Measured on
+  privacy.html and privacy-zh.html.
+
+  That difference is the property worth having, not a defect to correct. `ch` is
+  a unit of the script actually being set, so one declaration lands each
+  language inside its own comfortable measure — which a single pixel value could
+  not do for both. The markup stays identical either way, which is what SCOPE.md
+  section 3 asks for; it is the computed width that differs, as it does for every
+  text element on a Chinese page. `.mt-lead`'s 62ch behaves the same way and
+  always has.
+
+  The stylebook renders the two as a pair, and section 7's rule about specimens
+  is why. Its first version nested the Chinese block *inside* the Latin
+  `.mt-doc`, which kept the Latin cap and reported a width no Chinese page has;
+  the figure that produced was written into this file as fact and had to be
+  corrected. A per-language difference is a difference, not a value, so one
+  specimen proves nothing — the same reason the label resets in section 4 are
+  rendered in pairs.
 
   `.mt-doc h2` takes space above it and drops to `--mt-text-h3`. `--mt-text-h2`
   against 1rem body reads as a section break on a page carrying three of them
@@ -713,7 +728,7 @@ change waits.
 
 **Every page's `?v=` query matches the current STYLE.css version, and is bumped
 in the same commit that bumps the stamp.** Each page links the stylesheet as
-`href="STYLE.css?v=020"`, where the number is STYLE.css's own `v###`. Changing
+`href="STYLE.css?v=021"`, where the number is STYLE.css's own `v###`. Changing
 the query changes the URL, so a browser holding the old file has nothing to
 match against and must refetch.
 
@@ -730,13 +745,13 @@ a warm cache, which is why it cannot be reproduced with `curl`.
 Verify before pushing any STYLE.css change:
 
 ```
-grep -l 'rel="stylesheet"' *.html | xargs grep -L 'STYLE.css?v=020'
+grep -l 'rel="stylesheet"' *.html | xargs grep -L 'STYLE.css?v=021'
 ```
 
 It lists any page out of step and should return nothing. The scoping matters:
 `partials.html` and `partials-zh.html` are fragments injected into pages that
 already carry the link, so they hold no stylesheet reference of their own. A
-bare `grep -L 'STYLE.css?v=020' *.html` reports both as failures — the check
+bare `grep -L 'STYLE.css?v=021' *.html` reports both as failures — the check
 must ask only pages that link a stylesheet at all.
 
 This is a mitigation, not the fix. It costs a returning visitor a full CSS
