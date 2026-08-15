@@ -2,7 +2,12 @@
  * micronturbo.com contact form endpoint.
  *
  * Appends one row per submission to the bound Sheet.
- * Columns, in order: timestamp | lang | name | company | email | subject | message
+ * Columns, in order: timestamp | lang | name | email | subject | message
+ *
+ * Every field the page collects is mandatory, so REQUIRED covers all of them.
+ * There is no company field: it was cut from the form and its header removed
+ * from the Sheet, and appendRow must stay in step with that header or every
+ * value after the gap lands one column left of its heading.
  *
  * The page POSTs JSON with Content-Type text/plain so the browser treats it as a
  * simple request and skips the CORS preflight, which Apps Script cannot answer.
@@ -11,7 +16,7 @@
 
 var SHEET_NAME = 'Sheet1';
 var REQUIRED = ['name', 'email', 'subject', 'message'];
-var MAX = { name: 200, company: 200, email: 320, subject: 300, message: 5000 };
+var MAX = { name: 200, email: 320, subject: 300, message: 5000 };
 var MIN_ELAPSED_MS = 3000;
 
 function doPost(e) {
@@ -44,7 +49,6 @@ function doPost(e) {
     var row = {
       lang: data.lang === 'zh-Hans' ? 'zh-Hans' : 'en',
       name: clean(data.name, MAX.name),
-      company: clean(data.company, MAX.company),
       email: clean(data.email, MAX.email),
       subject: clean(data.subject, MAX.subject),
       message: clean(data.message, MAX.message)
@@ -71,7 +75,6 @@ function doPost(e) {
       new Date(),
       row.lang,
       row.name,
-      row.company,
       row.email,
       row.subject,
       row.message
