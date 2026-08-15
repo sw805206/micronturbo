@@ -1,4 +1,4 @@
-v013 | 2026-08-14 | 276 lines
+v014 | 2026-08-14 | 298 lines
 # Scope
 
 ## 1. Project
@@ -79,6 +79,28 @@ section covers it.
   the critical path on every page. Loaded by `<link>` tags in each page's own
   `<head>`, not by an `@import` in STYLE.css — see STYLE.md section 4 for why.
   Consumers: all pages.
+
+- **Exception taken: Google Apps Script form endpoint.** The contact form POSTs
+  to a Google Apps Script web app on `script.google.com`, which appends the
+  submission as a row to a Google Sheet. Taken because the site is static and
+  GitHub Pages has no backend to post to, so a form either goes to a third party
+  or does not exist.
+
+  The sheet is the delivery path, not a copy of one. No mail is configured on
+  `micronturbo.com` — BL-002 records DMARC at `p=quarantine` with no SPF and no
+  MX — so there is no email route to fall back to and nothing here depends on
+  one. That also means BL-002 does not block this page, which is the opposite of
+  how it would read at a glance.
+
+  Unlike the fonts exception this is NOT in the critical path: the request fires
+  on submit, not on load, and a visitor who never submits never touches Google
+  from this page. The cost is different in kind rather than in weight — whatever
+  a visitor types into the form leaves the site and lands in a third-party
+  document, which is a privacy fact `privacy.html` has to state plainly rather
+  than a performance one.
+
+  The endpoint URL is deployment-specific and lives in the page, not here; a
+  redeploy of the script changes it. Consumers: `contact.html`.
 
 - **Dependency note, NOT a CDN exception: vendored icons.** The product pages
   carry six icons and the form patterns add a seventh, vendored inline as SVG
