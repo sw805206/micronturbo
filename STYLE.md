@@ -1,4 +1,4 @@
-v021 | 2026-08-14 | 798 lines
+v022 | 2026-08-15 | 804 lines
 # Style
 
 The design-system decisions for micronturbo.com, in words. STYLE.css is the
@@ -551,6 +551,12 @@ whether a reader can complete them.
   between them is 552px. Below that the pair stops being two usable fields and
   becomes two cramped ones, so it collapses at 560.
 
+  On the stack the row's `row-gap` goes to zero. `.mt-field` already carries
+  its own bottom margin, and leaving the gap on top of it opened twice the
+  space between two stacked fields that a field outside a row gets — which
+  reads as the pair having come apart rather than as spacing. The column gap is
+  unaffected, because on one column there is no column.
+
   This is the rule the product patterns already follow — content-shaped grids
   break where their content breaks, not at the global 768. Worth noting that 560
   is named in the breakpoint list above but has had no consumer since the
@@ -643,7 +649,7 @@ change waits.
 
 **Every page's `?v=` query matches the current STYLE.css version, and is bumped
 in the same commit that bumps the stamp.** Each page links the stylesheet as
-`href="STYLE.css?v=016"`, where the number is STYLE.css's own `v###`. Changing
+`href="STYLE.css?v=017"`, where the number is STYLE.css's own `v###`. Changing
 the query changes the URL, so a browser holding the old file has nothing to
 match against and must refetch.
 
@@ -660,13 +666,13 @@ a warm cache, which is why it cannot be reproduced with `curl`.
 Verify before pushing any STYLE.css change:
 
 ```
-grep -l 'rel="stylesheet"' *.html | xargs grep -L 'STYLE.css?v=016'
+grep -l 'rel="stylesheet"' *.html | xargs grep -L 'STYLE.css?v=017'
 ```
 
 It lists any page out of step and should return nothing. The scoping matters:
 `partials.html` and `partials-zh.html` are fragments injected into pages that
 already carry the link, so they hold no stylesheet reference of their own. A
-bare `grep -L 'STYLE.css?v=016' *.html` reports both as failures — the check
+bare `grep -L 'STYLE.css?v=017' *.html` reports both as failures — the check
 must ask only pages that link a stylesheet at all.
 
 This is a mitigation, not the fix. It costs a returning visitor a full CSS
