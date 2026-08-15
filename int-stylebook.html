@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="STYLE.css?v=020">
+  <link rel="stylesheet" href="STYLE.css?v=021">
   <style>
     .sb-swatch { border: 1px solid var(--mt-border); border-radius: var(--mt-radius-sm); overflow: hidden; }
     .sb-swatch__chip { height: 88px; }
@@ -826,25 +826,42 @@
       A second heading, to show the rhythm repeating. A legal page carries
       roughly fifteen of these, which is the case the size drop answers.
     </p>
-    <!-- lang on a WRAPPER, per the section 04 specimen: :lang(zh) is what
-         swaps in --mt-font-cjk, and on a real page <html lang="zh-Hans">
-         supplies it. Without this the Han text sets in the Latin stack and the
-         measure below reports a width the Chinese page never has. -->
-    <div lang="zh-Hans">
-      <h2>简体中文</h2>
+  </div>
+
+  <!-- The lang goes ABOVE .mt-doc, not inside it, and that is the whole point
+       of this second specimen. :lang(zh) swaps --mt-font-cjk onto .mt-doc
+       itself, so ch resolves in the CJK stack and the cap computes narrower.
+       A zh block nested INSIDE the Latin .mt-doc above would keep the Latin
+       cap and report a width no Chinese page has — which is exactly what the
+       first version of this section did, and what sent a wrong figure into
+       STYLE.md.
+
+       Same reasoning as the label resets in section 04: a per-language
+       difference is a difference, not a value, so one specimen proves nothing.
+       The PAIR is the test. -->
+  <div lang="zh-Hans">
+    <div class="mt-doc">
+      <h2>简体中文的行长</h2>
       <p>
-        同一条规则同时服务中文页面。汉字宽度约为 ch 所测量的拉丁字符「0」的两倍，
-        因此 62ch 在中文下约合 39 个字，落在舒适的行长区间之内。两种语言的页面
-        因此共用同一条规则，结构保持一致。
+        这一段与上方英文段落使用同一条规则，宽度却不同。中文页面的根元素带有
+        zh-Hans，因此 .mt-doc 本身改用中文字体，ch 随之按中文字体的字符宽度计算，
+        上限收窄。两种语言各自得到符合本语言的行长，而声明只有一条。
       </p>
     </div>
   </div>
+
   <p class="sb-warn" style="margin-top: var(--mt-space-4);">
-    The Chinese block above is a MEASURE specimen, not a language specimen. It is
-    here because the cap has to be proven against a Han glyph, which is about
-    twice the width of the Latin "0" that ch measures — the regression it catches
-    is a Chinese line running to the Latin character count. Do not read it as
-    translated copy; it says only what it demonstrates.
+    <strong>The two blocks above must NOT be the same width.</strong> English
+    computes 636px, Chinese 551px, from the one max-width: 62ch. ch is a unit of
+    the script being set, so the same declaration lands near 62 Latin characters
+    and near 34 Han characters — each inside its own comfortable measure, which
+    one pixel value could not do for both. Equal widths here mean :lang(zh) is
+    not reaching .mt-doc, and the Chinese page is being measured in a font it
+    does not use.
+  </p>
+  <p class="sb-warn" style="margin-top: var(--mt-space-4);">
+    The Chinese block is a MEASURE specimen, not a language specimen. It says
+    only what it demonstrates — do not read it as translated copy.
   </p>
 
   <p style="font-size: var(--mt-text-xs); color: var(--mt-text-faint);">
