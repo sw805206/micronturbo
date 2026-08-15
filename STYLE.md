@@ -1,4 +1,4 @@
-v029 | 2026-08-15 | 903 lines
+v030 | 2026-08-15 | 1001 lines
 # Style
 
 The design-system decisions for micronturbo.com, in words. STYLE.css is the
@@ -310,8 +310,16 @@ It sits above a heading to categorize the section. Those are its Latin values �
 CJK does not take letter-spacing this way.
 
 The Chinese equivalent was DECIDED when the first Chinese page was built, which
-is the products hub. `:lang(zh)` resets `.mt-label` and `.mt-alt__vslbl` to
-`letter-spacing: 0.1em` and `text-transform: none`, in STYLE.css section 7.
+is the products hub. `:lang(zh)` resets `.mt-label`, `.mt-alt__vslbl` and
+`.mt-bio__role` to `letter-spacing: 0.1em` and `text-transform: none`, in
+STYLE.css section 7.
+
+`.mt-bio__role` joined that list before it had a Chinese consumer, which is the
+one place this file allows a reset to be written ahead of the page that needs
+it. It is not the same as writing a component variant speculatively: the reset
+is not a design decision waiting to be made, it is the same decision already
+made twice, and a tracked Latin label meeting CJK for the first time on a live
+page has already shipped wrong by the time anyone sees it.
 
 Two decisions are packed into that. **0.1em rather than 0** because a CJK label
 still wants to read as a label: the glyphs are already on a fixed body and a
@@ -715,6 +723,72 @@ layout.
   muted because it is metadata about the document rather than the first thing to
   read in it.
 
+### Defined by the about page
+
+One pattern, in STYLE.css section 13. Its own section rather than an addition to
+section 10, following the contact and privacy precedent: a page that defines
+patterns gets a section, and section 10's header names the pages its patterns
+came from.
+
+- **Bio card** — `.mt-bio` in `.mt-bios`. Surface ground, 3px ignition top
+  border, no radius — the stat-card idiom from section 6's carried patterns,
+  which is where a surface box with a single-sided accent edge already lives.
+  There is no new idea in the box; what is new is what goes in it.
+
+  **Text only. The card carries no image slot, and that is a decision rather
+  than a gap.** Four portraits are four commissioned photographs that have to
+  match each other in crop, lighting and background, and a set where one is a
+  conference snapshot and three are studio portraits reads worse than a set with
+  none. The credentials are the argument on this card; a face is not.
+
+  Latin name at `--mt-text-lg`/700, the Han name muted beneath it at
+  `--mt-text-sm` in `--mt-text-3`, then the role, then the credentials.
+
+  **The Han name is the same person, not a second one**, so it sits under the
+  Latin name rather than beside it at equal weight. `.mt-bio__han` carries
+  `lang="zh-Hans"` on its own element — the page around it is English, and the
+  `--mt-font-cjk` switch in section 4 keys off the `lang` attribute and nothing
+  else, so without it those glyphs render in whatever the Latin stack falls back
+  to.
+
+  **The role is amber, not ignition.** Section 3 reserves ignition for the rule
+  above a section and the one action that matters most on a page, and the role
+  is the one thing the eye scans for across four cards — the figure-equivalent
+  on a card that carries no figure. It is tracked at 0.16em rather than
+  `.mt-label`'s 0.28em because it sits inside a ~260px card rather than across a
+  section. Being tracked and uppercased Latin, it takes the `:lang(zh)` reset
+  alongside `.mt-label` — see section 4.
+
+  Even at 0.16em the longest role on the page, "Chief Technology Officer", needs
+  205px to hold one line, so it wraps to two between the 980 breakpoint and
+  about 1145px. **That band is accepted, not designed out**, on the same
+  reasoning as the 75K headline's three-line band in section 4: the only fix is
+  dropping the tracking that makes this a label at all, and because the cards
+  are grid items a two-line role lengthens all four together rather than
+  breaking the row.
+
+  **The credential list is unmarkered.** These are not steps and not a ranking,
+  so a marker would assert an order the content does not have. A 1px
+  `--mt-border` rule above it separates the person from what they have done,
+  which is cheaper than a second surface and quieter than a heading nobody needs
+  to read.
+
+  The grid is four across, because the team is four people and a row of four is
+  the whole set at a glance. It goes to two columns at **980px** and one at
+  **560px** — content-shaped like the section 10 and section 11 grids, not the
+  global 768.
+
+  **The credential line sets 980, not the role.** At four columns just above the
+  breakpoint the card is 212px and the longest credential fragments to four
+  lines, taking the card to 457px; two columns put the card at 430px, that line
+  at two, and the card at 323px. Measured on `about.html` at 990px and 970px,
+  not derived. A credential broken across four lines has stopped being one line
+  of a list and reads as a paragraph, which is what the unmarkered list was
+  meant to avoid.
+
+  560 is the number `.mt-form__row` already uses, and the same reasoning arrives
+  at it, so this reoccupies the number rather than adding another.
+
 ## 7. The stylebook
 
 `int-stylebook.html` renders every token and pattern in this file live. It is an
@@ -728,7 +802,7 @@ change waits.
 
 **Every page's `?v=` query matches the current STYLE.css version, and is bumped
 in the same commit that bumps the stamp.** Each page links the stylesheet as
-`href="STYLE.css?v=021"`, where the number is STYLE.css's own `v###`. Changing
+`href="STYLE.css?v=022"`, where the number is STYLE.css's own `v###`. Changing
 the query changes the URL, so a browser holding the old file has nothing to
 match against and must refetch.
 
@@ -745,13 +819,13 @@ a warm cache, which is why it cannot be reproduced with `curl`.
 Verify before pushing any STYLE.css change:
 
 ```
-grep -l 'rel="stylesheet"' *.html | xargs grep -L 'STYLE.css?v=021'
+grep -l 'rel="stylesheet"' *.html | xargs grep -L 'STYLE.css?v=022'
 ```
 
 It lists any page out of step and should return nothing. The scoping matters:
 `partials.html` and `partials-zh.html` are fragments injected into pages that
 already carry the link, so they hold no stylesheet reference of their own. A
-bare `grep -L 'STYLE.css?v=021' *.html` reports both as failures — the check
+bare `grep -L 'STYLE.css?v=022' *.html` reports both as failures — the check
 must ask only pages that link a stylesheet at all.
 
 This is a mitigation, not the fix. It costs a returning visitor a full CSS
@@ -768,11 +842,16 @@ not injected: the two button variants and the language toggle standalone, both
 in section 10, and the Simplified Chinese specimen for `--mt-font-cjk`, which
 sits in section 04 beside the type scale it belongs to.
 
-That specimen also carries the `:lang(zh)` label resets, as four rows pairing
-each label with its own Latin setting: `.mt-label` at 0.28em against 产品, and
-`.mt-alt__vslbl` at 0.14em against 锂电电源. A reset is a difference, not a
-value, so a single specimen would prove nothing — the pair is the test, and a
-regression reads as the Chinese row opening out to match the Latin one above it.
+That specimen also carries the `:lang(zh)` label resets, as six rows pairing
+each label with its own Latin setting: `.mt-label` at 0.28em against 产品,
+`.mt-alt__vslbl` at 0.14em against 锂电电源, and `.mt-bio__role` at 0.16em
+against 首席科学家. A reset is a difference, not a value, so a single specimen
+would prove nothing — the pair is the test, and a regression reads as the
+Chinese row opening out to match the Latin one above it.
+
+The third pair is rendered although no Chinese page consumes it yet, and it is
+marked on the page as a reset specimen rather than as copy — the same warning
+the `.mt-doc` Chinese block carries, for the same reason.
 
 The nav dropdown is the one deliberate exception. Section 10 renders it inline
 and open, because a panel that is invisible at rest cannot be reviewed any other
@@ -834,6 +913,9 @@ was carried, forgotten, or orphaned.
 | `.mt-form__consent`, `.mt-form__status` | Contact page | v016 §11 |
 | `.mt-form__trap` honeypot | Contact page | v016 §11 |
 | `.mt-doc`, `.mt-doc__meta` long-form document measure | Privacy pages | v020 §12 |
+| `.mt-bio` / `.mt-bios` bio card | About page | v022 §13 |
+| `:lang(zh)` reset extended to `.mt-bio__role` | About page | v022 §7 |
+| Two-up row for a pair of stat cards | About page | page-local |
 
 **Page-local, not promoted:** the contact page bottom-aligns its hero image
 with the message field rather than with the form or the column. The hero is
@@ -852,6 +934,22 @@ and then it is quietly off by however much they changed.
 It stays page-local because it is an answer to one page's content, not a
 pattern. But the structural version would survive promotion, where the
 reserved-gap version could not have.
+
+**Page-local, not promoted:** the about page carries `.about-pair`, a two-column
+grid holding the pair of `.mt-stat` cards in its section 03. `.mt-grid` offers
+`--3` and `--4` and no `--2`, and one page wanting two columns does not earn one:
+promoting on a single use is exactly what section 8 exists to stop. It is built
+from tokens, collapses at 560 alongside `.mt-bios`, and is recorded here so the
+second page that wants a two-up row promotes a `.mt-grid--2` instead of writing
+this again.
+
+Worth noting what did NOT need a wrapper. The four data columns in the same
+section and the three in section 04 use `.mt-grid--4` and `.mt-grid--3` exactly
+as they are. Those two classes and `.mt-stat` / `.mt-datum` had sat in STYLE.css
+since v001 with no page consumer at all — carried from the identity system and
+never used. The about page is the first page to consume any of them, and all
+four went in unchanged, which is the outcome the carried-patterns row in this
+table was betting on.
 
 **Retired in v015:** `.mt-line` / `.mt-lines`. The one-liner band was removed
 from all four SKU pages, which left it with no consumer. Its row is deleted

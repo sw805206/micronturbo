@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="STYLE.css?v=021">
+  <link rel="stylesheet" href="STYLE.css?v=022">
   <style>
     .sb-swatch { border: 1px solid var(--mt-border); border-radius: var(--mt-radius-sm); overflow: hidden; }
     .sb-swatch__chip { height: 88px; }
@@ -258,12 +258,20 @@
   <div class="sb-row"><span class="sb-row__token">.mt-label · zh · 0.1em</span><span lang="zh-Hans"><span class="mt-label" style="margin-bottom: 0;">产品</span></span></div>
   <div class="sb-row"><span class="sb-row__token">.mt-alt__vslbl · Latin · 0.14em</span><span class="mt-alt__vslbl">Lithium station</span></div>
   <div class="sb-row"><span class="sb-row__token">.mt-alt__vslbl · zh · 0.1em</span><span lang="zh-Hans"><span class="mt-alt__vslbl">锂电电源</span></span></div>
+  <div class="sb-row"><span class="sb-row__token">.mt-bio__role · Latin · 0.16em</span><span class="mt-bio__role" style="margin-top: 0;">Chief Scientist</span></div>
+  <div class="sb-row"><span class="sb-row__token">.mt-bio__role · zh · 0.1em</span><span lang="zh-Hans"><span class="mt-bio__role" style="margin-top: 0;">首席科学家</span></span></div>
   <p style="font-size: var(--mt-text-sm); color: var(--mt-text-3); max-width: 62ch;">
-    Both labels are tracked and uppercased for Latin. CJK takes neither, so the
-    :lang(zh) rule in section 7 resets them to 0.1em and text-transform: none —
-    the same treatment .mt-btn already had. The pairs above are the proof: the
-    Chinese rows must sit tighter than the Latin rows directly over them, and a
-    regression shows up here as 产品 spaced like 产 品.
+    All three labels are tracked and uppercased for Latin. CJK takes neither, so
+    the :lang(zh) rule in section 7 resets them to 0.1em and text-transform:
+    none — the same treatment .mt-btn already had. The pairs above are the
+    proof: the Chinese rows must sit tighter than the Latin rows directly over
+    them, and a regression shows up here as 产品 spaced like 产 品.
+  </p>
+  <p class="sb-warn" style="margin-top: var(--mt-space-4);">
+    .mt-bio__role has no Chinese consumer yet — there is no about-zh.html. The
+    reset is in the CSS and rendered here anyway, because a tracked Latin label
+    that meets CJK for the first time on a live page has already shipped wrong.
+    The Chinese row is a RESET specimen, not translated copy.
   </p>
 
   <h3 style="margin-top: var(--mt-space-6);">Tracked micro-label</h3>
@@ -862,6 +870,68 @@
   <p class="sb-warn" style="margin-top: var(--mt-space-4);">
     The Chinese block is a MEASURE specimen, not a language specimen. It says
     only what it demonstrates — do not read it as translated copy.
+  </p>
+
+  <div class="mt-rule" style="margin-top: var(--mt-space-9);">
+    <span class="mt-rule__num">14</span><span class="mt-rule__line"></span>
+  </div>
+  <h2>About Page Patterns</h2>
+  <p class="mt-lead">
+    One pattern. STYLE.css section 13; the decisions are in STYLE.md section 6.
+  </p>
+
+  <h3>Bio card · .mt-bio / .mt-bios</h3>
+  <div class="mt-bios">
+    <div class="mt-bio">
+      <div class="mt-bio__name">Latin Name</div>
+      <div class="mt-bio__han" lang="zh-Hans">汉字姓名</div>
+      <div class="mt-bio__role">Chairman</div>
+      <ul>
+        <li>A credential, one line or two</li>
+        <li>Another credential</li>
+        <li>A third</li>
+      </ul>
+    </div>
+    <div class="mt-bio">
+      <div class="mt-bio__name">Four Across</div>
+      <div class="mt-bio__han" lang="zh-Hans">汉字姓名</div>
+      <div class="mt-bio__role">Chief Scientist</div>
+      <ul>
+        <li>Then 2 at 980px, then 1 at 560px</li>
+        <li>Content-shaped, not the global 768</li>
+      </ul>
+    </div>
+    <div class="mt-bio">
+      <div class="mt-bio__name">No Portrait</div>
+      <div class="mt-bio__han" lang="zh-Hans">汉字姓名</div>
+      <div class="mt-bio__role">Chief Executive</div>
+      <ul>
+        <li>Text only — the card carries no image slot</li>
+        <li>Cards level regardless of list length</li>
+      </ul>
+    </div>
+    <div class="mt-bio">
+      <div class="mt-bio__name">Ignition Edge</div>
+      <div class="mt-bio__han" lang="zh-Hans">汉字姓名</div>
+      <div class="mt-bio__role">Chief Technology Officer</div>
+      <ul>
+        <li>3px top border, no radius</li>
+      </ul>
+    </div>
+  </div>
+  <p style="font-size: var(--mt-text-sm); color: var(--mt-text-3); max-width: 62ch; margin-top: var(--mt-space-5);">
+    Surface ground, 3px ignition top border, no radius — the .mt-stat idiom from
+    section 5. Name at --mt-text-lg/700, the Han name muted beneath it, the role
+    in amber at --mt-text-xs tracked 0.16em and uppercased, then an unmarkered
+    list of credentials behind a 1px rule.
+  </p>
+  <p class="sb-warn" style="margin-top: var(--mt-space-4);">
+    The Han name takes lang="zh-Hans" on its own element. Without it the glyphs
+    fall to whatever the Latin stack resolves them to on an English page, since
+    the --mt-font-cjk switch in section 7 keys off the lang attribute and
+    nothing else. The role is amber rather than ignition: ignition is reserved
+    for the section rule and the page's primary action, and the role is the one
+    thing the eye scans for across four cards.
   </p>
 
   <p style="font-size: var(--mt-text-xs); color: var(--mt-text-faint);">

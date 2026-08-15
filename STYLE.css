@@ -1,4 +1,4 @@
-/* v021 | 2026-08-15 | 1451 lines
+/* v022 | 2026-08-15 | 1560 lines
    micronturbo.com design tokens and shared patterns.
    The decisions this file implements are recorded in STYLE.md.
    Pages consume tokens, never raw hex or px. See STYLE.md section 8. */
@@ -417,13 +417,19 @@ td {
 
 /* CJK takes neither Latin tracking nor case. Same problem and same treatment as
    the :lang(zh) .mt-btn override in section 9. Without this the tracked
-   micro-label and the comparison-line label keep the letter-spacing they were
-   given for Latin — 0.28em and 0.14em — which on 产品 and 锂电电源 reads as
-   broken spacing rather than as tracking. text-transform is reset alongside it
-   because uppercase is a no-op on CJK and would only apply to any Latin run
-   sharing the element. */
+   micro-label, the comparison-line label and the bio role keep the
+   letter-spacing they were given for Latin — 0.28em, 0.14em and 0.16em — which
+   on 产品, 锂电电源 and 首席科学家 reads as broken spacing rather than as
+   tracking. text-transform is reset alongside it because uppercase is a no-op
+   on CJK and would only apply to any Latin run sharing the element.
+
+   .mt-bio__role joins the list because it is tracked and uppercased for the
+   same reason .mt-label is, not because a Chinese about page exists yet. The
+   selector costs nothing until one does, and a reset that arrives with the
+   page it is needed on arrives after the page has already shipped wrong. */
 :lang(zh) .mt-label,
-:lang(zh) .mt-alt__vslbl {
+:lang(zh) .mt-alt__vslbl,
+:lang(zh) .mt-bio__role {
   letter-spacing: 0.1em;
   text-transform: none;
 }
@@ -1449,3 +1455,106 @@ td {
 .mt-doc > *:last-child {
   margin-bottom: 0;
 }
+
+/* ---------------------------------------------------------------
+   13. ABOUT PAGE PATTERNS
+   Defined by the about page. Its own section rather than an addition
+   to section 10, following the contact and privacy precedent: each
+   page that defines patterns gets a section, and section 10's header
+   says where its patterns came from.
+   The grid breakpoints are content-shaped like section 10's and
+   section 11's, not the global 768. See STYLE.md section 6.
+   --------------------------------------------------------------- */
+
+/* Four across, because the team is four people and a row of four is the whole
+   set at a glance. 980 and 560 are where THIS content breaks, not where the
+   page does.
+
+   The credential line sets 980, not the role. At four columns just above the
+   breakpoint a card is 212px, and the longest credential fragments to FOUR
+   lines, taking the card to 457px. Dropping to two columns puts the card at
+   430px, the same line to two, and the card to 323px — measured on about.html
+   at 990px and 970px. A credential broken across four lines has stopped being
+   one line of a list and reads as a paragraph.
+
+   560 is the number .mt-form__row already uses, and the same reasoning arrives
+   at it: two columns of a card this dense stop being two usable cards. It
+   reoccupies the number rather than adding another. */
+.mt-bios {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--mt-space-4);
+}
+
+@media (max-width: 980px) {
+  .mt-bios { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 560px) {
+  .mt-bios { grid-template-columns: 1fr; }
+}
+
+/* Single-sided border, so no radius — the .mt-stat idiom in section 5, and the
+   same reason .mt-callout and .mt-sku-card take none. */
+.mt-bio {
+  background: var(--mt-surface);
+  border-top: 3px solid var(--mt-ignition);
+  border-radius: 0;
+  padding: var(--mt-space-5);
+}
+
+.mt-bio__name {
+  font-size: var(--mt-text-lg);
+  font-weight: 700;
+  color: var(--mt-text);
+}
+
+/* The Han name is the same person, not a second one, so it sits muted directly
+   under the Latin name rather than beside it at equal weight. It carries
+   lang="zh-Hans" in the markup, which is what switches --mt-font-cjk onto it
+   from section 7 — the page around it is English and its own lang attribute
+   would otherwise set these glyphs in a Latin face's fallback. */
+.mt-bio__han {
+  font-size: var(--mt-text-sm);
+  color: var(--mt-text-3);
+  margin-top: var(--mt-space-1);
+}
+
+/* Amber, not ignition. The role is the one figure-equivalent on the card — the
+   thing the eye is looking for when it scans four of these — and section 3
+   reserves ignition for the rule above a section and the one action that
+   matters most on a page.
+
+   Tracked at 0.16em rather than .mt-label's 0.28em because this sits inside a
+   ~260px card, not across a section. Even so, the longest role on about.html
+   ("Chief Technology Officer") needs 205px to hold one line, so it wraps to two
+   between the 980 breakpoint and about 1145px. That band is accepted rather
+   than tracked out of, the same way the 75K headline's three-line band is in
+   STYLE.md section 4: the fix would be dropping the tracking that makes this a
+   label, and the cards are grid items, so a two-line role lengthens all four
+   together rather than breaking the row. */
+.mt-bio__role {
+  font-size: var(--mt-text-xs);
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--mt-amber);
+  margin-top: var(--mt-space-3);
+}
+
+/* Unstyled list. These are credentials, not steps and not a ranking, so a
+   marker would assert an order the content does not have. The rule above them
+   separates the person from what they have done without a second surface or a
+   heading nobody needs to read. */
+.mt-bio ul {
+  list-style: none;
+  margin: var(--mt-space-4) 0 0;
+  padding: var(--mt-space-4) 0 0;
+  border-top: 1px solid var(--mt-border);
+  font-size: var(--mt-text-sm);
+  color: var(--mt-text-3);
+  line-height: 1.6;
+}
+
+.mt-bio li { margin-bottom: var(--mt-space-3); }
+.mt-bio li:last-child { margin-bottom: 0; }
