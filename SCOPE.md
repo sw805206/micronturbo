@@ -1,4 +1,4 @@
-v016 | 2026-08-15 | 328 lines
+v017 | 2026-08-15 | 352 lines
 # Scope
 
 ## 1. Project
@@ -217,24 +217,38 @@ Planned external pages: `index.html` (Home), `products.html`,
 The two SKU pages are children of the hub, reachable from the Products dropdown
 and from the hub's own SKU cards. They are the first pages below the top level.
 
-Built: `index.html` and `index-zh.html`, the home page in both languages, plus
-`products.html`, `products-6k.html`, `products-75k.html` and `contact.html` in
-English. The `noindex,nofollow` placeholder that stood in during DNS and
-certificate setup has been replaced wholesale on the home page and the
-directive is gone — home, all three product pages and contact are indexable.
-`about` and `privacy` are linked from the nav in both languages but do not
-exist yet, so those links 404 until they are built.
+**Every planned external page is now built in English**: `index.html`,
+`products.html`, `products-6k.html`, `products-75k.html`, `about.html`,
+`contact.html` and `privacy.html`. All seven are indexable. The
+`noindex,nofollow` placeholder that stood in during DNS and certificate setup
+was replaced wholesale on the home page and the directive is gone from every
+page that carried it. No nav link in either language 404s.
 
-`contact.html` is the first page with no Chinese counterpart, and the first to
-rely on the toggle fallback rather than a reciprocal alternate. It carries no
-`<link rel="alternate">`, so its toggle resolves to the Chinese home page —
-which is the fallback working as specified above, not a defect. `contact-zh.html`
-is not currently planned, so the Chinese nav, the Chinese home hero and the
-Chinese hub CTA all point at a page that 404s.
+The Chinese tree is one page short of the English one. Built: `index-zh.html`,
+`products-zh.html`, `products-6k-zh.html`, `products-75k-zh.html`,
+`contact-zh.html` and `privacy-zh.html`, all indexable and all carrying
+reciprocal alternates with their counterparts. **`about-zh.html` is the only
+gap**, and the Chinese nav links it, so that one entry 404s until it is built.
+That is the state this section is most likely to go stale on, which is why it
+is stated as a count rather than left implicit.
 
-It is also the first page that takes input rather than presents it. The form
-patterns it uses are in STYLE.css section 11 and STYLE.md section 6; the
-endpoint it posts to is the Apps Script exception recorded above.
+`contact.html` was for a time the one page with no Chinese counterpart, and the
+first to rely on the toggle fallback rather than a reciprocal alternate. That
+is no longer true — `contact-zh.html` exists, the pair carries alternates in
+both directions, and the Chinese nav, home hero and hub CTA all resolve. The
+fallback itself is unchanged and still specified above; it simply has no
+consumer among the built pairs.
+
+`contact.html` is also the first page that takes input rather than presents it.
+The form patterns it uses are in STYLE.css section 11 and STYLE.md section 6;
+the endpoint it posts to is the Apps Script exception recorded above.
+
+`about.html` is the first page built from the bio card, `.mt-bio` in STYLE.css
+section 13, and the first to consume `.mt-stat`, `.mt-datum`, `.mt-grid--3` and
+`.mt-grid--4` — four patterns carried from the identity system in v001 that had
+sat with no page consumer until it shipped. It is also the only English page
+that fetches Noto Sans SC, because its bio cards set Han names under
+`lang="zh-Hans"`.
 
 `products-zh.html`, `products-6k-zh.html` and `products-75k-zh.html` carry real
 translated content and are indexable. They stood as holding pages under
@@ -292,6 +306,16 @@ belongs on them.
   `cache: 'no-cache'` and paired by DOM position, so it cannot drift from the
   pages it reviews. A snapshot needing regeneration whenever copy changes is
   the failure mode the page exists to avoid.
+
+  **Which pairs it reviews is a hand-maintained list, and it is the one part of
+  this page that does drift.** `PAIRS` near the top of the file names the
+  English pages; everything else about a pair is derived. It currently holds
+  four — index, products and the two SKU pages — so `contact` and `privacy` are
+  built, paired and NOT reviewed, and any pair added later is invisible here
+  until someone edits that array. The page reports its own count in the header
+  ("四组页面结构一致"), which is what makes the gap findable, but nothing warns
+  that a pair is missing: an unreviewed pair looks exactly like a pair with no
+  problems. Adding a pair to the site is therefore two edits, not one.
 
   Its chrome — headings, column labels, legend, error states — is in Chinese,
   unlike the other two internal pages. This is deliberate and not an
