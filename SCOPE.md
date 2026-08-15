@@ -1,4 +1,4 @@
-v011 | 2026-08-09 | 269 lines
+v012 | 2026-08-14 | 274 lines
 # Scope
 
 ## 1. Project
@@ -81,15 +81,20 @@ section covers it.
   Consumers: all pages.
 
 - **Dependency note, NOT a CDN exception: vendored icons.** The product pages
-  carry six icons, vendored inline as SVG markup in the page. Nothing is fetched
-  at runtime and nothing is installed at build time, so this takes no exception
-  against the rule above — it is recorded because the artwork is third-party and
-  the licenses travel with it.
+  carry six icons and the form patterns add a seventh, vendored inline as SVG
+  markup in the page. Nothing is fetched at runtime and nothing is installed at
+  build time, so this takes no exception against the rule above — it is recorded
+  because the artwork is third-party and the licenses travel with it.
 
   | Icon | Source | License |
   |---|---|---|
   | Feather | Bootstrap Icons | MIT |
   | Clock, fuel, leaf, snowflake, zap | Lucide | ISC |
+  | Circle-alert | Lucide | ISC |
+
+  Circle-alert is the leading icon on `.mt-field__error`. It takes
+  `currentColor` like the rest, which is what lets it inherit `--mt-error` from
+  the message rather than carrying a color of its own.
 
   Both licenses permit use and modification with attribution retained. Inline
   rather than a sprite or an icon font because six icons on three pages do not
