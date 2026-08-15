@@ -1,4 +1,4 @@
-v019 | 2026-08-09 | 653 lines
+v020 | 2026-08-14 | 783 lines
 # Style
 
 The design-system decisions for micronturbo.com, in words. STYLE.css is the
@@ -157,6 +157,39 @@ This was first established on the point card, which the alternating feature rows
 replaced. The rule outlived the component because it was never about that
 component — it holds wherever the six categorical hues appear together, and the
 amber rule holds everywhere a figure is the only colored thing in its own.
+
+### Semantic color
+
+One token, and it is not part of the palette above.
+
+| Token | Value | Contrast on ground | Use |
+|---|---|---|---|
+| `--mt-error` | `#FF4F79` | ~5.5:1 | Error message text and its icon |
+
+**It is semantic, not categorical.** It does not join the c1–c6 order in the
+categorical block above and nothing counted may reference it. The categorical
+hues answer "which of six", and this one answers "this is wrong" — a token that
+tried to do both would put a validation color into a chart series the first time
+someone needed a seventh slot.
+
+**It never appears as a border, outline or fill.** An error field is marked by
+the message beneath it, not by its own edge. The reason is the submit button:
+`.mt-btn` is a hairline box in ignition, and ignition is reserved on any page
+for the one action that matters most. An outlined error field puts a second
+saturated box on the same screen, competing with the button for the attention
+the button is supposed to own — and it does it at the moment the reader most
+needs to be told where to go next. The message carries the color, the icon
+carries it too, and the field stays a field.
+
+It clears AA on `--mt-bg` at ~5.5:1, so it is legal for normal text there, which
+is the only place it is used.
+
+**There is deliberately no `--mt-inv-error`.** No light-ground page exists — the
+inverted band below is still defined and unused — and the rule immediately under
+it is that component-level inverted variants are not written speculatively. Its
+absence is a decision, not a gap. The first page that builds a form on
+`.mt-invert` adds it, and gets to pick a value against a ground it can actually
+see, rather than inheriting a guess made here.
 
 ### Inverted band
 
@@ -493,6 +526,97 @@ of them early and the other late.
   why the headline drops to `--mt-text-h1` here.
 - **Backlink** — `.mt-backlink`. The return path from a SKU page to the hub.
 
+### Defined by the contact page
+
+Eight patterns, in STYLE.css section 11. They are the first components on the
+site that take input rather than present it, and that changes what the rules are
+for: every other pattern here is judged on how it reads, and these are judged on
+whether a reader can complete them.
+
+- **Form container** — `.mt-form`, capped at `38rem`. Narrower than `.mt-lead`'s
+  62ch, and deliberately so. A measure is set by how far the eye travels back to
+  the start of the next line; a form is set by how far the eye travels from a
+  label to the field it names and then down to the next label. Long rows make a
+  form look like a wall, and the fields do not need the width — nothing typed
+  into a name, an email or a company field wants 62 characters.
+
+- **Two-column row** — `.mt-form__row`, holding name and company side by side,
+  collapsing to one column at **560px**.
+
+  That number is from the content, not from the page. A name field has to show a
+  full name without scrolling it: roughly 26 characters at `--mt-text-base`,
+  which is about 230px of text, plus `--mt-space-4` of padding on each side and
+  the hairline, so about 264px of field. Two of those with a `--mt-space-5` gap
+  between them is 552px. Below that the pair stops being two usable fields and
+  becomes two cramped ones, so it collapses at 560.
+
+  This is the rule the product patterns already follow — content-shaped grids
+  break where their content breaks, not at the global 768. Worth noting that 560
+  is named in the breakpoint list above but has had no consumer since the
+  one-liner band was retired in v015; this pattern reoccupies the number rather
+  than adding a seventh.
+
+- **Field** — `.mt-field`, the label-plus-control-plus-message unit. The unit
+  exists so the message has somewhere to live that is bound to its own field.
+  An error line that is a sibling of the form rather than of the field drifts
+  the moment a row reflows.
+
+- **Label** — `.mt-field__label`, visible, above the control. Not a placeholder
+  standing in for a label: a placeholder disappears on focus, which removes the
+  question at exactly the moment the reader starts answering it, and it leaves
+  a filled form with no way to check what each value was for.
+
+- **Controls** — `input` and `textarea` on `--mt-surface`, a 1px `--mt-border`
+  hairline, `--mt-radius-sm`. The radius matches `.mt-btn` because the field and
+  the button sit in the same form and a form built from two different corner
+  radii reads as two components that happen to be adjacent.
+
+  Text is `--mt-text`. **Placeholder is `--mt-text-3`, not `--mt-text-faint`** —
+  faint is marked decorative-only in section 3 and fails AA at every size, and a
+  placeholder is read text even when it is only a hint.
+
+- **Focus** — the border goes `--mt-ignition` and a soft ring is added, built as
+  a `box-shadow` in ignition at low alpha. Visible focus is not optional. The
+  ring rather than a thicker border because a border that changes width reflows
+  the field by a pixel and makes the whole row twitch on tab.
+
+  This is the one place ignition is legal on a field edge, and it does not
+  contradict the no-border rule for errors: focus is transient and applies to
+  exactly one field at a time, so it never competes with the submit button the
+  way a set of persistent error outlines would.
+
+  The transition honors `prefers-reduced-motion`, per the burger and dropdown
+  precedent in sections 8 and 9.
+
+- **Error** — `.mt-field__error`, below the control, in `--mt-error`, led by a
+  vendored inline alert icon taking `currentColor`. **The field border does not
+  change.** Section 3 carries the reasoning; the short version is that the
+  message says what is wrong and the button stays the only ignition-bordered box
+  on the page.
+
+  Color is not the only channel: the icon and the text carry the same message,
+  so the state survives a reader who cannot separate the hue from the body copy
+  around it.
+
+- **Consent line** — `.mt-form__consent`, beside the submit rather than above
+  it. It is the last thing read before the action, which is where a consent
+  statement belongs.
+
+- **Status block** — `.mt-form__status`, the thank-you and the form-level error.
+  Success reuses `--mt-hydro`; no success token was added, because hydro already
+  means the good outcome everywhere else on the site and a second green would be
+  a distinction nobody could name. `--modifier` classes select which of the two
+  it is.
+
+- **Honeypot** — `.mt-form__trap`. Offscreen, and **not** the existing
+  `.mt-visually-hidden` utility, which is the reuse a reader of section 8 would
+  expect. That utility exists to hide something from the eye while keeping it in
+  the accessibility tree, which is the exact opposite of what a honeypot needs:
+  a screen-reader user would find the field, fill it in, and be classified as a
+  bot for using assistive technology. The trap therefore pairs its own offscreen
+  rule with `aria-hidden="true"`, `tabindex="-1"` and `autocomplete="off"` in
+  the markup, and the markup half is not optional.
+
 ## 7. The stylebook
 
 `int-stylebook.html` renders every token and pattern in this file live. It is an
@@ -506,7 +630,7 @@ change waits.
 
 **Every page's `?v=` query matches the current STYLE.css version, and is bumped
 in the same commit that bumps the stamp.** Each page links the stylesheet as
-`href="STYLE.css?v=015"`, where the number is STYLE.css's own `v###`. Changing
+`href="STYLE.css?v=016"`, where the number is STYLE.css's own `v###`. Changing
 the query changes the URL, so a browser holding the old file has nothing to
 match against and must refetch.
 
@@ -523,13 +647,13 @@ a warm cache, which is why it cannot be reproduced with `curl`.
 Verify before pushing any STYLE.css change:
 
 ```
-grep -l 'rel="stylesheet"' *.html | xargs grep -L 'STYLE.css?v=015'
+grep -l 'rel="stylesheet"' *.html | xargs grep -L 'STYLE.css?v=016'
 ```
 
 It lists any page out of step and should return nothing. The scoping matters:
 `partials.html` and `partials-zh.html` are fragments injected into pages that
 already carry the link, so they hold no stylesheet reference of their own. A
-bare `grep -L 'STYLE.css?v=015' *.html` reports both as failures — the check
+bare `grep -L 'STYLE.css?v=016' *.html` reports both as failures — the check
 must ask only pages that link a stylesheet at all.
 
 This is a mitigation, not the fix. It costs a returning visitor a full CSS
@@ -602,6 +726,12 @@ was carried, forgotten, or orphaned.
 | `.mt-hero--sku` hero ratio override | MT-6K, MT-75K | v008 §10 |
 | `.mt-intro`, `.mt-backlink` | MT-6K, MT-75K | v008 §10 |
 | `:lang(zh)` label reset | Products (zh) | v014 §7 |
+| `--mt-error` semantic token | Contact page | v016 §1 |
+| `.mt-form`, `.mt-form__row` form container and row | Contact page | v016 §11 |
+| `.mt-field`, `.mt-field__label`, `.mt-field__error` | Contact page | v016 §11 |
+| `input` / `textarea` control styling and focus ring | Contact page | v016 §11 |
+| `.mt-form__consent`, `.mt-form__status` | Contact page | v016 §11 |
+| `.mt-form__trap` honeypot | Contact page | v016 §11 |
 
 **Retired in v015:** `.mt-line` / `.mt-lines`. The one-liner band was removed
 from all four SKU pages, which left it with no consumer. Its row is deleted
