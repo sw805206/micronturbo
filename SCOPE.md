@@ -1,4 +1,4 @@
-v017 | 2026-08-15 | 352 lines
+v018 | 2026-08-15 | 358 lines
 # Scope
 
 ## 1. Project
@@ -224,13 +224,18 @@ and from the hub's own SKU cards. They are the first pages below the top level.
 was replaced wholesale on the home page and the directive is gone from every
 page that carried it. No nav link in either language 404s.
 
-The Chinese tree is one page short of the English one. Built: `index-zh.html`,
+**The Chinese tree now matches it page for page**: `index-zh.html`,
 `products-zh.html`, `products-6k-zh.html`, `products-75k-zh.html`,
-`contact-zh.html` and `privacy-zh.html`, all indexable and all carrying
-reciprocal alternates with their counterparts. **`about-zh.html` is the only
-gap**, and the Chinese nav links it, so that one entry 404s until it is built.
-That is the state this section is most likely to go stale on, which is why it
-is stated as a count rather than left implicit.
+`about-zh.html`, `contact-zh.html` and `privacy-zh.html`. All seven are
+indexable, and all seven pairs carry reciprocal alternates in both directions,
+so no toggle anywhere on the site falls back to a language home page.
+
+Section 1 says either language may carry pages the other does not, and that
+remains the rule rather than a description of today. The trees happen to be
+level; nothing requires them to stay that way, and the `-zh` suffix convention
+plus the alternate-driven toggle exist precisely so they can diverge without
+breaking navigation. This paragraph is a count, not a constraint — it is the
+sentence to correct when the two next differ, not a reason to hold a page back.
 
 `contact.html` was for a time the one page with no Chinese counterpart, and the
 first to rely on the toggle fallback rather than a reciprocal alternate. That
@@ -309,13 +314,14 @@ belongs on them.
 
   **Which pairs it reviews is a hand-maintained list, and it is the one part of
   this page that does drift.** `PAIRS` near the top of the file names the
-  English pages; everything else about a pair is derived. It currently holds
-  four — index, products and the two SKU pages — so `contact` and `privacy` are
-  built, paired and NOT reviewed, and any pair added later is invisible here
-  until someone edits that array. The page reports its own count in the header
-  ("四组页面结构一致"), which is what makes the gap findable, but nothing warns
-  that a pair is missing: an unreviewed pair looks exactly like a pair with no
-  problems. Adding a pair to the site is therefore two edits, not one.
+  English pages; everything else about a pair is derived. It holds four — index,
+  products and the two SKU pages — while the site now has seven, so `about`,
+  `contact` and `privacy` are built, paired and NOT reviewed. Any pair added
+  later is invisible here until someone edits that array. The page reports its
+  own count in the header ("四组页面结构一致"), which is what makes the gap
+  findable, but nothing warns that a pair is missing: an unreviewed pair looks
+  exactly like a pair with no problems. Adding a pair to the site is therefore
+  two edits, not one, and three of the seven are currently outstanding.
 
   Its chrome — headings, column labels, legend, error states — is in Chinese,
   unlike the other two internal pages. This is deliberate and not an
