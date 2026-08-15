@@ -1,4 +1,4 @@
-/* v016 | 2026-08-14 | 1369 lines
+/* v017 | 2026-08-15 | 1376 lines
    micronturbo.com design tokens and shared patterns.
    The decisions this file implements are recorded in STYLE.md.
    Pages consume tokens, never raw hex or px. See STYLE.md section 8. */
@@ -1214,7 +1214,14 @@ td {
 }
 
 @media (max-width: 560px) {
-  .mt-form__row { grid-template-columns: 1fr; }
+  .mt-form__row {
+    grid-template-columns: 1fr;
+    /* row-gap goes to zero on the stack. .mt-field already carries its own
+       bottom margin, so the gap would sit on top of it and open twice the
+       space between two stacked fields that a field outside a row gets —
+       which reads as the pair having come apart rather than as spacing. */
+    row-gap: 0;
+  }
 }
 
 /* Label + control + message. The unit exists so the message has somewhere to
