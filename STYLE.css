@@ -1,4 +1,4 @@
-/* v024 | 2026-08-17 | 1622 lines
+/* v025 | 2026-08-17 | 1652 lines
    micronturbo.com design tokens and shared patterns.
    The decisions this file implements are recorded in STYLE.md.
    Pages consume tokens, never raw hex or px. See STYLE.md section 8. */
@@ -394,6 +394,36 @@ td {
   line-height: var(--mt-leading-display);
   margin: 0 0 var(--mt-space-5);
 }
+
+/* Inline phrase highlight, for the one term a lead is actually about.
+
+   Amber and nothing else. Section 3 of STYLE.md gives it the role "Highlight,
+   figures", and it reads ~9:1 on --mt-bg, so it is legal as text at any size —
+   which ignition, at ~4.5:1, is not. Ignition would also break its own
+   reservation: it belongs to the rule above a section and the one action that
+   matters most on a page, and spending it on a phrase mid-paragraph is what
+   makes a page stop having a primary action.
+
+   Color and weight, not a <mark> background. A swatch behind a phrase puts a
+   second surface inside running copy, and that surface then needs a radius,
+   padding and an inset that no single value gets right across a line break —
+   a highlight wrapping to the next line arrives as two boxes. Two channels
+   already carry the emphasis here, and neither of them reflows the line.
+
+   The selector takes the element as well as the class. The emphasis belongs in
+   the markup, not only in the stylesheet: a reader with CSS off, or one hearing
+   the page read out, still gets the phrase marked. Written as a bare .mt-hl the
+   treatment could be hung on a <span> and that would be lost silently.
+
+   700 holds in both scripts. Noto Sans SC carries 700 (section 4 of STYLE.md),
+   so this does not quietly degrade to color-only where the CJK family takes
+   over — which is the failure a weight-bearing pattern has on a Chinese page
+   when nobody checks the face actually has the weight.
+
+   The idiom is not new: .mt-table td.mt-ours strong in section 10 is already
+   amber at 700. This is that treatment generalized out of the comparison table
+   and into running copy. */
+strong.mt-hl { color: var(--mt-amber); font-weight: 700; }
 
 .mt-visually-hidden {
   position: absolute;
