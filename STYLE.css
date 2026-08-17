@@ -1,4 +1,4 @@
-/* v022 | 2026-08-15 | 1560 lines
+/* v023 | 2026-08-17 | 1598 lines
    micronturbo.com design tokens and shared patterns.
    The decisions this file implements are recorded in STYLE.md.
    Pages consume tokens, never raw hex or px. See STYLE.md section 8. */
@@ -1095,6 +1095,44 @@ td {
   text-transform: uppercase;
   color: var(--mt-text-faint);
   padding-top: 3px;
+}
+
+/* Footnote to a feature row's claim line. The Versatility row states a count
+   — "8 fuels" — and the footnote is what lets an engineer check it, which
+   keeps the specification argument on the page without putting it in the
+   headline. See STYLE.md section 6.
+
+   The marker sits inside .mt-alt__ours, which is --mt-text-h3 and bold. An
+   asterisk inheriting that size reads as a defect rather than as a reference
+   mark, so it drops to --mt-text-xs in muted text.
+
+   line-height: 0 is the load-bearing part. Without it the raised glyph
+   expands the claim line's 1.2 leading, and the one row carrying a footnote
+   sits a few pixels taller than the other five — a parallel that runs the
+   length of the page, broken by a character nobody would look at. */
+.mt-alt__fn-mark {
+  font-size: var(--mt-text-xs);
+  color: var(--mt-text-3);
+  vertical-align: super;
+  line-height: 0;
+}
+
+/* The footnote line itself, under the two comparators. Deliberately the same
+   register as .mt-alt__vsline directly above it — same size, same color, same
+   leading — so it reads as a third muted line under the claim rather than as
+   a new kind of element bolted onto one row.
+
+   Those three values are also exactly .mt-stat__note. It is NOT reused here:
+   that class belongs to the stat card, every other consumer is a .mt-stat,
+   and a products-hub footnote depending on it would leave the next person
+   editing the stat card unable to see what they would break. One rule of
+   duplication is cheaper than a class whose name lies about where it is
+   used. */
+.mt-alt__fn {
+  margin: var(--mt-space-3) 0 0;
+  font-size: var(--mt-text-sm);
+  color: var(--mt-text-3);
+  line-height: 1.6;
 }
 
 /* SKU cards on the hub. The third column is narrower because it holds the

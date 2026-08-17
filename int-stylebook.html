@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="STYLE.css?v=022">
+  <link rel="stylesheet" href="STYLE.css?v=023">
   <style>
     .sb-swatch { border: 1px solid var(--mt-border); border-radius: var(--mt-radius-sm); overflow: hidden; }
     .sb-swatch__chip { height: 88px; }
@@ -536,12 +536,13 @@
         that, muted, because they are context rather than the claim.</p>
         <div class="mt-alt__spec">
           <div class="mt-alt__ours">
-            <span style="color: var(--mt-steel);"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/></svg></span>−40 °C, 75% at 4,000 m
+            <span style="color: var(--mt-steel);"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/></svg></span>−40 °C, 75% at 4,000 m<sup class="mt-alt__fn-mark">*</sup>
           </div>
           <div class="mt-alt__vs">
             <div class="mt-alt__vsline"><span class="mt-alt__vslbl">Lithium station</span><span>Muted, at --mt-text-3, with a --mt-text-faint label</span></div>
             <div class="mt-alt__vsline"><span class="mt-alt__vslbl">Piston set</span><span>150px label column, collapsing to one column at 520px</span></div>
           </div>
+          <p class="mt-alt__fn">*the footnote line, at the comparators' own size and colour</p>
         </div>
       </div>
     </div>
@@ -565,6 +566,22 @@
     behind it, so the scrim itself is visible; on the hub it is what keeps the
     word legible over an arbitrary photograph. The word sits bottom-left, in the
     dense end of the gradient and clear of whatever the picture is of.
+  </p>
+  <p class="sb-warn" style="margin-top: var(--mt-space-4);">
+    <strong>The claim line above must sit at the same height as one carrying no
+    marker.</strong> .mt-alt__fn-mark takes line-height: 0 for that reason —
+    without it the raised glyph expands the line's 1.2 leading, and the single
+    row carrying a footnote stands a few pixels taller than the rest. Compare it
+    against the flipped row below, or against any row on the products hub.
+  </p>
+  <p class="sb-warn" style="margin-top: var(--mt-space-4);">
+    .mt-alt__fn is --mt-text-sm at --mt-text-3, which is exactly .mt-alt__vsline
+    above it and exactly .mt-stat__note elsewhere. The stat-card class is
+    deliberately not reused: it belongs to a different component, and a
+    products-hub footnote depending on it would leave whoever edits the stat
+    card next unable to see what they would break. On the hub only one row of
+    six carries a footnote — that break in the parallel is a decision, recorded
+    in STYLE.md section 6, not an oversight.
   </p>
 
   <h3>SKU cards · .mt-sku-card / .mt-skus</h3>
