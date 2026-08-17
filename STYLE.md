@@ -1,4 +1,4 @@
-v031 | 2026-08-17 | 1036 lines
+v032 | 2026-08-17 | 1037 lines
 # Style
 
 The design-system decisions for micronturbo.com, in words. STYLE.css is the
@@ -951,6 +951,7 @@ was carried, forgotten, or orphaned.
 | `.mt-bio` / `.mt-bios` bio card | About page | v022 §13 |
 | `:lang(zh)` reset extended to `.mt-bio__role` | About page | v022 §7 |
 | Two-up row for a pair of stat cards | About page | page-local |
+| Two-up row for a render and a drawing, and its caption | Products hub | page-local |
 
 **Page-local, not promoted:** the contact page bottom-aligns its hero image
 with the message field rather than with the form or the column. The hero is

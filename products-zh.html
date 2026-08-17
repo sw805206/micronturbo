@@ -10,6 +10,37 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="STYLE.css?v=024">
+  <style>
+    /* Page-local one-off, per STYLE.md section 8, recorded in the ratchet
+       record. Carried verbatim from products.html: SCOPE.md section 3 asks a
+       translated page to keep the same classes and the same inline styles, so
+       the pair stays diffable.
+
+       A two-up row pairing the control-face render with the dimensioned
+       elevation drawing in the closing section. The 1.5fr is derived from the
+       artwork rather than chosen: the render is 4:3 and the drawing 2.033:1,
+       and 2.033 / 1.333 = 1.525, so at this split the two images finish level
+       instead of one hanging below the other. It collapses at 860 rather than
+       at the global 768, matching .mt-alt__row — the other two-column layout on
+       this page — so the two come apart at the same width. */
+    .products-pair {
+      display: grid;
+      grid-template-columns: 1fr 1.5fr;
+      gap: var(--mt-space-6);
+      align-items: start;
+    }
+
+    @media (max-width: 860px) {
+      .products-pair { grid-template-columns: 1fr; }
+    }
+
+    .products-caption {
+      font-size: var(--mt-text-sm);
+      color: var(--mt-text-3);
+      line-height: 1.6;
+      margin: var(--mt-space-3) 0 0;
+    }
+  </style>
 </head>
 <body>
 
@@ -208,6 +239,29 @@
         <p>首发两款之后还有三款系统，各自打开前两款覆盖不到的细分市场。</p>
         <div class="mt-sku-card__spec">3 kW &nbsp;·&nbsp; 20 kW &nbsp;·&nbsp; 200 kW</div>
         <div><a class="mt-btn mt-btn--secondary" href="contact-zh.html">联系我们</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="mt-section" style="padding-top: 0;">
+  <div class="mt-container">
+    <h2>整机外观设计</h2>
+    <p class="mt-lead mt-lead--full" style="margin-bottom: var(--mt-space-7);">MT-6K 目前在台架运行，野外使用的整机外观仍在设计中：围绕发动机本体展开的通风箱体，控制与输出集中在同一面；箱体上架、下接底箱后，单人可同时背负整机与燃料。箱体单机外形 460 × 410 × 310 mm。以下为设计方案，非实物样机。</p>
+
+    <div class="products-pair">
+      <div>
+        <img class="mt-shot mt-shot--img mt-shot--use" src="images/design-6k-rear.jpg" width="800" height="600"
+             alt="箱体背面的设计渲染图，可见钥匙开关、急停、指示灯、插座与接插件，下方为通风格栅。">
+        <p class="products-caption">操作面——控制、指示与输出集中于同一面板。</p>
+      </div>
+      <div>
+        <!-- No size modifier on the drawing. .mt-shot--img sets width:100% with
+             no aspect-ratio, so it renders at its own 2.033:1 uncropped; --use
+             or --hero would impose a ratio and crop the callouts off it. -->
+        <img class="mt-shot mt-shot--img" src="images/design-6k-dims.jpg" width="1800" height="885"
+             alt="背负套装尺寸图，背面、正面与侧面三向视图，标注 460、630、335、575 mm。">
+        <p class="products-caption">背负状态——上架后 460 × 630 × 335 mm。</p>
       </div>
     </div>
   </div>

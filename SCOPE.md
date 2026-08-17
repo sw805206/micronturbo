@@ -1,4 +1,4 @@
-v019 | 2026-08-17 | 363 lines
+v020 | 2026-08-17 | 402 lines
 # Scope
 
 ## 1. Project
@@ -143,6 +143,45 @@ section covers it.
   the six above, but for a semantic token rather than a categorical one: the
   icon inherits `--mt-error` from the message it sits in and carries no color of
   its own.
+
+- **Dependency note, NOT a CDN exception: third-party artwork.** The two MT-6K
+  enclosure images on the products hub — the control-face render and the
+  dimensioned elevation drawing — come from an outside industrial-design study
+  rather than from anything drawn here. They are served from `images/` like
+  every other image on the site, so nothing is fetched from a third party at
+  runtime and this takes no exception against the rule above. It is recorded for
+  the same reason the icons are, that the artwork originates elsewhere.
+
+  | Artwork | Source | Rights |
+  |---|---|---|
+  | `design-6k-rear.jpg`, `design-6k-dims.jpg` | Commissioned industrial-design study | Micronturbo |
+
+  Unlike the icons, these carry no upstream license to retain: Micronturbo holds
+  the rights outright, so the row records provenance rather than an obligation.
+
+  Three things about them are not visible in the files themselves.
+
+  **They were retouched to remove the designation MTG-6, the product lettering,
+  and the studio's own header and caption.** The study named the machine MTG-6;
+  the site's designation is MT-6K, and LANGUAGE.md holds it invariant across
+  languages — never translated, transliterated or spaced. A render carrying the
+  other designation would put a second name for the same machine on the page, in
+  the one place a reader cannot correct it from context, and it would do so in an
+  image rather than in copy, where no terminology sweep would ever reach it.
+
+  **The drawing is indicative, not measurable.** Its source is not internally to
+  scale: two callouts both marked 460 mm differ by about 9 percent. The stated
+  millimeter values are the reference, not the drawn geometry, and nothing should
+  ever be derived by measuring off the artwork.
+
+  **Both images were recolored from the studio's gray plate to `#0C1A2B` so they
+  sit flush on the page ground, and the drawing's black linework was remapped to
+  `#C6CDD6` to survive the change.** That is `--mt-bg` and `--mt-text-2` frozen
+  into two JPEGs. If either token moves, the page moves and the images do not,
+  and two rectangles appear where none were visible — the same failure mode as
+  the hard-coded height recorded in STYLE.md section 9, where a measurement of
+  one element was baked into another and had no way to announce it had gone
+  stale. **Re-export both images if the ground token ever changes.**
 
 - All internal links are RELATIVE paths, for portability.
 
