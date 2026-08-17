@@ -1,4 +1,4 @@
-v032 | 2026-08-17 | 1037 lines
+v033 | 2026-08-17 | 1046 lines
 # Style
 
 The design-system decisions for micronturbo.com, in words. STYLE.css is the
@@ -836,7 +836,7 @@ change waits.
 
 **Every page's `?v=` query matches the current STYLE.css version, and is bumped
 in the same commit that bumps the stamp.** Each page links the stylesheet as
-`href="STYLE.css?v=023"`, where the number is STYLE.css's own `v###`. Changing
+`href="STYLE.css?v=024"`, where the number is STYLE.css's own `v###`. Changing
 the query changes the URL, so a browser holding the old file has nothing to
 match against and must refetch.
 
@@ -853,14 +853,22 @@ a warm cache, which is why it cannot be reproduced with `curl`.
 Verify before pushing any STYLE.css change:
 
 ```
-grep -l 'rel="stylesheet"' *.html | xargs grep -L 'STYLE.css?v=023'
+grep -l 'rel="stylesheet"' *.html | xargs grep -L 'STYLE.css?v=024'
 ```
 
 It lists any page out of step and should return nothing. The scoping matters:
 `partials.html` and `partials-zh.html` are fragments injected into pages that
 already carry the link, so they hold no stylesheet reference of their own. A
-bare `grep -L 'STYLE.css?v=023' *.html` reports both as failures — the check
+bare `grep -L 'STYLE.css?v=024' *.html` reports both as failures — the check
 must ask only pages that link a stylesheet at all.
+
+**The three numbers above are part of the bump.** They went stale in v024,
+when STYLE.css and all seventeen pages moved to `024` and this section was left
+naming `023` — which turned the verification command into one that reports every
+page as failing. A check that inverts its own answer is worse than no check,
+because the reading it gives is a full sweep of red on a site that is correct.
+Bumping the query is therefore three edits and not two: the stamp, the pages,
+and this section.
 
 This is a mitigation, not the fix. It costs a returning visitor a full CSS
 refetch on every release, and it only works if the query is actually bumped —
@@ -950,6 +958,7 @@ was carried, forgotten, or orphaned.
 | `.mt-doc`, `.mt-doc__meta` long-form document measure | Privacy pages | v020 §12 |
 | `.mt-bio` / `.mt-bios` bio card | About page | v022 §13 |
 | `:lang(zh)` reset extended to `.mt-bio__role` | About page | v022 §7 |
+| `.mt-alt__shot--wide`, `.mt-alt__shot--dark-source` feature-slot modifiers | About page | v024 §10 |
 | Two-up row for a pair of stat cards | About page | page-local |
 | Two-up row for a render and a drawing, and its caption | Products hub | page-local |
 
