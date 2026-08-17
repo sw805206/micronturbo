@@ -10,6 +10,35 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="STYLE.css?v=023">
+  <style>
+    /* Page-local one-off, per STYLE.md section 8, built from tokens and
+       recorded in the ratchet record.
+
+       A two-up row pairing the control-face render with the dimensioned
+       elevation drawing in the closing section. The 1.5fr is derived from the
+       artwork rather than chosen: the render is 4:3 and the drawing 2.033:1,
+       and 2.033 / 1.333 = 1.525, so at this split the two images finish level
+       instead of one hanging below the other. It collapses at 860 rather than
+       at the global 768, matching .mt-alt__row — the other two-column layout on
+       this page — so the two come apart at the same width. */
+    .products-pair {
+      display: grid;
+      grid-template-columns: 1fr 1.5fr;
+      gap: var(--mt-space-6);
+      align-items: start;
+    }
+
+    @media (max-width: 860px) {
+      .products-pair { grid-template-columns: 1fr; }
+    }
+
+    .products-caption {
+      font-size: var(--mt-text-sm);
+      color: var(--mt-text-3);
+      line-height: 1.6;
+      margin: var(--mt-space-3) 0 0;
+    }
+  </style>
 </head>
 <body>
 
@@ -219,6 +248,33 @@
         the first two do not reach.</p>
         <div class="mt-sku-card__spec">3 kW &nbsp;·&nbsp; 20 kW &nbsp;·&nbsp; 200 kW</div>
         <div><a class="mt-btn mt-btn--secondary" href="contact.html">Talk to us</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="mt-section" style="padding-top: 0;">
+  <div class="mt-container">
+    <h2>The Enclosure Takes Shape</h2>
+    <p class="mt-lead mt-lead--full" style="margin-bottom: var(--mt-space-7);">The MT-6K runs on the
+    bench today; the field enclosure is still in design. A vented case sized around the engine
+    carries the controls and the outlets on one face, and sits on a backpack frame over a base
+    container so one person takes the unit and its fuel in together. The case alone measures
+    460 × 410 × 310 mm. A design study, not built hardware.</p>
+
+    <div class="products-pair">
+      <div>
+        <img class="mt-shot mt-shot--img mt-shot--use" src="images/design-6k-rear.jpg" width="800" height="600"
+             alt="Design render of the generator case seen from the rear. A gray panel carries a keyswitch, a red emergency stop, a green indicator, a mains socket and two connector ports above a louvered exhaust grille.">
+        <p class="products-caption">Control face — controls, indicators and outlets on one panel.</p>
+      </div>
+      <div>
+        <!-- No size modifier on the drawing. .mt-shot--img sets width:100% with
+             no aspect-ratio, so it renders at its own 2.033:1 uncropped; --use
+             or --hero would impose a ratio and crop the callouts off it. -->
+        <img class="mt-shot mt-shot--img" src="images/design-6k-dims.jpg" width="1800" height="885"
+             alt="Dimensioned elevation drawing of the backpack set, seen from the back, the front and the side, marked 460, 630, 335 and 575 millimeters.">
+        <p class="products-caption">Carried set — 460 × 630 × 335 mm on the frame.</p>
       </div>
     </div>
   </div>
