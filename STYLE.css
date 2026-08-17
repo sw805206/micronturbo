@@ -1,4 +1,4 @@
-/* v023 | 2026-08-17 | 1598 lines
+/* v024 | 2026-08-17 | 1622 lines
    micronturbo.com design tokens and shared patterns.
    The decisions this file implements are recorded in STYLE.md.
    Pages consume tokens, never raw hex or px. See STYLE.md section 8. */
@@ -999,6 +999,30 @@ td {
    and the brightest pixel landed barely above the page ground. It read as blue
    haze rather than as a picture. The scrim does the darkening now. */
 .mt-alt__shot img { width: 100%; height: 100%; object-fit: cover; opacity: 0.7; }
+
+/* Two modifiers on the slot, and they are INDEPENDENT: one is about the shape
+   of the box, the other about the image put in it. Either may be used without
+   the other, and nothing here couples them.
+
+   --wide is 2/1 rather than the base 4/3. A letterbox suits a subject that is
+   wide and short — an aircraft seen head-on, a skyline and its reflection —
+   where 4/3 would either crop the width away or leave the subject stranded in
+   a tall frame. The six hub rows stay 4/3 and are not affected. */
+.mt-alt__shot--wide { aspect-ratio: 2 / 1; }
+
+/* --dark-source releases the muting for an image that arrives dark already.
+   The trigger is the SOURCE, not the slot: a bright photograph in a --wide box
+   still wants the 0.7 above, and a dark one in a 4/3 box still wants this.
+
+   The 0.7 and the 0.15–0.5 scrim were set together on bright photographs, and
+   what they were solving was an image being darkened twice. An image that is
+   already dark at source is not that case — the scrim on its own carries the
+   word, and muting the image as well takes it below the floor and returns the
+   blue haze the note above describes.
+
+   Same specificity as .mt-alt__shot img, so this rule has to sit after it.
+   Moving it above that line silently restores the 0.7. */
+.mt-alt__shot--dark-source img { opacity: 1; }
 
 /* Built from --mt-bg-rgb rather than a hex-derived literal, so the scrim is
    demonstrably the page ground at two alphas.

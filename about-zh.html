@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="STYLE.css?v=023">
+  <link rel="stylesheet" href="STYLE.css?v=024">
   <style>
     /* Page-local one-off, per STYLE.md section 8, recorded in the ratchet
        record. Carried verbatim from about.html: SCOPE.md section 3 asks a
@@ -185,6 +185,72 @@
     </div>
 
     <div class="mt-rule" style="margin-top: var(--mt-space-9);"><span class="mt-rule__num">04</span><span class="mt-rule__line"></span></div>
+    <p class="mt-label">合作项目</p>
+    <h2>正在推进的合作项目</h2>
+    <p class="mt-lead mt-lead--full" style="margin-bottom: var(--mt-space-6);">安恒燃动与制造整机的企业合作，也进入那些能源政策看重设备燃料选择的市场。以下是两个典型案例。</p>
+
+    <!-- 与英文页同一套标记：.mt-alt__row 自产品页沿用，未作改动。外层 .mt-alt
+         是为了让 :first-child 有父元素，第一行才保得住顶部细线。
+
+         与产品页六行的区别只有两处，且都在图槽而不在行上：--wide 用于 2:1 的
+         画面，--dark-source 用于本身即为暗调的 eVTOL 渲染图。此处
+         .mt-alt__ours 不带图标——svg 本就可选，且这一节讲的是合作项目，不是
+         那六个分类特性。 -->
+    <div class="mt-alt">
+
+      <div class="mt-alt__row">
+        <div class="mt-alt__media">
+          <div class="mt-alt__shot mt-alt__shot--wide mt-alt__shot--dark-source">
+            <!-- 裁切位置属逐图数据，见 STYLE.md 第 6 节。原图 870x433，略宽于
+                 2:1，cover 每侧仅裁掉约两个像素，居中即可保住两侧最外的旋翼
+                 ——少了它们，剪影就不再像 eVTOL。 -->
+            <img src="images/program-evtol.webp" width="870" height="433"
+                 style="object-position: 50% 50%;"
+                 alt="一架深色 eVTOL 飞行器在黑色影棚中正面拍摄，四个涵道旋翼由细长支臂承托于流线型座舱两侧，机身倒映在光洁的地面上。">
+          </div>
+          <div class="mt-alt__scrim"></div>
+          <div class="mt-alt__word">eVTOL</div>
+        </div>
+        <div class="mt-alt__body">
+          <p class="mt-alt__desc">公司已与一家领先的 eVTOL 企业签署联合开发技术协议，共同开发以安恒燃动发电机为核心的混合动力方案，替代该机型现有动力系统。项目完成后，预计在同等载重下航程可由 50 公里提升至 550 公里；或在同等飞行时长下，载重由 150 公斤提升至 300 公斤。由于使用寿命大幅延长，预计每小时使用成本可降低一半。</p>
+          <div class="mt-alt__spec">
+            <div class="mt-alt__ours">预计航程 550 公里</div>
+            <div class="mt-alt__vs">
+              <div class="mt-alt__vsline"><span class="mt-alt__vslbl">现状</span><span>同一机型、同等载重下为 50 公里</span></div>
+              <div class="mt-alt__vsline"><span class="mt-alt__vslbl">或载重</span><span>同等飞行时长下由 150 公斤提升至 300 公斤</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-alt__row mt-alt__row--flip">
+        <div class="mt-alt__media">
+          <div class="mt-alt__shot mt-alt__shot--wide">
+            <!-- 2560x1707 为 3:2，比图槽更高而非更宽，因此裁切发生在纵向，
+                 起作用的是 Y 值。25% 把顶部空旷的天空裁去，同时在宣礼塔尖上
+                 方留出余量，并保住底部的倒影——居中会把两座高塔的塔尖切掉。 -->
+            <img src="images/program-green-fuels.jpg" width="2560" height="1707"
+                 style="object-position: 50% 25%;"
+                 alt="暮色中一座大型穹顶清真寺被蓝光照亮，四座宣礼塔映衬着橙色与青色渐变的天空，整片立面倒映在前景平静的水面上。">
+          </div>
+          <div class="mt-alt__scrim"></div>
+          <div class="mt-alt__word">Green Fuels</div>
+        </div>
+        <div class="mt-alt__body">
+          <p class="mt-alt__desc">阿联酋已公开承诺发展氢能：国家氢能战略提出 2031 年前年产 140 万吨，2050 年实现净零排放。进入该市场的发电设备，将以燃料适配能力受到审视。2026 年，安恒燃动在阿联酋投资合作峰会上入围遴选名单——就目前所知，这是唯一同时兼容甲醇与氢气的便携发电方案，且为现有设计已具备的属性，无需后续改造投入。</p>
+          <div class="mt-alt__spec">
+            <div class="mt-alt__ours">兼容 8 种燃料，含甲醇与氢气</div>
+            <div class="mt-alt__vs">
+              <div class="mt-alt__vsline"><span class="mt-alt__vslbl">阿联酋目标</span><span>2031 年前年产 140 万吨氢</span></div>
+              <div class="mt-alt__vsline"><span class="mt-alt__vslbl">进展</span><span>2026 年阿联酋投资合作峰会入围</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="mt-rule" style="margin-top: var(--mt-space-9);"><span class="mt-rule__num">05</span><span class="mt-rule__line"></span></div>
     <h2>后续产品</h2>
     <p class="mt-lead mt-lead--full" style="margin-bottom: var(--mt-space-6);">首发两款之后还有三款，各自打开前两款覆盖不到的区间。</p>
 

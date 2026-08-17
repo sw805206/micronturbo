@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="STYLE.css?v=023">
+  <link rel="stylesheet" href="STYLE.css?v=024">
   <style>
     /* The three highlight states. Everything else on this page comes from
        STYLE.css tokens; these three do not exist there because nothing else
@@ -137,7 +137,8 @@
     { en: 'index.html' },
     { en: 'products.html' },
     { en: 'products-6k.html' },
-    { en: 'products-75k.html' }
+    { en: 'products-75k.html' },
+    { en: 'about.html' }
   ];
 
   /* Text-bearing slots. Derived from tag and class, never from a list of
@@ -439,7 +440,7 @@
         '页面已加载，但未取到可配对的文本元素——本页没有可审校的内容。');
     } else {
       checks += check(desyncPages.length === 0,
-        desyncPages.length === 0 ? '四组页面结构一致' : desyncPages.length + ' 组页面结构不一致',
+        desyncPages.length === 0 ? '五组页面结构一致' : desyncPages.length + ' 组页面结构不一致',
         desyncPages.length === 0 ? '共 ' + totalRows + ' 项对照' : desyncPages.join('、'));
       checks += check(totalVariant === 0,
         totalVariant === 0 ? '未发现变体' : '发现 ' + totalVariant + ' 处变体',

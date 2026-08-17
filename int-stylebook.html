@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="STYLE.css?v=023">
+  <link rel="stylesheet" href="STYLE.css?v=024">
   <style>
     .sb-swatch { border: 1px solid var(--mt-border); border-radius: var(--mt-radius-sm); overflow: hidden; }
     .sb-swatch__chip { height: 88px; }
@@ -20,6 +20,13 @@
     .sb-row__token { font-size: var(--mt-text-xs); color: var(--mt-text-3); min-width: 190px; }
     .sb-bar { background: var(--mt-ignition); height: 16px; border-radius: 2px; }
     .sb-warn { border-left: 2px solid var(--mt-ignition); padding-left: var(--mt-space-4); color: var(--mt-text-2); font-size: var(--mt-text-sm); max-width: 62ch; }
+    /* Two-up, for specimens where the difference IS the specimen and one box
+       on its own would report a value rather than a change. .mt-grid carries
+       --3 and --4 and no --2, so this is the stylebook's own chrome, like
+       .sb-row above it. */
+    .sb-pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--mt-space-5); }
+    .sb-pair__cap { font-size: var(--mt-text-sm); color: var(--mt-text-3); margin-top: var(--mt-space-3); }
+    @media (max-width: 560px) { .sb-pair { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
@@ -582,6 +589,75 @@
     card next unable to see what they would break. On the hub only one row of
     six carries a footnote — that break in the parallel is a decision, recorded
     in STYLE.md section 6, not an oversight.
+  </p>
+
+  <h3 style="margin-top: var(--mt-space-7);">Wide slot · .mt-alt__shot--wide</h3>
+  <!-- Two pairs rather than four boxes in a row. Each pair changes exactly one
+       thing against the same photograph, because a modifier is a difference and
+       a single specimen would report a value instead. Same reasoning as the
+       :lang(zh) label pairs in section 04 and the .mt-doc pair below. -->
+  <div class="sb-pair">
+    <div>
+      <div class="mt-alt__media">
+        <div class="mt-alt__shot">
+          <img src="images/hero-about.jpg" width="1600" height="2400" alt="">
+        </div>
+        <div class="mt-alt__scrim"></div>
+        <div class="mt-alt__word">Base</div>
+      </div>
+      <p class="sb-pair__cap">.mt-alt__shot · 4 / 3 · the six hub rows</p>
+    </div>
+    <div>
+      <div class="mt-alt__media">
+        <div class="mt-alt__shot mt-alt__shot--wide">
+          <img src="images/hero-about.jpg" width="1600" height="2400" alt="">
+        </div>
+        <div class="mt-alt__scrim"></div>
+        <div class="mt-alt__word">Wide</div>
+      </div>
+      <p class="sb-pair__cap">--wide · 2 / 1 · a subject that is wide and short</p>
+    </div>
+  </div>
+
+  <h3 style="margin-top: var(--mt-space-7);">Dark source · .mt-alt__shot--dark-source</h3>
+  <div class="sb-pair">
+    <div>
+      <div class="mt-alt__media">
+        <div class="mt-alt__shot mt-alt__shot--wide">
+          <img src="images/hero-about.jpg" width="1600" height="2400" alt="">
+        </div>
+        <div class="mt-alt__scrim"></div>
+        <div class="mt-alt__word">Muted</div>
+      </div>
+      <p class="sb-pair__cap">image at 0.7 — correct for a bright photograph</p>
+    </div>
+    <div>
+      <div class="mt-alt__media">
+        <div class="mt-alt__shot mt-alt__shot--wide mt-alt__shot--dark-source">
+          <img src="images/hero-about.jpg" width="1600" height="2400" alt="">
+        </div>
+        <div class="mt-alt__scrim"></div>
+        <div class="mt-alt__word">Dark source</div>
+      </div>
+      <p class="sb-pair__cap">--dark-source · image at 1 — the scrim alone</p>
+    </div>
+  </div>
+  <p style="font-size: var(--mt-text-sm); color: var(--mt-text-3); max-width: 62ch; margin-top: var(--mt-space-5);">
+    The specimen is hero-about.jpg, a low-light turbine close-up that is already
+    dark at source — which is why the right-hand slot keeps shadow detail the
+    left-hand one has flattened into the page ground.
+  </p>
+  <p class="sb-warn" style="margin-top: var(--mt-space-4);">
+    <strong>The two modifiers are independent.</strong> --wide is about the shape
+    of the box and --dark-source about the image put in it, so either works
+    without the other: a bright photograph in a --wide slot still wants the 0.7,
+    and a dark one in a 4/3 slot still wants --dark-source. They are shown here
+    on the same slot only because the about page happens to use both at once.
+  </p>
+  <p class="sb-warn" style="margin-top: var(--mt-space-4);">
+    --dark-source has the same specificity as the .mt-alt__shot img rule it
+    overrides, so it depends on sitting after it in STYLE.css. Moved above that
+    line it restores the 0.7 silently, and this pair is what would show it.
   </p>
 
   <h3>SKU cards · .mt-sku-card / .mt-skus</h3>
