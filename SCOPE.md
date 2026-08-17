@@ -1,4 +1,4 @@
-v018 | 2026-08-15 | 358 lines
+v019 | 2026-08-17 | 363 lines
 # Scope
 
 ## 1. Project
@@ -314,14 +314,19 @@ belongs on them.
 
   **Which pairs it reviews is a hand-maintained list, and it is the one part of
   this page that does drift.** `PAIRS` near the top of the file names the
-  English pages; everything else about a pair is derived. It holds four — index,
-  products and the two SKU pages — while the site now has seven, so `about`,
+  English pages; everything else about a pair is derived. It holds five — index,
+  products, the two SKU pages and `about` — while the site has seven, so
   `contact` and `privacy` are built, paired and NOT reviewed. Any pair added
   later is invisible here until someone edits that array. The page reports its
-  own count in the header ("四组页面结构一致"), which is what makes the gap
+  own count in the header ("五组页面结构一致"), which is what makes the gap
   findable, but nothing warns that a pair is missing: an unreviewed pair looks
   exactly like a pair with no problems. Adding a pair to the site is therefore
-  two edits, not one, and three of the seven are currently outstanding.
+  two edits, not one, and two of the seven are currently outstanding.
+
+  `about` is the pair that proves the two-edits rule rather than illustrating
+  it in the abstract. It was built, paired and left unreviewed here for as long
+  as it took someone to notice, and the count in the header is what surfaced
+  it — exactly the path this paragraph describes.
 
   Its chrome — headings, column labels, legend, error states — is in Chinese,
   unlike the other two internal pages. This is deliberate and not an
