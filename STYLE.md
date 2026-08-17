@@ -1,4 +1,4 @@
-v030 | 2026-08-15 | 1001 lines
+v031 | 2026-08-17 | 1036 lines
 # Style
 
 The design-system decisions for micronturbo.com, in words. STYLE.css is the
@@ -472,6 +472,40 @@ of them early and the other late.
   comparison lines sit beneath it in `--mt-text-3` with `--mt-text-faint`
   labels. That ordering is the argument: the claim first, the context second,
   never the competitor's number at the same weight as ours.
+- **Feature-row footnote** — `.mt-alt__fn` with `.mt-alt__fn-mark`. A fourth
+  line under the two comparisons, on the one row that states a count rather
+  than a measurement.
+
+  The Versatility row claims "8 fuels". The count is what the page argues and
+  the footnote is what lets an engineer check it, which keeps the
+  specification argument on the page without putting it in the headline.
+  Nothing in STYLE.css could carry it: before v023 the file had no superscript
+  handling of any kind.
+
+  The marker drops to `--mt-text-xs` in `--mt-text-3` because it sits inside
+  `.mt-alt__ours`, which is `--mt-text-h3` and bold — an asterisk inheriting
+  that size reads as a defect rather than as a reference mark. **It takes
+  `line-height: 0`, and that is the load-bearing part.** Without it the raised
+  glyph expands the claim line's 1.2 leading and the single row carrying a
+  footnote stands taller than the other five, breaking a parallel that runs
+  the length of the page for a character nobody would look at. Measured: 26px
+  with the marker, 26px without.
+
+  The footnote line takes the same register as `.mt-alt__vsline` above it —
+  `--mt-text-sm`, `--mt-text-3`, 1.6 — so it reads as a third muted line under
+  the claim rather than as a new kind of element. Those three values are also
+  exactly `.mt-stat__note`, which is deliberately **not** reused: that class
+  belongs to the stat card, every other consumer is a `.mt-stat`, and a
+  products-hub footnote depending on it would leave whoever edits the stat card
+  next unable to see what they would break. One rule of duplication is cheaper
+  than a class whose name lies about where it is used.
+
+  **Only one row of six carries a footnote, and that asymmetry is the
+  decision, not an oversight.** It was taken deliberately: a count invites the
+  question "which eight?" in a way a temperature or an hour figure does not, so
+  the row that counts is the row that owes an answer. A second footnote
+  appearing elsewhere is a signal that some other row has started making a
+  claim it cannot support in one line, not a licence to even the page up.
 - **Comparison table** — `.mt-table` in `.mt-table-wrap`. Our column takes a
   surface fill and an ignition rule; the competitor's is left uncolored. It
   scrolls below its breakpoint rather than wrapping, because a three-column
@@ -802,7 +836,7 @@ change waits.
 
 **Every page's `?v=` query matches the current STYLE.css version, and is bumped
 in the same commit that bumps the stamp.** Each page links the stylesheet as
-`href="STYLE.css?v=022"`, where the number is STYLE.css's own `v###`. Changing
+`href="STYLE.css?v=023"`, where the number is STYLE.css's own `v###`. Changing
 the query changes the URL, so a browser holding the old file has nothing to
 match against and must refetch.
 
@@ -819,13 +853,13 @@ a warm cache, which is why it cannot be reproduced with `curl`.
 Verify before pushing any STYLE.css change:
 
 ```
-grep -l 'rel="stylesheet"' *.html | xargs grep -L 'STYLE.css?v=022'
+grep -l 'rel="stylesheet"' *.html | xargs grep -L 'STYLE.css?v=023'
 ```
 
 It lists any page out of step and should return nothing. The scoping matters:
 `partials.html` and `partials-zh.html` are fragments injected into pages that
 already carry the link, so they hold no stylesheet reference of their own. A
-bare `grep -L 'STYLE.css?v=022' *.html` reports both as failures — the check
+bare `grep -L 'STYLE.css?v=023' *.html` reports both as failures — the check
 must ask only pages that link a stylesheet at all.
 
 This is a mitigation, not the fix. It costs a returning visitor a full CSS
@@ -894,6 +928,7 @@ was carried, forgotten, or orphaned.
 | Categorical accents — hydro, magnet, vortex, and the three deep variants | Products hub | v008 §1 |
 | `.mt-sku-card` / `.mt-skus` SKU cards | Products hub | v008 §10 |
 | `.mt-alt__row` alternating feature row | Products hub | v010 §10 |
+| `.mt-alt__fn`, `.mt-alt__fn-mark` feature-row footnote | Products hub | v023 §10 |
 | `--mt-bg-rgb` | Products hub | v010 §1 |
 | `.mt-callout` brand callout | Products hub | v012 §10 |
 | `.mt-lead--full` full-measure lead | Products hub, MT-6K, MT-75K | v012 §10 |
