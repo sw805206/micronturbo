@@ -8,7 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Noto+Sans+SC:wght@400;500;700;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="STYLE.css?v=024">
+  <link rel="stylesheet" href="STYLE.css?v=025">
   <style>
     .sb-swatch { border: 1px solid var(--mt-border); border-radius: var(--mt-radius-sm); overflow: hidden; }
     .sb-swatch__chip { height: 88px; }
@@ -292,6 +292,28 @@
   <p style="font-size: var(--mt-text-sm); color: var(--mt-text-3);">
     .mt-label · --mt-text-xs · 500 · 0.28em · uppercase · ignition. Latin values;
     :lang(zh) resets the tracking and the case, as shown above.
+  </p>
+
+  <h3 style="margin-top: var(--mt-space-6);">Inline phrase highlight</h3>
+  <!-- Shown inside real lead text rather than on its own, because the whole
+       question this pattern answers is how a marked phrase sits against the
+       copy around it. A swatch on a blank row would prove nothing. -->
+  <p class="mt-lead mt-lead--full" style="margin-bottom: var(--mt-space-3);">A
+  rescue team, a polar station and an air taxi all have one thing setting their
+  power ceiling: <strong class="mt-hl">power density</strong>. This team spent
+  their careers raising that number to a new high.</p>
+  <p class="mt-lead mt-lead--full" lang="zh-Hans" style="margin-bottom: var(--mt-space-3);">一支救援队、一座极地考察站、一架空中出租车，它们动力上限都取决于一个指标：<strong class="mt-hl">功率密度</strong>。正是这个团队，用他们整个职业生涯，将这个数字推到新的高度。</p>
+  <p style="font-size: var(--mt-text-sm); color: var(--mt-text-3); max-width: 62ch;">
+    strong.mt-hl · --mt-amber · 700. The pair is the specimen, not the Latin row
+    alone: the weight is half the pattern, and Noto Sans SC has to carry 700 for
+    it to survive the CJK family switch. A regression reads as the Chinese
+    phrase going amber at body weight while the Latin one stays bold.
+  </p>
+  <p style="font-size: var(--mt-text-sm); color: var(--mt-text-3); max-width: 62ch;">
+    The selector is strong.mt-hl, element and class together, so the emphasis is
+    in the markup and not only here. Amber rather than ignition because amber
+    clears AA at any size and ignition is reserved for section rules and the
+    primary action.
   </p>
 
   <div class="mt-rule" style="margin-top: var(--mt-space-9);">

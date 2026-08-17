@@ -1,4 +1,4 @@
-v006 | 2026-08-15 | 218 lines
+v007 | 2026-08-17 | 219 lines
 # Language
 
 The canonical termbase for micronturbo.com, in ENGLISH. English is the source
@@ -216,3 +216,4 @@ what it excludes as much as for what it says.
 | air taxi | A passenger-carrying eVTOL service, named as a use rather than as an aircraft class. Distinct from `eVTOL`, which is the vehicle category: this is what the vehicle is for. It sits beside a rescue team and a polar station to show the power-density argument reaching civil aviation and not only industrial equipment. |
 | polar station | A permanently staffed research station in a polar region. The scenario is sustained operation where resupply is measured in months, which is what makes every kilogram of generator a kilogram of something else left behind. Not a synonym for `off-grid`, which is a property of a place rather than a place. |
 | compute ceiling | The limit a walking robot meets when its power source cannot feed both movement and onboard computation. The claim is that power density sets how capable the machine can be and not only how strong. Stated as a ceiling being raised, never as a bottleneck being removed — see the note on 算力天花板 in LANGUAGE-zh.md, which records the same choice against the company deck's own phrasing. |
+| utility and municipal works | Municipal and utility work in the street — a crew at an open excavation, cable and pipe work, signals. The site is urban and reachable; the constraint is street space rather than distance, which is what separates it from the remote-construction case where the problem is that a trailer or a crane cannot get there at all. |

@@ -1,4 +1,4 @@
-v033 | 2026-08-17 | 1046 lines
+v034 | 2026-08-17 | 1081 lines
 # Style
 
 The design-system decisions for micronturbo.com, in words. STYLE.css is the
@@ -337,6 +337,40 @@ would have to maintain.
 Without the reset, 产品 renders at 0.28em and 锂电电源 at 0.14em — which reads
 as broken spacing rather than as tracking, because a reader parses the gaps as
 word boundaries in a script that has none.
+
+**The inline phrase highlight** is the other named inline treatment:
+`strong.mt-hl`, amber at weight 700, in STYLE.css section 6. It marks the one
+term a lead is actually about — the phrase a reader skimming the section should
+come away with — and it is used at most once in a passage. A second highlight
+in the same paragraph is the signal that the paragraph has two subjects, not
+that it needs two marks.
+
+**Amber, not ignition.** Section 3 gives amber the role "Highlight, figures"
+and it reads ~9:1 on `--mt-bg`, so it is legal as text at any size; ignition at
+~4.5:1 is reserved there for display type, rules and the one action that
+matters most on a page. Spending ignition on a phrase mid-paragraph is how a
+page stops having a primary action.
+
+**Color and weight, not a `<mark>` background.** A swatch behind the phrase
+introduces a second surface inside running copy, and that surface needs a
+radius, padding and an inset that no single value gets right across a line
+break — a highlight that wraps arrives as two boxes. Two channels carry the
+emphasis instead, and neither reflows the line.
+
+**The selector names the element as well as the class**, so the emphasis lives
+in the markup and not only in the stylesheet. A bare `.mt-hl` could be hung on
+a `<span>`, which would read identically and say nothing to a reader with
+styles off or one hearing the page read aloud.
+
+The weight is the part that has to be checked per script rather than assumed.
+Noto Sans SC carries 700, so the pattern holds on a Chinese page instead of
+degrading to color alone when the CJK family takes over — which is why the
+stylebook renders the Latin and the Simplified Chinese specimens as a pair,
+on the same reasoning as the label resets above.
+
+The idiom is not new. `.mt-table td.mt-ours strong` in section 10 has been
+amber at 700 since v008; this generalizes that treatment out of the comparison
+table and into running copy.
 
 ## 5. Spacing, radii, layout
 
@@ -836,7 +870,7 @@ change waits.
 
 **Every page's `?v=` query matches the current STYLE.css version, and is bumped
 in the same commit that bumps the stamp.** Each page links the stylesheet as
-`href="STYLE.css?v=024"`, where the number is STYLE.css's own `v###`. Changing
+`href="STYLE.css?v=025"`, where the number is STYLE.css's own `v###`. Changing
 the query changes the URL, so a browser holding the old file has nothing to
 match against and must refetch.
 
@@ -853,13 +887,13 @@ a warm cache, which is why it cannot be reproduced with `curl`.
 Verify before pushing any STYLE.css change:
 
 ```
-grep -l 'rel="stylesheet"' *.html | xargs grep -L 'STYLE.css?v=024'
+grep -l 'rel="stylesheet"' *.html | xargs grep -L 'STYLE.css?v=025'
 ```
 
 It lists any page out of step and should return nothing. The scoping matters:
 `partials.html` and `partials-zh.html` are fragments injected into pages that
 already carry the link, so they hold no stylesheet reference of their own. A
-bare `grep -L 'STYLE.css?v=024' *.html` reports both as failures — the check
+bare `grep -L 'STYLE.css?v=025' *.html` reports both as failures — the check
 must ask only pages that link a stylesheet at all.
 
 **The three numbers above are part of the bump.** They went stale in v024,
@@ -959,6 +993,7 @@ was carried, forgotten, or orphaned.
 | `.mt-bio` / `.mt-bios` bio card | About page | v022 §13 |
 | `:lang(zh)` reset extended to `.mt-bio__role` | About page | v022 §7 |
 | `.mt-alt__shot--wide`, `.mt-alt__shot--dark-source` feature-slot modifiers | About page | v024 §10 |
+| `strong.mt-hl` inline phrase highlight | About page (both languages) | v025 §6 |
 | Two-up row for a pair of stat cards | About page | page-local |
 | Two-up row for a render and a drawing, and its caption | Products hub | page-local |
 
