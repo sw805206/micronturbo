@@ -1,4 +1,4 @@
-v017 | 2026-08-22 | 301 lines
+v020 | 2026-08-30 | 326 lines
 
 # Working Rules
 
@@ -165,16 +165,26 @@ concluded from it that there was nowhere at all a paid user could read their pla
 back — which became false later still, and was further from true. Checking only
 the premise would have left the conclusion standing.
 
-**Protect main when it deploys from main.** If the project deploys from main (a
-live website or app), never commit code directly to main: one feature branch per
-task, branched from an up-to-date main → commit locally as you work → push the
-branch → open a PR only when I ask → merge → clean up. If the project does not
-deploy from main, committing code directly to main is fine; branch only when you
-want isolation for risky work.
+**Protect main when it deploys from main.** Where the project deploys from main
+(a live website or app), anything on the branch-and-PR side of the split takes
+one feature branch per task, branched from an up-to-date main → commit locally as
+you work → push the branch → open a PR only when I ask → merge → clean up. Where
+the project does not deploy from main, a commit reaches no reader and there is
+nothing for the split to protect: committing directly to main is fine, and you
+branch only when you want isolation for risky work.
 
-**No PR unless I explicitly ask.** When I do ask, name it
-`type/short-description`, where type is one of: feat, fix, docs, refactor,
-chore, style, test, perf, build, ci, uat.
+**Direct to main:** anything the build validates before it publishes, plus
+governance docs.
+
+**Branch and PR unless I say otherwise:** anything on a deploying surface that
+nothing validates — the viewer, the build script, stylesheets.
+
+Public or private makes no difference. If it isn't obvious which side a file sits
+on, the test is whether a bad commit reaches readers with nothing catching it; if
+that's still unclear, ask.
+
+When I ask for a PR, name it `type/short-description`, where type is one of: feat,
+fix, docs, refactor, chore, style, test, perf, build, ci, uat.
 
 **Post-merge cleanup — Claude reminds, so I don't have to.** After any PR
 merges, Claude surfaces the cleanup automatically, but only once the merge is
@@ -204,6 +214,11 @@ or **opt-in**, applying only where SCOPE.md declares them.
 The master copy of CLAUDE.md lives on local disk at
 `/Users/swai/sw805206/CLAUDE.md`. Every project repo holds a copy, and the disk
 master is what they reconcile against.
+
+Every project repo holds a copy regardless of which local tree or which GitHub
+account it belongs to: the master is an absolute path, not a tree-relative one,
+so a repo under a different account's tree reconciles against it identically. A
+new repo joins by taking a copy at creation.
 
 **Publishing a change (project A).** Edit the copy in project A's repo, commit
 to main, then copy the file back to the disk master. The change is not finished
@@ -250,6 +265,16 @@ a row would only duplicate them. The other exit is DEFERRED: I say the item
 waits, and it is flushed to BACKLOG.md. Only deferred items are ever flushed.
 The test is deferral alone — never the item's category, and never whether it is
 a bug, a governance fix, a feature or a decision.
+
+**A DECISION NOT TO ACT GOES IN THE GOVERNING PROSE, NOT HERE.** The DONE exit
+above assumes a finished item left a commit to find; a decision to leave code
+alone leaves none — no commit, no diff, no PR — so its reasoning has no artifact
+at all and vanishes with the chat. It is still not deferred, so a row would
+announce work that does not exist in the one file people read looking for work.
+Record it in the §-level documentation that governs the thing decided about,
+where the person who would otherwise "fix" it is already reading. Symptom: an
+asymmetry nobody can explain, tidied away three months later on the evidence
+available.
 
 **This governs entry to the backlog only.** Once an item IS a row, the Status
 rules below govern it for the rest of its life: work done on an existing row
