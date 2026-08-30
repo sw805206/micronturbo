@@ -1,5 +1,13 @@
-v020 | 2026-08-17 | 402 lines
+v021 | 2026-08-30 | 410 lines
 # Scope
+
+## Repository
+
+| | |
+|---|---|
+| Local | `/Users/swai/sw805206/micronturbo` |
+| Git | `https://github.com/sw805206/micronturbo` |
+| GitHub account | `sw805206` |
 
 ## 1. Project
 
